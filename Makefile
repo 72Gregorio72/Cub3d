@@ -38,5 +38,9 @@ re: fclean all
 miniclean: fclean
 	$(RM) minilibx-linux
 
+vale: re clean
+	@clear
+	valgrind ./$(NAME) 
+
 .SILENT:	all clean fclean re
 .PHONY:		all clean fclean re
