@@ -15,19 +15,18 @@ RM = rm -rf
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	if [ ! -d "minilibx-linux" ]; then \
-		git clone https://github.com/42Paris/minilibx-linux.git; \
-	fi
 	@$(MAKE) -C ./libft --quiet
 	@$(MAKE) -C ./minilibx-linux --quiet
 	$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(MLX) ./libft/libft.a -o $(NAME)
 
 %.o: %.c
+	if [ ! -d "minilibx-linux" ]; then \
+		git clone https://github.com/42Paris/minilibx-linux.git; \
+	fi
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	@$(MAKE) -C ./libft clean --quiet
-	@$(MAKE) -C ./minilibx-linux clean --quiet
 	@$(RM) $(OBJS)
 
 fclean: clean
@@ -35,6 +34,9 @@ fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean all
+
+miniclean: fclean
+	$(RM) minilibx-linux
 
 .SILENT:	all clean fclean re
 .PHONY:		all clean fclean re
