@@ -48,6 +48,12 @@ int	close_window(t_gen *gen)
 	mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
 	mlx_destroy_display(gen->mlx_ptr);
 	free(gen->mlx_ptr);
+	free(gen->map.N_tex);
+	free(gen->map.S_tex);
+	free(gen->map.W_tex);
+	free(gen->map.E_tex);
+	free(gen->map.F_tex);
+	free(gen->map.C_tex);
 	exit(0);
 	return (0);
 }

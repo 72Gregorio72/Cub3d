@@ -53,6 +53,8 @@ typedef struct s_map
 	char	*S_tex;
 	char	*W_tex;
 	char	*E_tex;
+	char	*F_tex;
+	char	*C_tex;
 	int		floor_color[3];
 	int		ceil_color[3];
 }				t_map;
