@@ -45,7 +45,11 @@ int	main(int ac, char **av)
 	(void)av;
  	if (!pre_checks(ac, av, &gen))
 		return (0);
-	/*gen.map = read_map(av); */
+	read_map(av, &gen);
+	printf(GREEN"Map loaded successfully!\n"RESET);
+	printf("Map dimensions: %d x %d\n", gen.map.width, gen.map.height);
+	for (int y = 0; y < gen.map.height; y++)
+		printf("%s\n", gen.map.map_matrix[y]);
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D"); 
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask,

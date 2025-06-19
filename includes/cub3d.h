@@ -49,6 +49,12 @@ typedef struct s_map
 	int		height;
 	char	**map_matrix;
 	int		fd_map;
+	char	*N_tex;
+	char	*S_tex;
+	char	*W_tex;
+	char	*E_tex;
+	int		floor_color[3];
+	int		ceil_color[3];
 }				t_map;
 
 typedef struct s_gen
@@ -56,9 +62,11 @@ typedef struct s_gen
 	void	*mlx_ptr;
 	void	*win_ptr;
 	void	*img;
+
 	t_map	map;
 }				t_gen;
 
-int	close_window(t_gen *gen);
+int		close_window(t_gen *gen);
+void	read_map(char **av, t_gen *gen);
 
 #endif
