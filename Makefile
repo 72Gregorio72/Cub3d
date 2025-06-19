@@ -1,6 +1,7 @@
 NAME		= cub3D
 
 SRCS		=	main.c \
+				free.c \
 				
 OBJS		= $(SRCS:.c=.o)
 
@@ -43,7 +44,7 @@ miniclean: fclean
 
 vale: re clean
 	@clear
-	valgrind ./$(NAME) 
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 
 
 .SILENT:	all clean fclean re
 .PHONY:		all clean fclean re
