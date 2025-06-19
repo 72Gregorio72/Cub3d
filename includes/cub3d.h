@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:31:52 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/19 13:39:34 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:05:02 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,12 @@
 # include <fcntl.h>
 # include "X11/X.h"
 # include "X11/keysym.h"
+
+typedef struct s_data
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img;
+}				t_data;
 
 #endif
