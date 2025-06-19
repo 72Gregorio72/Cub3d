@@ -1,42 +1,49 @@
-NAME = cub3D
-MLX = -Lminilibx-linux minilibx-linux/libmlx_Linux.a -L/usr/lib -Iminilibx-linux -lXext -lX11 -lm -lz
-CC = cc -Wall -Werror -Wextra
-SRCS = main.c \
+NAME		= cub3D
+
+SRCS		=	main.c \
+				
+OBJS		= $(SRCS:.c=.o)
 
 INCLUDES = -Iincludes
 
+CC = cc
+MLX = -Lminilibx-linux minilibx-linux/libmlx_Linux.a -L/usr/lib -Iminilibx-linux -lXext -lX11 -lm -lz
+CFLAGS	= -Wall -Werror -Wextra -g
+
+RM = rm -rf
+
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(OBJS)
+	@$(MAKE) -C ./libft --quiet
+	@$(MAKE) -C ./minilibx-linux --quiet
+	$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(MLX) ./libft/libft.a -o $(NAME)
+
+%.o: %.c
 	if [ ! -d "minilibx-linux" ]; then \
 		git clone https://github.com/42Paris/minilibx-linux.git; \
 	fi
-	make -C minilibx-linux 2>/dev/null 1>/dev/null
-	make -C libft
-	$(CC) $(SRCS) $(INCLUDES) $(MLX) libft/libft.a -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	make clean -C minilibx-linux 2>/dev/null 1>/dev/null
-	make clean -C libft
-	rm -f $(NAME)
-	
-bonus:
-	if [ ! -d "minilibx-linux" ]; then \
-		git clone https://github.com/42Paris/minilibx-linux.git; \
-	fi
-	make -C minilibx-linux 2>/dev/null 1>/dev/null
-	make -C libft
-	$(CC) $(SRCS) $(INCLUDES) $(MLX) libft/libft.a -o $(NAME)
+	@$(MAKE) -C ./libft clean --quiet
+	@$(RM) $(OBJS)
+
 fclean: clean
-	make fclean -C libft
-	rm -f $(NAME)
+	@$(MAKE) -C ./libft fclean
+	@$(RM) $(NAME)
 
 re: fclean all
-.PHONY: all clean fclean re
-.SILENT:
-RED = \033[1;31m
-GREEN = \033[1;32m
-YELLOW = \033[1;33m
-BLUE = \033[1;34m
-NO_COLOR = \033[0m
-BOLD = \033[1m
+
+bonus: all
+	@echo Go to bonus dir
+
+miniclean: fclean
+	$(RM) minilibx-linux
+
+vale: re clean
+	@clear
+	valgrind ./$(NAME) 
+
+.SILENT:	all clean fclean re
+.PHONY:		all clean fclean re
