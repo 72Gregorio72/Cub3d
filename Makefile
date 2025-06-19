@@ -35,6 +35,9 @@ fclean: clean
 
 re: fclean all
 
+bonus: all
+	@echo Go to bonus dir
+
 miniclean: fclean
 	$(RM) minilibx-linux
 
