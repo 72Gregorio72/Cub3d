@@ -70,40 +70,36 @@ void	get_texture_paths(char *file, t_gen *gen)
 void	get_map_dimensions(char *file, t_map *map)
 {
 	char	*line;
-	char	*original;
 	int		fd;
 	int		width = 0;
 	int		height = 0;
 	int		len;
+	int		i;
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		exit(EXIT_FAILURE);
+
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		original = line;
-		while (*line == ' ' || *line == '\t')
-			line++;
-		if (*line == '\0' || *line == '\n' || *line == '\r')
+		i = 0;
+		while (line[i] == ' ' || line[i] == '\t')
+			i++;
+		if (!(line[i] == '\0' || line[i] == '\n' || line[i] == '\r')
+			&& !((!ft_strncmp(&line[i], "NO", 2) || !ft_strncmp(&line[i], "SO", 2)
+			|| !ft_strncmp(&line[i], "WE", 2) || !ft_strncmp(&line[i], "EA", 2)
+			|| !ft_strncmp(&line[i], "F", 1)  || !ft_strncmp(&line[i], "C", 1))))
 		{
-			printf("Empty line found, skipping...\n");
-			free(original);
-		}
-		else
-		{
-			if (!*line || !ft_strncmp(line, "NO", 2) || !ft_strncmp(line, "SO", 2)
-				|| !ft_strncmp(line, "WE", 2) || !ft_strncmp(line, "EA", 2)
-				|| !ft_strncmp(line, "F", 1) || !ft_strncmp(line, "C", 1))
-			{
-				free(original);
-				continue;
-			}
-			len = ft_strlen(line) - 2;
+			i = 0;
+			len = ft_strlen(&line[i]) - 2;
+			if (len > 0 && line[i + len - 1] == '\n')
+				len--;
+
 			if (len > width)
 				width = len;
 			height++;
-			free(original);
 		}
+		free(line);
 	}
 	close(fd);
 	map->width = width;
@@ -113,64 +109,58 @@ void	get_map_dimensions(char *file, t_map *map)
 void	load_map(char **av, t_gen *gen)
 {
 	char	*line;
-	char	*original;
 	int		fd;
 	int		y = 0;
-
+	int		i;
+	
+	i = 0;
 	gen->map.map_matrix = malloc(sizeof(char *) * gen->map.height);
 	if (!gen->map.map_matrix)
-	{
-		perror("malloc map_matrix");
-		exit(EXIT_FAILURE);
-	}
-	for (int i = 0; i < gen->map.height; i++)
+		return ;
+	while (i < gen->map.height)
 	{
 		gen->map.map_matrix[i] = ft_calloc(gen->map.width + 1, sizeof(char));
 		if (!gen->map.map_matrix[i])
-		{
-			perror("calloc row");
-			exit(EXIT_FAILURE);
-		}
+			return ;
+		i++;
 	}
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
+		return ;
+	while ((line = get_next_line(fd)) != NULL)
 	{
-		perror("open");
-		exit(EXIT_FAILURE);
-	}
-	while ((line = get_next_line(fd)) != NULL && y < gen->map.height)
-	{
-		original = line;
-		while (*line == ' ' || *line == '\t')
-			line++;
-
-		if (!*line || !ft_strncmp(line, "NO", 2) || !ft_strncmp(line, "SO", 2)
-			|| !ft_strncmp(line, "WE", 2) || !ft_strncmp(line, "EA", 2)
-			|| !ft_strncmp(line, "F", 1) || !ft_strncmp(line, "C", 1))
-		{
-			free(original);
-			continue;
-		}
-		int i = 0;
-		while (line[i] && line[i] != '\n' && i < gen->map.width)
-		{
-			if (line[i] == ' ' || line[i] == '\t')
-				gen->map.map_matrix[y][i] = '0';
-			else
-				gen->map.map_matrix[y][i] = line[i];
+		i = 0;
+		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 			i++;
+		if (line[i] && ft_strncmp(&line[i], "NO", 2) && ft_strncmp(&line[i], "SO", 2)
+			&& ft_strncmp(&line[i], "WE", 2) && ft_strncmp(&line[i], "EA", 2)
+			&& ft_strncmp(&line[i], "F", 1) && ft_strncmp(&line[i], "C", 1)
+			&& line[i] != '\n' && line[i] != '\r')
+		{
+			i = 0;
+			while (line[i] && line[i] != '\n' && line[i] != '\r' && i < gen->map.width)
+			{
+				if (line[i] == ' ' || line[i] == '\t')
+					gen->map.map_matrix[y][i] = '0';
+				else
+					gen->map.map_matrix[y][i] = line[i];
+				i++;
+			}
+			while (i < gen->map.width)
+				gen->map.map_matrix[y][i++] = '0';
+			y++;
 		}
-		while (i < gen->map.width)
-			gen->map.map_matrix[y][i++] = '0';
-
-		y++;
-		free(original);
+		free(line);
 	}
 	close(fd);
 }
 
 void    read_map(char **av, t_gen *gen)
 {
+	int i;
+	int	j;
+
+	i = 0;
 	get_texture_paths(av[1], gen);
 	printf(YELLOW);
 	printf("North texture: %s\n", gen->map.N_tex);
@@ -181,8 +171,25 @@ void    read_map(char **av, t_gen *gen)
 	printf("Ceiling texture: %s\n", gen->map.C_tex);
 	get_map_dimensions(av[1], &gen->map);
 	load_map(av, gen);
-	printf(RED);
-	for (int i = 0; i < gen->map.height; i++)
-		printf("%s\n", gen->map.map_matrix[i]);
-	printf(RESET);
+	while (i < gen->map.height)
+	{
+		j = 0;
+		while (j < gen->map.width)
+		{
+			if (gen->map.map_matrix[i][j] == '0')
+				printf(" ");
+			else if (gen->map.map_matrix[i][j] == '1')
+				printf(RED"%c"RESET, gen->map.map_matrix[i][j]);
+			else if (gen->map.map_matrix[i][j] == 'N')
+				printf(BLUE"%c"RESET, gen->map.map_matrix[i][j]);
+			else
+				printf("%c", gen->map.map_matrix[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+	set_player_position(gen);
+	printf("player position: x = %.1f, y = %.1f\n",
+		gen->xXpicchio_valePRO2025Xx.x, gen->xXpicchio_valePRO2025Xx.y);
 }

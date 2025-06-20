@@ -3,6 +3,8 @@ NAME		= cub3D
 SRCS		=	main.c \
 				free.c \
 				map_loader.c \
+				player_loader.c \
+				raycasting.c \
 				
 OBJS		= $(SRCS:.c=.o)
 

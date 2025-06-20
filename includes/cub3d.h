@@ -59,16 +59,33 @@ typedef struct s_map
 	int		ceil_color[3];
 }				t_map;
 
+typedef struct s_player
+{
+	double		x;
+	double		y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+	double		camera_x;
+	double		camera_y;
+	double		ray_dir_x;
+	double		ray_dir_y;
+}				t_player;
+
 typedef struct s_gen
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	void	*img;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img;
+	t_player	xXpicchio_valePRO2025Xx;
 
 	t_map	map;
 }				t_gen;
 
 int		close_window(t_gen *gen);
 void	read_map(char **av, t_gen *gen);
+void	set_player_position(t_gen *gen);
+void	raycasting(t_gen *gen);
 
 #endif

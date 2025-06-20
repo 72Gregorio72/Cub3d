@@ -37,23 +37,26 @@ int	pre_checks(int ac, char **av, t_gen *gen)
 	return (1);
 }
 
+// int	game_loop(t_gen *gen)
+// {
+// 	raycasting(gen);
+// 	return (0);
+// }
+
 int	main(int ac, char **av)
 {
 	t_gen	gen;
 
-	(void)ac;
-	(void)av;
- 	if (!pre_checks(ac, av, &gen))
+	if (!pre_checks(ac, av, &gen))
 		return (0);
 	read_map(av, &gen);
 	printf(GREEN"Map loaded successfully!\n"RESET);
 	printf("Map dimensions: %d x %d\n", gen.map.width, gen.map.height);
 	gen.mlx_ptr = mlx_init();
-	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D"); 
-	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask,
-		&on_keypress, &gen);
-	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
-		&close_window, &gen);
+	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
+	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_keypress, &gen);
+	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask, &close_window, &gen);
+	//mlx_loop_hook(gen.mlx_ptr, game_loop, &gen);
 	mlx_loop(gen.mlx_ptr);
 	close_window(&gen);
 	return (0);
