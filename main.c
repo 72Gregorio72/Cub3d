@@ -76,6 +76,31 @@ void	rotate_player(t_gen *gen, double angle)
 	gen->player.plane_y = old_plane_x * sin(angle) + gen->player.plane_y * cos(angle);
 }
 
+int	on_mouse_move(int x, int y, t_gen *gen)
+{
+	const double	sensitivity = 0.003;
+	double			angle;
+	int				delta_x;
+
+	if (!gen->mouse_initialized)
+	{
+		gen->last_mouse_x = x;
+		gen->last_mouse_y = y;
+		gen->mouse_initialized = 1;
+		return (0);
+	}
+	delta_x = x - gen->last_mouse_x;
+	gen->last_mouse_x = x;
+	gen->last_mouse_y = y;
+	if (delta_x != 0)
+	{
+		angle = -delta_x * sensitivity;
+		rotate_player(gen, angle);
+	}
+	mlx_mouse_move(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
+	return (0);
+}
+
 int	is_walkable(t_gen *gen, double x, double y)
 {
 	int mx = (int)x;
@@ -140,11 +165,11 @@ void	check_movements(t_gen *gen)
 int	game_loop(t_gen *gen)
 {
 	check_movements(gen);
+	update_zombies_position(gen);
 	if (gen->keys.left)
 		rotate_player(gen, -ROTATE_SPEED);
 	if (gen->keys.right)
 		rotate_player(gen, ROTATE_SPEED);
-
 	clear_image(&gen->img);
 	raycasting(gen);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
@@ -223,6 +248,7 @@ int	main(int ac, char **av)
 	read_map(av, &gen);
 	printf(GREEN"Map loaded successfully!\n"RESET);
 	printf("Map dimensions: %d x %d\n", gen.map.width, gen.map.height);
+	gen.ignore_next_mouse = 0;
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	gen.keys = (t_keys){0, 0, 0, 0, 0, 0};
@@ -234,6 +260,7 @@ int	main(int ac, char **av)
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask, &close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);
 	mlx_hook(gen.win_ptr, KeyRelease, KeyReleaseMask, &on_key_release, &gen);
+	//mlx_hook(gen.win_ptr, MotionNotify, PointerMotionMask, &on_mouse_move, &gen);
 	mlx_loop_hook(gen.mlx_ptr, game_loop, &gen);
 	mlx_loop(gen.mlx_ptr);
 	return (0);

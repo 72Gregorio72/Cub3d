@@ -12,6 +12,26 @@
 
 #include "cub3d.h"
 
+void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start, int draw_end)
+{
+	int		y;
+	int		x_offset;
+	int		width = 10;
+
+	for (x_offset = -width / 2; x_offset <= width / 2; x_offset++)
+	{
+		int x = screen_x + x_offset;
+		if (x < 0 || x >= SCREEN_X)
+			continue;
+		y = draw_start;
+		while (y < draw_end)
+		{
+			put_pixel(&gen->img, x, y, 0x00FF00);
+			y++;
+		}
+	}
+}
+
 void	get_step(t_ray *ray, t_gen *gen)
 {
 	if (gen->player.ray_dir_x < 0)
@@ -114,9 +134,19 @@ void	clear_image(t_img *img)
 static t_tex	*select_texture(t_ray *ray, t_gen *gen)
 {
 	if (ray->side == 0)
-		return (gen->player.ray_dir_x < 0) ? &gen->map.west : &gen->map.east;
+	{
+		if (gen->player.ray_dir_x < 0)
+			return &gen->map.west;
+		else
+			return &gen->map.east;
+	}
 	else
-		return (gen->player.ray_dir_y < 0) ? &gen->map.north : &gen->map.south;
+	{
+		if (gen->player.ray_dir_y < 0)
+			return &gen->map.north;
+		else
+			return &gen->map.south;
+	}
 }
 
 static void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x)
@@ -163,7 +193,9 @@ void	draw_map(t_ray *ray, t_gen *gen)
 void	raycasting(t_gen *gen)
 {
 	t_ray	ray;
+	int		i;
 
+	i = 0;
 	ray.x = 0;
 	while (ray.x < SCREEN_X)
 	{
@@ -172,5 +204,24 @@ void	raycasting(t_gen *gen)
 		check_hit(&ray, gen);
 		calculate_distance(&ray, gen);
 		draw_map(&ray, gen);
+	}
+
+	while (i < gen->num_zombies)
+	{
+		double dx = gen->zombies[i].x - gen->player.x;
+		double dy = gen->zombies[i].y - gen->player.y;
+		double invDet = 1.0 / (gen->player.plane_x * gen->player.dir_y - gen->player.dir_x * gen->player.plane_y);
+		double transformX = invDet * (gen->player.dir_y * dx - gen->player.dir_x * dy);
+		double transformY = invDet * (-gen->player.plane_y * dx + gen->player.plane_x * dy);
+		if (transformY > 0)
+		{
+			int spriteScreenX = (int)((SCREEN_X / 2) * (1 + transformX / transformY));
+			int lineHeight = abs((int)(SCREEN_Y / transformY));
+			int drawStart = -lineHeight / 2 + SCREEN_Y / 2;
+			int drawEnd = lineHeight / 2 + SCREEN_Y / 2;
+			if (spriteScreenX >= 0 && spriteScreenX < SCREEN_X)
+				draw_zombie_column(gen, spriteScreenX, drawStart, drawEnd);
+		}
+		i++;
 	}
 }

@@ -5,6 +5,7 @@ SRCS		=	main.c \
 				map_loader.c \
 				player_loader.c \
 				raycasting.c \
+				zombie_cpu.c \
 				
 OBJS		= $(SRCS:.c=.o)
 

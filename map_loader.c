@@ -171,6 +171,7 @@ void    read_map(char **av, t_gen *gen)
 	printf("Ceiling texture: %s\n", gen->map.C_tex);
 	get_map_dimensions(av[1], &gen->map);
 	load_map(av, gen);
+	gen->num_zombies = 0;
 	while (i < gen->map.height)
 	{
 		j = 0;
@@ -184,6 +185,19 @@ void    read_map(char **av, t_gen *gen)
 				printf(BLUE"%c"RESET, gen->map.map_matrix[i][j]);
 			else
 				printf("%c", gen->map.map_matrix[i][j]);
+			
+			if (gen->map.map_matrix[i][j] == 'Z')
+			{
+				if (gen->num_zombies < MAX_ZOMBIES)
+				{
+					gen->zombies[gen->num_zombies].x = j + 0.5;
+					gen->zombies[gen->num_zombies].y = i + 0.5;
+					gen->zombies[gen->num_zombies].health = 100;
+					gen->zombies[gen->num_zombies].attack_power = 10;
+					gen->zombies[gen->num_zombies].attacked = 0;
+					gen->num_zombies++;
+				}
+			}
 			j++;
 		}
 		printf("\n");

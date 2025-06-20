@@ -25,6 +25,7 @@
 # include <fcntl.h>
 # include "X11/X.h"
 # include "X11/keysym.h"
+#include <sys/time.h>
 
 # define SCREEN_X 1920
 # define SCREEN_Y 1080
@@ -47,6 +48,8 @@
 # define WHITE "\033[1;37m"
 # define MOVE_SPEED 0.05
 # define ROTATE_SPEED 0.08
+# define MAX_ZOMBIES 32
+# define ZOMBIE_SPEED 0.01
 
 typedef struct s_tex {
 	void	*img_ptr;
@@ -109,14 +112,29 @@ typedef struct s_keys {
 	int right;
 } t_keys;
 
+typedef struct zombie {
+	double			x;
+	double			y;
+	int				health;
+	int				attack_power;
+	int				attacked;
+	long		last_attack_time;
+} t_zombie;
+
 typedef struct s_gen
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
+	int			ignore_next_mouse;
+	int			last_mouse_x;
+	int			mouse_initialized;
+	int			last_mouse_y;
 	t_img		img;
 	t_player	player;
 	t_keys		keys;
-	t_map	map;
+	t_map		map;
+	t_zombie	zombies[MAX_ZOMBIES];
+	int			num_zombies;
 }				t_gen;
 
 typedef struct s_ray
@@ -153,5 +171,6 @@ int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
+void	update_zombies_position(t_gen *gen);
 
 #endif
