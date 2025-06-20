@@ -192,7 +192,8 @@ void    read_map(char **av, t_gen *gen)
 				{
 					gen->zombies[gen->num_zombies].x = j + 0.5;
 					gen->zombies[gen->num_zombies].y = i + 0.5;
-					gen->zombies[gen->num_zombies].health = 100;
+					gen->zombies[gen->num_zombies].max_health = 100;
+					gen->zombies[gen->num_zombies].health = gen->zombies[gen->num_zombies].max_health;
 					gen->zombies[gen->num_zombies].attack_power = 10;
 					gen->zombies[gen->num_zombies].attacked = 0;
 					gen->num_zombies++;

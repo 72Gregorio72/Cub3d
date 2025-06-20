@@ -30,10 +30,23 @@ void	damage_player(t_gen *gen, int zombie_index)
 		gen->zombies[zombie_index].x, gen->zombies[zombie_index].y);
 }
 
+void	check_zombie_hit(t_gen *gen, int zombie_index)
+{
+	if (gen->projectiles.active)
+	{
+		double dx = gen->projectiles.x - gen->zombies[zombie_index].x;
+		double dy = gen->projectiles.y - gen->zombies[zombie_index].y;
+		double dist = sqrt(dx * dx + dy * dy);
+		if (dist < 0.5)
+		{
+			printf(GREEN"Zombie at position (%.2f, %.2f) hit by projectile!\n"RESET,
+				gen->zombies[zombie_index].x, gen->zombies[zombie_index].y);
+		}
+	}
+}
+
 void	update_zombies_position(t_gen *gen)
 {
-	struct timeval now;
-	gettimeofday(&now, NULL);
 	int		i;
 	double	dx;
 	double	dy;
@@ -42,10 +55,13 @@ void	update_zombies_position(t_gen *gen)
 	double	step_y;
 	double	next_x;
 	double	next_y;
+	struct	timeval now;
 
+	gettimeofday(&now, NULL);
 	i = 0;
 	while (i < gen->num_zombies)
 	{
+		check_zombie_hit(gen, i);
 		if (gen->zombies[i].last_attack_time - get_current_time() < (long unsigned int)-1000)
 			gen->zombies[i].attacked = 0;
 		dx = gen->player.x - gen->zombies[i].x;

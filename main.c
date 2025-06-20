@@ -166,6 +166,7 @@ int	game_loop(t_gen *gen)
 {
 	check_movements(gen);
 	update_zombies_position(gen);
+	update_projectile_position(gen);
 	if (gen->keys.left)
 		rotate_player(gen, -ROTATE_SPEED);
 	if (gen->keys.right)
@@ -198,6 +199,16 @@ void	update_player_position(int keysym, t_gen *gen)
 		gen->player.x += gen->player.plane_x * MOVE_SPEED;
 		gen->player.y += gen->player.plane_y * MOVE_SPEED;
 	}
+}
+
+int	on_mouse_click(int button, int x, int y, t_gen *gen)
+{
+	if (button == MOUSE_LEFT_CLICK)
+	{
+		printf(GREEN"Left click at (%d, %d)\n"RESET, x, y);
+		shoot_projectile(gen, x, y);
+	}
+	return (0);
 }
 
 int	on_key_press(int keycode, t_gen *gen)
@@ -260,6 +271,7 @@ int	main(int ac, char **av)
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask, &close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);
 	mlx_hook(gen.win_ptr, KeyRelease, KeyReleaseMask, &on_key_release, &gen);
+	mlx_mouse_hook(gen.win_ptr, &on_mouse_click, &gen);
 	//mlx_hook(gen.win_ptr, MotionNotify, PointerMotionMask, &on_mouse_move, &gen);
 	mlx_loop_hook(gen.mlx_ptr, game_loop, &gen);
 	mlx_loop(gen.mlx_ptr);

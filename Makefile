@@ -6,6 +6,7 @@ SRCS		=	main.c \
 				player_loader.c \
 				raycasting.c \
 				zombie_cpu.c \
+				fps.c \
 				
 OBJS		= $(SRCS:.c=.o)
 
