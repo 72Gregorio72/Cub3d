@@ -153,5 +153,12 @@ int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
+int		parsing_map(t_gen *gen);
+int		get_texture_paths(char *file, t_gen *gen);
+int		get_char_pos(char *src, int c);
+int		map_check(t_gen *gen);
+int		check_closed(t_gen *gen);
+void    clean_path(char *path);
+void	free_gen(t_gen * gen, int flag);
 
 #endif

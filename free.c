@@ -27,7 +27,7 @@ void	free_matrix(char **matrix, int height)
 	free(matrix);
 }
 
-void	free_gen(t_gen * gen)
+void	free_gen(t_gen * gen, int flag)
 {
 	free(gen->map.N_tex);
 	free(gen->map.S_tex);
@@ -37,7 +37,8 @@ void	free_gen(t_gen * gen)
 	free(gen->map.C_tex);
 	free(gen->map.ceil_color);
 	free(gen->map.floor_color);
-	free_matrix(gen->map.map_matrix, gen->map.height);
+	if (flag)
+		free_matrix(gen->map.map_matrix, gen->map.height);
 }
 
 int	close_window(t_gen *gen)
@@ -58,8 +59,7 @@ int	close_window(t_gen *gen)
 		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
 	if (gen->mlx_ptr)
 		mlx_destroy_display(gen->mlx_ptr);
-
-	free_gen(gen);
+	free_gen(gen, 1);
 	free(gen->mlx_ptr);
 	exit(EXIT_SUCCESS);
 }

@@ -142,6 +142,32 @@ static void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x)
 	ray->x++;
 }
 
+unsigned int rgb_to_hex(int r, int g, int b)
+{
+	return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
+}
+
+void	draw_ceiling_and_floor(t_ray *ray, t_gen *gen)
+{
+	int				i;
+	unsigned int	color;
+
+	i = 0;
+	color = rgb_to_hex(gen->map.floor_color[0], gen->map.floor_color[1], gen->map.floor_color[2]);
+	while (i < ray->drawStart)
+	{
+		put_pixel(&gen->img, ray->x, i, color);
+		i++;
+	}
+	i = ray->drawEnd;
+	color = rgb_to_hex(gen->map.ceil_color[0], gen->map.ceil_color[1], gen->map.ceil_color[2]);
+	while (i < SCREEN_Y)
+	{
+		put_pixel(&gen->img, ray->x, i, color);
+		i++;
+	}
+}
+
 void	draw_map(t_ray *ray, t_gen *gen)
 {
 	t_tex	*tex;
@@ -158,6 +184,7 @@ void	draw_map(t_ray *ray, t_gen *gen)
 	if ((ray->side == 0 && gen->player.ray_dir_x > 0) || (ray->side == 1 && gen->player.ray_dir_y < 0))
 		tex_x = tex->width - tex_x - 1;
 	draw_texture_column(ray, gen, tex, tex_x);
+	draw_ceiling_and_floor(ray, gen);
 }
 
 void	raycasting(t_gen *gen)

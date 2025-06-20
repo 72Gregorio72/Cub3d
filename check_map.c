@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:52:58 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 13:55:24 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:10:07 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,6 @@ int	fill_colors(t_gen *gen, int flag)
 	free(start);
 	return (1);
 }
-
-void    clean_path(char *path)
-{
-    int    len = ft_strlen(path);
-    while (len > 0 && (path[len - 1] == '\n' || path[len - 1] == '\r' || path[len - 1] == ' '))
-        path[--len] = '\0';
-}
-
 int	check_textures(t_gen *gen)
 {
 	int	fd;
@@ -92,7 +84,8 @@ int	check_textures(t_gen *gen)
 
 int	parsing_map(t_gen *gen)
 {
-	if (!map_check(gen) || !fill_colors(gen, 1) || !fill_colors(gen, 0))
+	if (!map_check(gen) || !fill_colors(gen, 1) || !fill_colors(gen, 0)
+		|| !check_textures(gen))
 		return (0);
 	if (!check_closed(gen))
 		return (printf(RED"Error: unclosed map!\n"RESET), 0);

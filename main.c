@@ -223,9 +223,9 @@ int	main(int ac, char **av)
 	if (!read_map(av, &gen))
 		return (0);
 	if (!parsing_map(&gen))
-		return (free_gen(&gen), 0);
-	printf(GREEN"Map loaded successfully!\n"RESET);
-	printf("Map dimensions: %d x %d\n", gen.map.width, gen.map.height);
+		return (free_gen(&gen, 1), 0);
+	/*printf(GREEN"Map loaded successfully!\n"RESET);
+	printf("Map dimensions: %d x %d\n", gen.map.width, gen.map.height);*/
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	gen.keys = (t_keys){0, 0, 0, 0, 0, 0};

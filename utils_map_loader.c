@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:48:56 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 11:42:23 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:04:21 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_textures(t_gen *gen)
 	gen->map.C_tex = NULL;
 }
 
-int	fill_textures(t_gen *gen, char *line, char *original)
+int	fill_textures(t_gen *gen, char *line)
 {
 	if (!ft_strncmp(line, "NO", 2))
 		gen->map.N_tex = get_path(line);
@@ -57,8 +57,6 @@ int	fill_textures(t_gen *gen, char *line, char *original)
 		gen->map.F_tex = get_path(line);
 	else if (!ft_strncmp(line, "C", 1))
 		gen->map.C_tex = get_path(line);
-	else if (ft_strncmp(line, "\r\n", 2) && !ft_isdigit(line[0]))
-		return (printf(RED"Error: wrong map!\n"RESET), free(original), 0);
 	return (1);
 }
 
@@ -80,13 +78,13 @@ int	get_texture_paths(char *file, t_gen *gen)
 		original = line;
 		while (*line && ((*line == ' ') || (*line == '\t')))
 			line++;
-		if (!fill_textures(gen, line, original))
+		if (!fill_textures(gen, line))
 			return (0);
 		free(original);
 	}
 	if (!gen->map.N_tex || !gen->map.S_tex || !gen->map.W_tex
 		|| !gen->map.E_tex || !gen->map.F_tex || !gen->map.C_tex)
-		return (printf(RED"Error: missing texture!\n"RESET), 0);
+		return (printf(RED"Error: missing texture!\n"RESET), free_gen(gen, 0), 0);
 	close(fd);
 	return (1);
 }

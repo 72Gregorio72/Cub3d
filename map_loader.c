@@ -135,20 +135,20 @@ void	print_map(t_gen *gen)
 
 int    read_map(char **av, t_gen *gen)
 {
+	gen->map.floor_color = ft_calloc(3, sizeof(int));
+	gen->map.ceil_color = ft_calloc(3, sizeof(int));
 	if (!get_texture_paths(av[1], gen))
 		return (0);
-	printf(YELLOW);
+	/*printf(YELLOW);
 	printf("North texture: %s\n", gen->map.N_tex);
 	printf("South texture: %s\n", gen->map.S_tex);
 	printf("West texture: %s\n", gen->map.W_tex);
 	printf("East texture: %s\n", gen->map.E_tex);
 	printf("Floor texture: %s\n", gen->map.F_tex);
-	printf("Ceiling texture: %s\n", gen->map.C_tex);
+	printf("Ceiling texture: %s\n", gen->map.C_tex);*/
 	get_map_dimensions(av[1], &gen->map);
 	load_map(av, gen);
-	print_map(gen);
+	//print_map(gen);
 	set_player_position(gen);
-	gen->map.floor_color = ft_calloc(3, sizeof(int));
-	gen->map.ceil_color = ft_calloc(3, sizeof(int));
 	return (1);
 }
