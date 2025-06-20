@@ -152,5 +152,6 @@ void	strafe_right(t_gen *gen);
 int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 void	clear_image(t_img *img);
+void	free_matrix(char **matrix, int height);
 
 #endif

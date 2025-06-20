@@ -134,6 +134,7 @@ void	check_movements(t_gen *gen)
 		if (is_walkable(gen, gen->player.x, new_y))
 			gen->player.y = new_y;
 	}
+	check_movements_util(gen);
 }
 
 int	game_loop(t_gen *gen)
