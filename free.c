@@ -16,19 +16,9 @@ void	free_matrix(char **matrix, int height)
 {
 	int	i;
 
+	if (!matrix)
+		return;
 	i = 0;
-	if (matrix[0][0] == '\n')
-	{
-		free(matrix[0]);
-		free(matrix);
-		return ;
-	}
-	if (height == 1)
-	{
-		free(matrix[0]);
-		free(matrix);
-		return ;
-	}
 	while (i < height)
 	{
 		free(matrix[i]);
@@ -52,10 +42,24 @@ void	free_gen(t_gen * gen)
 
 int	close_window(t_gen *gen)
 {
-	mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
-	mlx_destroy_display(gen->mlx_ptr);
-	free(gen->mlx_ptr);
+	if (gen->img.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->img.img_ptr);
+
+	if (gen->map.north.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.north.img_ptr);
+	if (gen->map.south.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.south.img_ptr);
+	if (gen->map.east.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.east.img_ptr);
+	if (gen->map.west.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.west.img_ptr);
+
+	if (gen->win_ptr)
+		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
+	if (gen->mlx_ptr)
+		mlx_destroy_display(gen->mlx_ptr);
+
 	free_gen(gen);
-	exit(0);
-	return (0);
+	free(gen->mlx_ptr);
+	exit(EXIT_SUCCESS);
 }
