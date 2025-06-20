@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 09:47:29 by vcastald          #+#    #+#             */
-/*   Updated: 2025/01/27 12:39:49 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:12:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (fd == -42)
+	{
+		free(leftovers);
+		leftovers = NULL;
+		return (NULL);
+	}
 	if (!leftovers)
 		leftovers = (ft_strdup(""));
 	if (!leftovers)

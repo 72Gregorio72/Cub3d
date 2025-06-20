@@ -2,6 +2,9 @@ NAME		= cub3D
 
 SRCS		=	main.c \
 				free.c \
+				map_loader.c \
+				player_loader.c \
+				raycasting.c \
 				
 OBJS		= $(SRCS:.c=.o)
 
@@ -44,7 +47,7 @@ miniclean: fclean
 
 vale: re clean
 	@clear
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ciao.cub
 
 .SILENT:	all clean fclean re
 .PHONY:		all clean fclean re
