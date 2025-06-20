@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-/* void	free_matrix(char **matrix, int height)
+void	free_matrix(char **matrix, int height)
 {
 	int	i;
 
@@ -37,23 +37,25 @@
 	free(matrix);
 }
 
-void	free_map(t_map	*map)
+void	free_gen(t_gen * gen)
 {
-	free_matrix(map->map_matrix, map->height);
-	free(map);
-} */
-
-int	close_window(t_gen *gen)
-{
-	mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
-	mlx_destroy_display(gen->mlx_ptr);
-	free(gen->mlx_ptr);
 	free(gen->map.N_tex);
 	free(gen->map.S_tex);
 	free(gen->map.W_tex);
 	free(gen->map.E_tex);
 	free(gen->map.F_tex);
 	free(gen->map.C_tex);
+	free(gen->map.ceil_color);
+	free(gen->map.floor_color);
+	free_matrix(gen->map.map_matrix, gen->map.height);
+}
+
+int	close_window(t_gen *gen)
+{
+	mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
+	mlx_destroy_display(gen->mlx_ptr);
+	free(gen->mlx_ptr);
+	free_gen(gen);
 	exit(0);
 	return (0);
 }

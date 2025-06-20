@@ -5,6 +5,10 @@ SRCS		=	main.c \
 				map_loader.c \
 				player_loader.c \
 				raycasting.c \
+				utils_map_loader.c \
+				check_map.c \
+				check_map1.c \
+				utils_map_check.c \
 				
 OBJS		= $(SRCS:.c=.o)
 

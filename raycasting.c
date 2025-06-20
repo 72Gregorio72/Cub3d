@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	raycasting(t_gen *gen)
+/*void	raycasting(t_gen *gen)
 {
     
-}
+}*/

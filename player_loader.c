@@ -30,7 +30,6 @@ void	set_player_position(t_gen *gen)
 				gen->xXpicchio_valePRO2025Xx.dir_y = -1;
 				gen->xXpicchio_valePRO2025Xx.plane_x = 0.66;
 				gen->xXpicchio_valePRO2025Xx.plane_y = 0;
-				gen->map.map_matrix[y][x] = '0';
 				return ;
 			}
 			x++;

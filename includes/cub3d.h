@@ -55,8 +55,8 @@ typedef struct s_map
 	char	*E_tex;
 	char	*F_tex;
 	char	*C_tex;
-	int		floor_color[3];
-	int		ceil_color[3];
+	int		*floor_color;
+	int		*ceil_color;
 }				t_map;
 
 typedef struct s_player
@@ -79,13 +79,24 @@ typedef struct s_gen
 	void		*win_ptr;
 	void		*img;
 	t_player	xXpicchio_valePRO2025Xx;
-
-	t_map	map;
+	t_map		map;
 }				t_gen;
 
 int		close_window(t_gen *gen);
-void	read_map(char **av, t_gen *gen);
+int		read_map(char **av, t_gen *gen);
 void	set_player_position(t_gen *gen);
 void	raycasting(t_gen *gen);
+int		get_texture_paths(char *file, t_gen *gen);
+int		fill_textures(t_gen *gen, char *line, char *original);
+void	init_textures(t_gen *gen);
+char	*get_path(char *line);
+int		map_check(t_gen *gen);
+int		parsing_map(t_gen *gen);
+void	free_matrix(char **matrix, int height);
+void	free_gen(t_gen * gen);
+void	print_map(t_gen *gen);
+int		get_char_pos(char *src, int c);
+int		check_closed(t_gen *gen);
+int		map_check(t_gen *gen);
 
 #endif

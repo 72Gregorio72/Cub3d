@@ -12,61 +12,6 @@
 
 #include "cub3d.h"
 
-char	*get_path(char *line)
-{
-	char	*path;
-	int		i;
-
-	i = 0;
-	line = line + 2;
-	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-		i++;
-	if (line[i] == '\0')
-		return (NULL);
-	path = ft_strdup(&line[i]);
-	if (!path)
-		return (NULL);
-	i = 0;
-	while (path[i] && path[i] != '\n')
-		i++;
-	path[i] = '\0';
-	return (path);
-}
-
-void	get_texture_paths(char *file, t_gen *gen)
-{
-	char	*line;
-	char	*original;
-	int		fd;
-
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-	{
-		perror("open");
-		exit(EXIT_FAILURE);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		original = line;
-		while (*line && ((*line == ' ') || (*line == '\t')))
-			line++;
-		if (!ft_strncmp(line, "NO", 2))
-			gen->map.N_tex = get_path(line);
-		else if (!ft_strncmp(line, "SO", 2))
-			gen->map.S_tex = get_path(line);
-		else if (!ft_strncmp(line, "WE", 2))
-			gen->map.W_tex = get_path(line);
-		else if (!ft_strncmp(line, "EA", 2))
-			gen->map.E_tex = get_path(line);
-		else if (!ft_strncmp(line, "F", 1))
-			gen->map.F_tex = get_path(line);
-		else if (!ft_strncmp(line, "C", 1))
-			gen->map.C_tex = get_path(line);
-		free(original);
-	}
-	close(fd);
-}
-
 void	get_map_dimensions(char *file, t_map *map)
 {
 	char	*line;
@@ -79,7 +24,6 @@ void	get_map_dimensions(char *file, t_map *map)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		exit(EXIT_FAILURE);
-
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		i = 0;
@@ -94,7 +38,6 @@ void	get_map_dimensions(char *file, t_map *map)
 			len = ft_strlen(&line[i]) - 2;
 			if (len > 0 && line[i + len - 1] == '\n')
 				len--;
-
 			if (len > width)
 				width = len;
 			height++;
@@ -106,28 +49,12 @@ void	get_map_dimensions(char *file, t_map *map)
 	map->height = height;
 }
 
-void	load_map(char **av, t_gen *gen)
+void	read_file(int fd, int i, t_gen *gen, int y)
 {
 	char	*line;
-	int		fd;
-	int		y = 0;
-	int		i;
-	
-	i = 0;
-	gen->map.map_matrix = malloc(sizeof(char *) * gen->map.height);
-	if (!gen->map.map_matrix)
-		return ;
-	while (i < gen->map.height)
-	{
-		gen->map.map_matrix[i] = ft_calloc(gen->map.width + 1, sizeof(char));
-		if (!gen->map.map_matrix[i])
-			return ;
-		i++;
-	}
-	fd = open(av[1], O_RDONLY);
-	if (fd < 0)
-		return ;
-	while ((line = get_next_line(fd)) != NULL)
+
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		i = 0;
 		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
@@ -141,44 +68,59 @@ void	load_map(char **av, t_gen *gen)
 			while (line[i] && line[i] != '\n' && line[i] != '\r' && i < gen->map.width)
 			{
 				if (line[i] == ' ' || line[i] == '\t')
-					gen->map.map_matrix[y][i] = '0';
+					gen->map.map_matrix[y][i] = '2';
 				else
 					gen->map.map_matrix[y][i] = line[i];
 				i++;
 			}
 			while (i < gen->map.width)
-				gen->map.map_matrix[y][i++] = '0';
+				gen->map.map_matrix[y][i++] = '2';
 			y++;
 		}
 		free(line);
+		line = get_next_line(fd);
 	}
+}
+
+void	load_map(char **av, t_gen *gen)
+{
+	int		fd;
+	int		y;
+	int		i;
+	
+	i = 0;
+	y = 0;
+	gen->map.map_matrix = malloc(sizeof(char *) * gen->map.height);
+	if (!gen->map.map_matrix)
+		return ;
+	while (i < gen->map.height)
+	{
+		gen->map.map_matrix[i] = ft_calloc(gen->map.width + 1, sizeof(char));
+		if (!gen->map.map_matrix[i])
+			return ;
+		i++;
+	}
+	fd = open(av[1], O_RDONLY);
+	if (fd < 0)
+		return ;
+	read_file(fd, i, gen, y);
 	close(fd);
 }
 
-void    read_map(char **av, t_gen *gen)
+void	print_map(t_gen *gen)
 {
 	int i;
 	int	j;
 
 	i = 0;
-	get_texture_paths(av[1], gen);
-	printf(YELLOW);
-	printf("North texture: %s\n", gen->map.N_tex);
-	printf("South texture: %s\n", gen->map.S_tex);
-	printf("West texture: %s\n", gen->map.W_tex);
-	printf("East texture: %s\n", gen->map.E_tex);
-	printf("Floor texture: %s\n", gen->map.F_tex);
-	printf("Ceiling texture: %s\n", gen->map.C_tex);
-	get_map_dimensions(av[1], &gen->map);
-	load_map(av, gen);
 	while (i < gen->map.height)
 	{
 		j = 0;
 		while (j < gen->map.width)
 		{
-			if (gen->map.map_matrix[i][j] == '0')
+			if (gen->map.map_matrix[i][j] == '2')
 				printf(" ");
-			else if (gen->map.map_matrix[i][j] == '1')
+			else if (gen->map.map_matrix[i][j] == '1' || gen->map.map_matrix[i][j] == '0')
 				printf(RED"%c"RESET, gen->map.map_matrix[i][j]);
 			else if (gen->map.map_matrix[i][j] == 'N')
 				printf(BLUE"%c"RESET, gen->map.map_matrix[i][j]);
@@ -189,7 +131,24 @@ void    read_map(char **av, t_gen *gen)
 		printf("\n");
 		i++;
 	}
+}
+
+int    read_map(char **av, t_gen *gen)
+{
+	if (!get_texture_paths(av[1], gen))
+		return (0);
+	printf(YELLOW);
+	printf("North texture: %s\n", gen->map.N_tex);
+	printf("South texture: %s\n", gen->map.S_tex);
+	printf("West texture: %s\n", gen->map.W_tex);
+	printf("East texture: %s\n", gen->map.E_tex);
+	printf("Floor texture: %s\n", gen->map.F_tex);
+	printf("Ceiling texture: %s\n", gen->map.C_tex);
+	get_map_dimensions(av[1], &gen->map);
+	load_map(av, gen);
+	print_map(gen);
 	set_player_position(gen);
-	printf("player position: x = %.1f, y = %.1f\n",
-		gen->xXpicchio_valePRO2025Xx.x, gen->xXpicchio_valePRO2025Xx.y);
+	gen->map.floor_color = ft_calloc(3, sizeof(int));
+	gen->map.ceil_color = ft_calloc(3, sizeof(int));
+	return (1);
 }
