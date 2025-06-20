@@ -12,23 +12,13 @@
 
 #include "cub3d.h"
 
-/* void	free_matrix(char **matrix, int height)
+void	free_matrix(char **matrix, int height)
 {
 	int	i;
 
+	if (!matrix)
+		return;
 	i = 0;
-	if (matrix[0][0] == '\n')
-	{
-		free(matrix[0]);
-		free(matrix);
-		return ;
-	}
-	if (height == 1)
-	{
-		free(matrix[0]);
-		free(matrix);
-		return ;
-	}
 	while (i < height)
 	{
 		free(matrix[i]);
@@ -37,23 +27,39 @@
 	free(matrix);
 }
 
-void	free_map(t_map	*map)
+void	free_gen(t_gen * gen)
 {
-	free_matrix(map->map_matrix, map->height);
-	free(map);
-} */
-
-int	close_window(t_gen *gen)
-{
-	mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
-	mlx_destroy_display(gen->mlx_ptr);
-	free(gen->mlx_ptr);
 	free(gen->map.N_tex);
 	free(gen->map.S_tex);
 	free(gen->map.W_tex);
 	free(gen->map.E_tex);
 	free(gen->map.F_tex);
 	free(gen->map.C_tex);
-	exit(0);
-	return (0);
+	free(gen->map.ceil_color);
+	free(gen->map.floor_color);
+	free_matrix(gen->map.map_matrix, gen->map.height);
+}
+
+int	close_window(t_gen *gen)
+{
+	if (gen->img.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->img.img_ptr);
+
+	if (gen->map.north.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.north.img_ptr);
+	if (gen->map.south.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.south.img_ptr);
+	if (gen->map.east.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.east.img_ptr);
+	if (gen->map.west.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->map.west.img_ptr);
+
+	if (gen->win_ptr)
+		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
+	if (gen->mlx_ptr)
+		mlx_destroy_display(gen->mlx_ptr);
+
+	free_gen(gen);
+	free(gen->mlx_ptr);
+	exit(EXIT_SUCCESS);
 }

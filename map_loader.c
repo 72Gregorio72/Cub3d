@@ -191,5 +191,7 @@ void    read_map(char **av, t_gen *gen)
 	}
 	set_player_position(gen);
 	printf("player position: x = %.1f, y = %.1f\n",
-		gen->xXpicchio_valePRO2025Xx.x, gen->xXpicchio_valePRO2025Xx.y);
+		gen->player.x, gen->player.y);
+	gen->map.floor_color = ft_calloc(3, sizeof(int));
+    gen->map.ceil_color = ft_calloc(3, sizeof(int));
 }

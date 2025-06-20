@@ -24,12 +24,12 @@ void	set_player_position(t_gen *gen)
 		{
 			if (gen->map.map_matrix[y][x] == 'N')
 			{
-				gen->xXpicchio_valePRO2025Xx.x = x + 0.5;
-				gen->xXpicchio_valePRO2025Xx.y = y + 0.5;
-				gen->xXpicchio_valePRO2025Xx.dir_x = 0;
-				gen->xXpicchio_valePRO2025Xx.dir_y = -1;
-				gen->xXpicchio_valePRO2025Xx.plane_x = 0.66;
-				gen->xXpicchio_valePRO2025Xx.plane_y = 0;
+				gen->player.x = x + 0.5;
+				gen->player.y = y + 0.5;
+				gen->player.dir_x = 0;
+				gen->player.dir_y = -1;
+				gen->player.plane_x = 0.66;
+				gen->player.plane_y = 0;
 				gen->map.map_matrix[y][x] = '0';
 				return ;
 			}

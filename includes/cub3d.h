@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <limits.h>
 # include "../minilibx-linux/mlx.h"
-# include "../minilibx-linux/mlx_int.h"
+//# include "../minilibx-linux/mlx_int.h"
 # include "../libft/ft_printf/ft_printf.h"
 # include <math.h>
 # include <fcntl.h>
@@ -42,6 +42,21 @@
 # define GREEN "\033[1;32m"
 # define YELLOW "\033[1;33m"
 # define BLUE "\033[1;34m"
+# define MAGENTA "\033[1;35m"
+# define CYAN "\033[1;36m"
+# define WHITE "\033[1;37m"
+# define MOVE_SPEED 0.05
+# define ROTATE_SPEED 0.08
+
+typedef struct s_tex {
+	void	*img_ptr;
+	char	*data;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_tex;
 
 typedef struct s_map
 {
@@ -53,10 +68,14 @@ typedef struct s_map
 	char	*S_tex;
 	char	*W_tex;
 	char	*E_tex;
+	t_tex	north;
+	t_tex	south;
+	t_tex	east;
+	t_tex	west;
 	char	*F_tex;
 	char	*C_tex;
-	int		floor_color[3];
-	int		ceil_color[3];
+	int		*floor_color;
+	int		*ceil_color;
 }				t_map;
 
 typedef struct s_player
@@ -73,19 +92,65 @@ typedef struct s_player
 	double		ray_dir_y;
 }				t_player;
 
+typedef struct s_img {
+	void	*img_ptr;
+	char	*data;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_img;
+
+typedef struct s_keys {
+	int w;
+	int a;
+	int s;
+	int d;
+	int left;
+	int right;
+} t_keys;
+
 typedef struct s_gen
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
-	void		*img;
-	t_player	xXpicchio_valePRO2025Xx;
-
+	t_img		img;
+	t_player	player;
+	t_keys		keys;
 	t_map	map;
 }				t_gen;
+
+typedef struct s_ray
+{
+    int		x;
+	double	cameraX;
+	int 	mapX;
+	int 	mapY;
+	double	deltaDistX;
+	double	deltaDistY;
+	double	sideDistX;
+	double	sideDistY;
+	int 	stepX;
+	int 	stepY;
+	int 	hit;
+	int 	side;
+	double	perpWallDist;
+	int		lineHeight;
+	int		drawStart;
+	int		drawEnd;
+}				t_ray;
 
 int		close_window(t_gen *gen);
 void	read_map(char **av, t_gen *gen);
 void	set_player_position(t_gen *gen);
 void	raycasting(t_gen *gen);
+void	put_pixel(t_img *img, int x, int y, int color);
+void	load_texture(void *mlx, char *path, t_tex *tex);
+void	move_forward(t_gen *gen);
+void	move_backward(t_gen *gen);
+void	strafe_left(t_gen *gen);
+void	strafe_right(t_gen *gen);
+int		on_key_press(int keycode, t_gen *gen);
+int		on_key_release(int keycode, t_gen *gen);
+void	clear_image(t_img *img);
 
 #endif
