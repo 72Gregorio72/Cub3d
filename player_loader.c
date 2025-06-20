@@ -22,7 +22,10 @@ void	set_player_position(t_gen *gen)
 		x = 0;
 		while (x < gen->map.width)
 		{
-			if (gen->map.map_matrix[y][x] == 'N')
+			if (gen->map.map_matrix[y][x] == 'N'
+				|| gen->map.map_matrix[y][x] == 'E'
+				|| gen->map.map_matrix[y][x] == 'W'
+				|| gen->map.map_matrix[y][x] == 'S')
 			{
 				gen->player.x = x + 0.5;
 				gen->player.y = y + 0.5;

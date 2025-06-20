@@ -71,6 +71,11 @@ void	read_file(int fd, int i, t_gen *gen, int y)
 					gen->map.map_matrix[y][i] = '2';
 				else
 					gen->map.map_matrix[y][i] = line[i];
+				if (line[i] == 'N'
+					|| line[i] == 'S'
+					|| line[i] == 'E'
+					|| line[i] == 'W')
+					gen->player_orientation = line[i];
 				i++;
 			}
 			while (i < gen->map.width)
@@ -122,7 +127,10 @@ void	print_map(t_gen *gen)
 				printf(" ");
 			else if (gen->map.map_matrix[i][j] == '1' || gen->map.map_matrix[i][j] == '0')
 				printf(RED"%c"RESET, gen->map.map_matrix[i][j]);
-			else if (gen->map.map_matrix[i][j] == 'N')
+			else if (gen->map.map_matrix[i][j] == 'N'
+					|| gen->map.map_matrix[i][j] == 'S'
+					|| gen->map.map_matrix[i][j] == 'E'
+					|| gen->map.map_matrix[i][j] == 'W')
 				printf(BLUE"%c"RESET, gen->map.map_matrix[i][j]);
 			else
 				printf("%c", gen->map.map_matrix[i][j]);

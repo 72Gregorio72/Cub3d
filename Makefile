@@ -9,7 +9,12 @@ SRCS		=	main.c \
 				check_map.c \
 				check_map1.c \
 				utils_map_check.c \
+				utils_ray.c \
+				utils_ray2.c \
+				utils_ray3.c \
+				utils_ray4.c \
 				
+
 OBJS		= $(SRCS:.c=.o)
 
 INCLUDES = -Iincludes

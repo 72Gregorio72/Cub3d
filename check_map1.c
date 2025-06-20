@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:53:20 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 13:54:40 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:30:56 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int	check_closed(t_gen *gen)
 			return (0);
 		i++;
 	}
-	px = get_x(&gen->map, 'N');
-	py = get_y(&gen->map, 'N', px);
+	px = get_x(&gen->map, gen->player_orientation);
+	py = get_y(&gen->map, gen->player_orientation, px);
 	valid = flood_fill(&gen->map, py, px, visited);
 	i = -1;
 	while (++i < gen->map.height)

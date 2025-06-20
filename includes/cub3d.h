@@ -47,6 +47,10 @@
 # define WHITE "\033[1;37m"
 # define MOVE_SPEED 0.05
 # define ROTATE_SPEED 0.08
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 
 typedef struct s_tex {
 	void	*img_ptr;
@@ -116,7 +120,8 @@ typedef struct s_gen
 	t_img		img;
 	t_player	player;
 	t_keys		keys;
-	t_map	map;
+	char		player_orientation;
+	t_map		map;
 }				t_gen;
 
 typedef struct s_ray
@@ -160,5 +165,23 @@ int		map_check(t_gen *gen);
 int		check_closed(t_gen *gen);
 void    clean_path(char *path);
 void	free_gen(t_gen * gen, int flag);
+void	draw_map_col(t_ray *ray, t_gen *gen);
+void	calculate_distance(t_ray *ray, t_gen *gen);
+void	check_hit(t_ray *ray, t_gen *gen);
+void	init_ray(t_ray *ray, t_gen *gen);
+void	get_step(t_ray *ray, t_gen *gen);
+t_tex	*select_texture(t_ray *ray, t_gen *gen);
+void	clear_image(t_img *img);
+int		pre_checks(int ac, char **av, t_gen *gen);
+void	clean_path(char *path);
+void 	load_texture(void *mlx, char *path, t_tex *tex);
+void	put_pixel(t_img *img, int x, int y, int color);
+void	init_image(t_gen *gen);
+void	rotate_player(t_gen *gen, double angle);
+int		is_walkable(t_gen *gen, double x, double y);
+void	check_movements_util(t_gen *gen);
+void	check_movements(t_gen *gen);
+void	update_player_position(int keysym, t_gen *gen);
+void	rotate_view(t_gen *gen);
 
 #endif

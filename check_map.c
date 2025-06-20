@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:52:58 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 15:10:07 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:29:05 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	fill_colors(t_gen *gen, int flag)
 	free(start);
 	return (1);
 }
+
 int	check_textures(t_gen *gen)
 {
 	int	fd;
