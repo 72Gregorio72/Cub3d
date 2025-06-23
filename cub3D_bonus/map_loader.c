@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_loader_bonus.c                                 :+:      :+:    :+:   */
+/*   map_loader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 12:09:27 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 12:09:27 by vcastald         ###   ########.fr       */
+/*   Created: 2025/06/19 19:17:11 by marvin            #+#    #+#             */
+/*   Updated: 2025/06/19 19:17:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d_bonus.h"
+#include "cub3d.h"
 
 static int	is_map_line(char *line)
 {

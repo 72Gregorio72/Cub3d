@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_loader_bonus.c                              :+:      :+:    :+:   */
+/*   player_loader.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 12:09:45 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 12:09:45 by vcastald         ###   ########.fr       */
+/*   Created: 2025/06/20 09:39:19 by marvin            #+#    #+#             */
+/*   Updated: 2025/06/20 09:39:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d_bonus.h"
+#include "cub3d.h"
 
 void	set_player_position(t_gen *gen)
 {

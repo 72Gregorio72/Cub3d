@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:48:56 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 11:45:12 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:20:12 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	get_texture_paths(char *file, t_gen *gen)
 	if (!gen->map.n_tex || !gen->map.s_tex || !gen->map.w_tex
 		|| !gen->map.e_tex || !gen->map.f_tex || !gen->map.c_tex)
 		return (
-			printf(RED"Error: missing texture!\n"RESET), free_gen(gen, 0), 0);
+			printf(RED"Error\n missing texture!\n"RESET), free_gen(gen, 0), 0);
 	close(fd);
 	return (1);
 }

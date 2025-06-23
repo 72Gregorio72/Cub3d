@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting_bonus.c                                 :+:      :+:    :+:   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 12:09:58 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 12:09:58 by vcastald         ###   ########.fr       */
+/*   Created: 2025/06/20 09:43:11 by marvin            #+#    #+#             */
+/*   Updated: 2025/06/20 09:43:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d_bonus.h"
+#include "cub3d.h"
 
 static void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x)
 {

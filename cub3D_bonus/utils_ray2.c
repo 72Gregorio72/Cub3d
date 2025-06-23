@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_ray2_bonus.c                                 :+:      :+:    :+:   */
+/*   utils_ray2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:55:35 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 12:13:55 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:20:24 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d_bonus.h"
+#include "cub3d.h"
 
 void	clear_image(t_img *img)
 {
@@ -47,14 +47,14 @@ int	pre_checks(int ac, char **av, t_gen *gen)
 	char	*dot;
 
 	if (ac != 2)
-		return (printf(RED"Error: wrong number of arguments!\n"RESET), 0);
+		return (printf(RED"Error\n wrong number of arguments!\n"RESET), 0);
 	dot = ft_strchr(av[1], '.');
 	if (!dot || ft_strncmp(dot, ".cub", 4) || ft_strlen(dot) != 4)
-		return (printf(RED"Error: "YELLOW"%s"RED" is not a .cub!\n"RESET,
+		return (printf(RED"Error\n "YELLOW"%s"RED" is not a .cub!\n"RESET,
 				av[1]), 0);
 	gen->map.fd_map = open(av[1], O_RDONLY);
 	if (gen->map.fd_map == -1)
-		return (printf(RED"Error: file not found!\n"RESET), 0);
+		return (printf(RED"Error\n file not found!\n"RESET), 0);
 	return (1);
 }
 

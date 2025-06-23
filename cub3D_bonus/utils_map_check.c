@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_map_check_bonus.c                            :+:      :+:    :+:   */
+/*   utils_map_check.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:55:08 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 12:13:47 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:20:07 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d_bonus.h"
+#include "cub3d.h"
 
 int	util_map_check(t_gen *gen, int i, int j)
 {
@@ -39,7 +39,7 @@ int	map_check(t_gen *gen)
 		while (gen->map.map_matrix[i][++j])
 		{
 			if (util_map_check(gen, i, j))
-				return (printf(RED"Error: wrong map!\n"RESET), 0);
+				return (printf(RED"Error\n wrong map!\n"RESET), 0);
 			if (gen->map.map_matrix[i][j] == 'N'
 				|| gen->map.map_matrix[i][j] == 'S'
 				|| gen->map.map_matrix[i][j] == 'E'
@@ -50,7 +50,7 @@ int	map_check(t_gen *gen)
 	}
 	if (count_n != 1)
 		return (
-			printf(RED"Error: wrong number of starting positions!\n"RESET), 0);
+			printf(RED"Error\n wrong number of starting positions!\n"RESET), 0);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:02:39 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 10:47:02 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:51:19 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ long	ft_atoi(const char *str)
 	i = 0;
 	sign = 1;
 	result = 0;
-	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
-		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
+	while (str[i] && (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+			|| str[i] == '\f' || str[i] == '\r' || str[i] == ' '))
 		i++;
-	if (str[i] == '+' || str[i] == '-')
+	if (str[i] && (str[i] == '+' || str[i] == '-'))
 	{
-		if (str[i] == '-')
+		if (str[i] && str[i] == '-')
 			sign *= -1;
 		i++;
 	}
-	while ('0' <= str[i] && str[i] <= '9')
+	while (str[i] && '0' <= str[i] && str[i] <= '9')
 	{
 		result = result * 10 + (str[i] - '0');
 		i++;
