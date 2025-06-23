@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_loader.c                                    :+:      :+:    :+:   */
+/*   player_loader_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 09:39:19 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/20 09:39:19 by marvin           ###   ########.fr       */
+/*   Created: 2025/06/23 12:09:45 by vcastald          #+#    #+#             */
+/*   Updated: 2025/06/23 12:09:45 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	set_player_position(t_gen *gen)
 {
-	int	y = 0;
+	int	y;
 	int	x;
 
-	while (y < gen->map.height)
+	y = -1;
+	while (++y < gen->map.height)
 	{
 		x = 0;
 		while (x < gen->map.width)
@@ -37,6 +38,5 @@ void	set_player_position(t_gen *gen)
 			}
 			x++;
 		}
-		y++;
 	}
 }

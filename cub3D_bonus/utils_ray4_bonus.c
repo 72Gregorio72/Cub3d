@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_ray4.c                                       :+:      :+:    :+:   */
+/*   utils_ray4_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:02:12 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 16:03:01 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:14:00 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	rotate_view(t_gen *gen)
 {
 	if (gen->player_orientation == 'E')
-		rotate_player(gen, M_PI / 2); 
+		rotate_player(gen, M_PI / 2);
 	else if (gen->player_orientation == 'S')
 		rotate_player(gen, M_PI);
 	else if (gen->player_orientation == 'W')

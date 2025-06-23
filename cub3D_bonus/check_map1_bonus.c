@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map1.c                                       :+:      :+:    :+:   */
+/*   check_map1_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:53:20 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 15:30:56 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:13:32 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	is_invalid(char c)
 {
 	return (c == ' ' || c == '\0');
 }
 
-int flood_fill(t_map *map, int y, int x, int **visited)
+int	flood_fill(t_map *map, int y, int x, int **visited)
 {
 	if (x < 0 || y < 0 || x >= map->width || y >= map->height)
 		return (0);
@@ -29,10 +29,10 @@ int flood_fill(t_map *map, int y, int x, int **visited)
 		return (1);
 	visited[y][x] = 1;
 	return (
-		flood_fill(map, y + 1, x, visited) &&
-		flood_fill(map, y - 1, x, visited) &&
-		flood_fill(map, y, x + 1, visited) &&
-		flood_fill(map, y, x - 1, visited)
+		flood_fill(map, y + 1, x, visited)
+		&& flood_fill(map, y - 1, x, visited)
+		&& flood_fill(map, y, x + 1, visited)
+		&& flood_fill(map, y, x - 1, visited)
 	);
 }
 
@@ -73,20 +73,19 @@ int	get_y(t_map *map, char c, int col)
 int	check_closed(t_gen *gen)
 {
 	int	**visited;
-	int i;
+	int	i;
 	int	valid;
-	int px;
-	int py;
+	int	px;
+	int	py;
 
 	valid = 0;
-	i = 0;
+	i = -1;
 	visited = malloc(sizeof(int *) * gen->map.height);
-	while (i < gen->map.height)
+	while (++i < gen->map.height)
 	{
 		visited[i] = ft_calloc(gen->map.width, sizeof(int));
 		if (!visited[i])
 			return (0);
-		i++;
 	}
 	px = get_x(&gen->map, gen->player_orientation);
 	py = get_y(&gen->map, gen->player_orientation, px);
@@ -96,5 +95,5 @@ int	check_closed(t_gen *gen)
 		free(visited[i]);
 	if (!valid)
 		return (free(visited), 0);
-	return (free(visited), 1);
+	return (free(visited), unclosed_zero(&gen->map));
 }

@@ -74,17 +74,16 @@ int	main(int ac, char **av)
 		return (0);
 	if (!parsing_map(&gen))
 		return (free_gen(&gen, 1), 0);
-	/*printf(GREEN"Map loaded successfully!\n"RESET);
-	printf("Map dimensions: %d x %d\n", gen.map.width, gen.map.height);*/
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	gen.keys = (t_keys){0, 0, 0, 0, 0, 0};
 	init_image(&gen);
-	load_texture(gen.mlx_ptr, gen.map.N_tex, &gen.map.north);
-	load_texture(gen.mlx_ptr, gen.map.S_tex, &gen.map.south);
-	load_texture(gen.mlx_ptr, gen.map.E_tex, &gen.map.east);
-	load_texture(gen.mlx_ptr, gen.map.W_tex, &gen.map.west);
-	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask, &close_window, &gen);
+	load_texture(gen.mlx_ptr, gen.map.n_tex, &gen.map.north);
+	load_texture(gen.mlx_ptr, gen.map.s_tex, &gen.map.south);
+	load_texture(gen.mlx_ptr, gen.map.e_tex, &gen.map.east);
+	load_texture(gen.mlx_ptr, gen.map.w_tex, &gen.map.west);
+	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
+		&close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);
 	mlx_hook(gen.win_ptr, KeyRelease, KeyReleaseMask, &on_key_release, &gen);
 	rotate_view(&gen);
@@ -92,3 +91,6 @@ int	main(int ac, char **av)
 	mlx_loop(gen.mlx_ptr);
 	return (0);
 }
+
+/*printf(GREEN"Map loaded successfully!\n"RESET);
+printf("Map dimensions: %d x %d\n", gen.map.width, gen.map.height);*/

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_ray3.c                                       :+:      :+:    :+:   */
+/*   utils_ray3_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:59:40 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 16:00:06 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:13:58 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	put_pixel(t_img *img, int x, int y, int color)
 {
@@ -26,30 +26,36 @@ void	init_image(t_gen *gen)
 {
 	gen->img.img_ptr = mlx_new_image(gen->mlx_ptr, SCREEN_X, SCREEN_Y);
 	gen->img.data = mlx_get_data_addr(gen->img.img_ptr,
-		&gen->img.bpp, &gen->img.line_length, &gen->img.endian);
+			&gen->img.bpp, &gen->img.line_length, &gen->img.endian);
 	clear_image(&gen->img);
 }
 
 void	rotate_player(t_gen *gen, double angle)
 {
-	double	old_dir_x = gen->player.dir_x;
-	double	old_plane_x = gen->player.plane_x;
+	double	old_dir_x;
+	double	old_plane_x;
 
-	gen->player.dir_x = gen->player.dir_x * cos(angle) - gen->player.dir_y * sin(angle);
+	old_dir_x = gen->player.dir_x;
+	old_plane_x = gen->player.plane_x;
+	gen->player.dir_x = gen->player.dir_x * cos(angle)
+		- gen->player.dir_y * sin(angle);
 	gen->player.dir_y = old_dir_x * sin(angle) + gen->player.dir_y * cos(angle);
-
-	gen->player.plane_x = gen->player.plane_x * cos(angle) - gen->player.plane_y * sin(angle);
-	gen->player.plane_y = old_plane_x * sin(angle) + gen->player.plane_y * cos(angle);
+	gen->player.plane_x = gen->player.plane_x * cos(angle)
+		- gen->player.plane_y * sin(angle);
+	gen->player.plane_y = old_plane_x * sin(angle)
+		+ gen->player.plane_y * cos(angle);
 }
 
 int	is_walkable(t_gen *gen, double x, double y)
 {
-	int mx = (int)x;
-	int my = (int)y;
+	int	mx;
+	int	my;
 
-	return (mx >= 0 && mx < gen->map.width &&
-		my >= 0 && my < gen->map.height &&
-		gen->map.map_matrix[my][mx] != '1');
+	mx = (int)x;
+	my = (int)y;
+	return (mx >= 0 && mx < gen->map.width
+		&& my >= 0 && my < gen->map.height
+		&& gen->map.map_matrix[my][mx] != '1');
 }
 
 void	check_movements_util(t_gen *gen)

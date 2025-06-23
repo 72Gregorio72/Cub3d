@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_map_check.c                                  :+:      :+:    :+:   */
+/*   utils_map_check_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:55:08 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/23 11:45:18 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:13:47 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	util_map_check(t_gen *gen, int i, int j)
 {

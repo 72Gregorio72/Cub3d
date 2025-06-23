@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:48:56 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/20 15:04:21 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:45:12 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,28 @@ char	*get_path(char *line)
 
 void	init_textures(t_gen *gen)
 {
-	gen->map.N_tex = NULL;
-	gen->map.S_tex = NULL;
-	gen->map.W_tex = NULL;
-	gen->map.E_tex = NULL;
-	gen->map.F_tex = NULL;
-	gen->map.C_tex = NULL;
+	gen->map.n_tex = NULL;
+	gen->map.s_tex = NULL;
+	gen->map.w_tex = NULL;
+	gen->map.e_tex = NULL;
+	gen->map.f_tex = NULL;
+	gen->map.c_tex = NULL;
 }
 
 int	fill_textures(t_gen *gen, char *line)
 {
 	if (!ft_strncmp(line, "NO", 2))
-		gen->map.N_tex = get_path(line);
+		gen->map.n_tex = get_path(line);
 	else if (!ft_strncmp(line, "SO", 2))
-		gen->map.S_tex = get_path(line);
+		gen->map.s_tex = get_path(line);
 	else if (!ft_strncmp(line, "WE", 2))
-		gen->map.W_tex = get_path(line);
+		gen->map.w_tex = get_path(line);
 	else if (!ft_strncmp(line, "EA", 2))
-		gen->map.E_tex = get_path(line);
+		gen->map.e_tex = get_path(line);
 	else if (!ft_strncmp(line, "F", 1))
-		gen->map.F_tex = get_path(line);
+		gen->map.f_tex = get_path(line);
 	else if (!ft_strncmp(line, "C", 1))
-		gen->map.C_tex = get_path(line);
+		gen->map.c_tex = get_path(line);
 	return (1);
 }
 
@@ -69,11 +69,9 @@ int	get_texture_paths(char *file, t_gen *gen)
 	init_textures(gen);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-	{
-		perror("open");
-		exit(EXIT_FAILURE);
-	}
-	while ((line = get_next_line(fd)) != NULL)
+		return (perror("open"), exit(EXIT_FAILURE), 0);
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		original = line;
 		while (*line && ((*line == ' ') || (*line == '\t')))
@@ -81,24 +79,12 @@ int	get_texture_paths(char *file, t_gen *gen)
 		if (!fill_textures(gen, line))
 			return (0);
 		free(original);
+		line = get_next_line(fd);
 	}
-	if (!gen->map.N_tex || !gen->map.S_tex || !gen->map.W_tex
-		|| !gen->map.E_tex || !gen->map.F_tex || !gen->map.C_tex)
-		return (printf(RED"Error: missing texture!\n"RESET), free_gen(gen, 0), 0);
+	if (!gen->map.n_tex || !gen->map.s_tex || !gen->map.w_tex
+		|| !gen->map.e_tex || !gen->map.f_tex || !gen->map.c_tex)
+		return (
+			printf(RED"Error: missing texture!\n"RESET), free_gen(gen, 0), 0);
 	close(fd);
 	return (1);
-}
-
-int	get_char_pos(char *src, int c)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		if (src[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
 }

@@ -14,10 +14,11 @@
 
 void	set_player_position(t_gen *gen)
 {
-	int	y = 0;
+	int	y;
 	int	x;
 
-	while (y < gen->map.height)
+	y = -1;
+	while (++y < gen->map.height)
 	{
 		x = 0;
 		while (x < gen->map.width)
@@ -37,6 +38,5 @@ void	set_player_position(t_gen *gen)
 			}
 			x++;
 		}
-		y++;
 	}
 }

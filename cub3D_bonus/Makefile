@@ -1,18 +1,18 @@
-NAME		= cub3D
+NAME		= cub3D_bonus
 
-SRCS		=	main.c \
-				free.c \
-				map_loader.c \
-				player_loader.c \
-				raycasting.c \
-				utils_map_loader.c \
-				check_map.c \
-				check_map1.c \
-				utils_map_check.c \
-				utils_ray.c \
-				utils_ray2.c \
-				utils_ray3.c \
-				utils_ray4.c \
+SRCS		=	main_bonus.c \
+				free_bonus.c \
+				map_loader_bonus.c \
+				player_loader_bonus.c \
+				raycasting_bonus.c \
+				utils_map_loader_bonus.c \
+				check_map_bonus.c \
+				check_map1_bonus.c \
+				utils_map_check_bonus.c \
+				utils_ray_bonus.c \
+				utils_ray2_bonus.c \
+				utils_ray3_bonus.c \
+				utils_ray4_bonus.c \
 				
 
 OBJS		= $(SRCS:.c=.o)
