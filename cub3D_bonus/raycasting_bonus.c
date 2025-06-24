@@ -80,7 +80,6 @@ void	draw_map(t_ray *ray, t_gen *gen)
 		tex_x = tex->width - tex_x - 1;
 	draw_texture_column(ray, gen, tex, tex_x);
 	draw_ceiling_and_floor(ray, gen);
-	draw_minimap(&gen->map, gen);
 }
 
 void	raycasting(t_gen *gen)
@@ -96,4 +95,5 @@ void	raycasting(t_gen *gen)
 		calculate_distance(&ray, gen);
 		draw_map(&ray, gen);
 	}
+	draw_minimap(&gen->map, gen);
 }
