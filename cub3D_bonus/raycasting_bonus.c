@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting.c                                       :+:      :+:    :+:   */
+/*   raycasting_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 09:43:11 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/20 09:43:11 by marvin           ###   ########.fr       */
+/*   Created: 2025/06/24 17:29:26 by vcastald          #+#    #+#             */
+/*   Updated: 2025/06/24 17:29:26 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	draw_map(t_ray *ray, t_gen *gen)
 		tex_x = tex->width - tex_x - 1;
 	draw_texture_column(ray, gen, tex, tex_x);
 	draw_ceiling_and_floor(ray, gen);
+	draw_minimap(&gen->map, gen);
 }
 
 void	raycasting(t_gen *gen)

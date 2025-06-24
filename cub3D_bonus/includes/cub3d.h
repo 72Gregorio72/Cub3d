@@ -190,5 +190,6 @@ void	read_file(int fd, int i, t_gen *gen, int y);
 void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
+void	draw_minimap(t_map *map, t_gen *gen);
 
 #endif
