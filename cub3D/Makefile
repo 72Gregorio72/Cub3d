@@ -5,8 +5,6 @@ SRCS		=	main.c \
 				map_loader.c \
 				player_loader.c \
 				raycasting.c \
-				zombie_cpu.c \
-				fps.c \
 				utils_map_loader.c \
 				check_map.c \
 				check_map1.c \
