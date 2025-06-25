@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:10:48 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/25 10:43:09 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:09:06 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	draw_minimap(t_map *map, t_gen *gen)
 	int	x;
 	int	y;
 	int	color;
-	int	px;
-	int	py;
+	// int	px;
+	// int	py;
 
-	px = get_x(&gen->map, gen->player_orientation);
-	py = get_y(&gen->map, gen->player_orientation, px);
+	// px = get_x(&gen->map, gen->player_orientation);
+	// py = get_y(&gen->map, gen->player_orientation, px);
 	i = 0;
 	while (i < map->height)
 	{

@@ -1,19 +1,25 @@
 NAME		= cub3D_bonus
 
 SRCS		=	main_bonus.c \
-				free_bonus.c \
-				map_loader_bonus.c \
-				player_loader_bonus.c \
-				raycasting_bonus.c \
-				utils_map_loader_bonus.c \
-				check_map_bonus.c \
-				check_map1_bonus.c \
-				utils_map_check_bonus.c \
-				utils_ray_bonus.c \
-				utils_ray2_bonus.c \
-				utils_ray3_bonus.c \
-				utils_ray4_bonus.c \
-				minimap_bonus.c \
+				\
+				srcs/free_bonus.c \
+				srcs/player_loader_bonus.c \
+				\
+				map_loader/utils_map_loader_bonus.c \
+				map_loader/check_map_bonus.c \
+				map_loader/check_map1_bonus.c \
+				map_loader/utils_map_check_bonus.c \
+				map_loader/minimap_bonus.c \
+				map_loader/map_loader_bonus.c \
+				\
+				raycasting/raycasting_bonus.c \
+				raycasting/utils_ray_bonus.c \
+				raycasting/utils_ray2_bonus.c \
+				raycasting/utils_ray3_bonus.c \
+				raycasting/utils_ray4_bonus.c \
+				\
+				minigame/zombie_cpu_bonus.c \
+				minigame/fps_bonus.c \
 				
 
 OBJS		= $(SRCS:.c=.o)
@@ -58,6 +64,9 @@ miniclean: fclean
 vale: re clean
 	@clear
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ciao.cub
+
+push: miniclean
+	bash -i -c "push"
 
 .SILENT:	all clean fclean re
 .PHONY:		all clean fclean re
