@@ -29,7 +29,7 @@
 # include <fcntl.h>
 # include "X11/X.h"
 # include "X11/keysym.h"
-#include <sys/time.h>
+# include <sys/time.h>
 
 # define SCREEN_X 1920
 # define SCREEN_Y 1080
@@ -60,7 +60,8 @@
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
 
-typedef struct s_projectile {
+typedef struct s_projectile
+{
 	double	x;
 	double	y;
 	double	dir_x;
@@ -134,7 +135,8 @@ typedef struct s_keys
 	int	right;
 }	t_keys;
 
-typedef struct zombie {
+typedef struct zombie
+{
 	double			x;
 	double			y;
 	int				health;
@@ -142,7 +144,7 @@ typedef struct zombie {
 	int				attack_power;
 	int				attacked;
 	long			last_attack_time;
-} t_zombie;
+}	t_zombie;
 
 typedef struct s_gen
 {
@@ -159,13 +161,7 @@ typedef struct s_gen
 	t_zombie		zombies[MAX_ZOMBIES];
 	int				num_zombies;
 	t_projectile	projectiles;
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_img		img;
-	t_player	player;
-	t_keys		keys;
-	char		player_orientation;
-	t_map		map;
+	char			player_orientation;
 }				t_gen;
 
 typedef struct s_ray
@@ -202,11 +198,9 @@ int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
-<<<<<<< HEAD:includes/cub3d.h
 void	update_zombies_position(t_gen *gen);
 void	shoot_projectile(t_gen *gen, int x, int y);
 void	update_projectile_position(t_gen *gen);
-=======
 int		parsing_map(t_gen *gen);
 int		get_texture_paths(char *file, t_gen *gen);
 int		get_char_pos(char *src, int c);
@@ -236,6 +230,5 @@ void	read_file(int fd, int i, t_gen *gen, int y);
 void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
->>>>>>> origin/vcastald:cub3D/includes/cub3d.h
 
 #endif
