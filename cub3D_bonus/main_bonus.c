@@ -68,27 +68,20 @@ int	on_key_release(int keycode, t_gen *gen)
 
 int	on_mouse_move(int x, int y, t_gen *gen)
 {
-	const double	sensitivity = 0.003;
-	double			angle;
+	const double	sensitivity = 0.0005;
 	int				delta_x;
 
-	if (x == SCREEN_X / 2 && y == SCREEN_Y / 2)
-		return (0);
+	(void)y;
 	if (!gen->mouse_initialized)
 	{
-		gen->last_mouse_x = x;
-		gen->last_mouse_y = y;
 		gen->mouse_initialized = 1;
 		return (0);
 	}
-	delta_x = x - gen->last_mouse_x;
-	gen->last_mouse_x = x;
-	gen->last_mouse_y = y;
-
-	if (delta_x != 0)
+	delta_x = x - (SCREEN_X / 2);
+	if (abs(delta_x) > 1)
 	{
-		angle = -delta_x * sensitivity;
-		rotate_player(gen, angle);
+		double angle = -delta_x * sensitivity;
+		rotate_player(gen, -angle);
 	}
 	mlx_mouse_move(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
 	return (0);
