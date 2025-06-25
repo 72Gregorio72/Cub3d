@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 13:31:52 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/19 15:48:08 by vcastald         ###   ########.fr       */
+/*   Created: 2025/06/25 11:07:51 by gpicchio          #+#    #+#             */
+/*   Updated: 2025/06/25 11:07:51 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <fcntl.h>
 # include "X11/X.h"
 # include "X11/keysym.h"
+# include <sys/time.h>
 
 # define SCREEN_X 1920
 # define SCREEN_Y 1080
@@ -51,6 +52,24 @@
 # define WHITE "\033[1;37m"
 # define MOVE_SPEED 0.05
 # define ROTATE_SPEED 0.08
+# define MOVE_SPEED 0.05
+# define MAX_ZOMBIES 32
+# define ZOMBIE_SPEED 0.01
+# define MOUSE_LEFT_CLICK 1
+# define MOUSE_RIGHT_CLICK 3
+# define MOUSE_SCROLL_UP 4
+# define MOUSE_SCROLL_DOWN 5
+
+typedef struct s_projectile
+{
+	double	x;
+	double	y;
+	double	dir_x;
+	double	dir_y;
+	int		damage;
+	long	last_shot_time;
+	int		active;
+}	t_projectile;
 
 typedef struct s_tex
 {
@@ -116,15 +135,33 @@ typedef struct s_keys
 	int	right;
 }	t_keys;
 
+typedef struct zombie
+{
+	double			x;
+	double			y;
+	int				health;
+	int				max_health;
+	int				attack_power;
+	int				attacked;
+	long			last_attack_time;
+}	t_zombie;
+
 typedef struct s_gen
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_img		img;
-	t_player	player;
-	t_keys		keys;
-	char		player_orientation;
-	t_map		map;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	int				ignore_next_mouse;
+	int				last_mouse_x;
+	int				mouse_initialized;
+	int				last_mouse_y;
+	t_img			img;
+	t_player		player;
+	t_keys			keys;
+	t_map			map;
+	t_zombie		zombies[MAX_ZOMBIES];
+	int				num_zombies;
+	t_projectile	projectiles;
+	char			player_orientation;
 }				t_gen;
 
 typedef struct s_ray
@@ -161,6 +198,9 @@ int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
+void	update_zombies_position(t_gen *gen);
+void	shoot_projectile(t_gen *gen, int x, int y);
+void	update_projectile_position(t_gen *gen);
 int		parsing_map(t_gen *gen);
 int		get_texture_paths(char *file, t_gen *gen);
 int		get_char_pos(char *src, int c);
@@ -191,7 +231,5 @@ void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
 void	draw_minimap(t_map *map, t_gen *gen);
-int		get_x(t_map *map, char c);
-int		get_y(t_map *map, char c, int col);
 
 #endif
