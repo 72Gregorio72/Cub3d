@@ -27,6 +27,18 @@ void	free_matrix(char **matrix, int height)
 	free(matrix);
 }
 
+void	free_zombies(t_zombie *zombies)
+{
+	t_zombie	*tmp;
+
+	while (zombies)
+	{
+		tmp = zombies;
+		zombies = zombies->next;
+		free(tmp);
+	}
+}
+
 void	free_gen(t_gen *gen, int flag)
 {
 	free(gen->map.n_tex);
@@ -39,6 +51,7 @@ void	free_gen(t_gen *gen, int flag)
 	free(gen->map.floor_color);
 	if (flag)
 		free_matrix(gen->map.map_matrix, gen->map.height);
+	free_zombies(gen->zombies);
 }
 
 int	close_window(t_gen *gen)

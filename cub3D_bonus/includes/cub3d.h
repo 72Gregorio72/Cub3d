@@ -135,7 +135,7 @@ typedef struct s_keys
 	int	right;
 }	t_keys;
 
-typedef struct zombie
+typedef struct s_zombie
 {
 	double			x;
 	double			y;
@@ -144,6 +144,7 @@ typedef struct zombie
 	int				attack_power;
 	int				attacked;
 	long			last_attack_time;
+	struct s_zombie	*next;
 }	t_zombie;
 
 typedef struct s_gen
@@ -158,7 +159,7 @@ typedef struct s_gen
 	t_player		player;
 	t_keys			keys;
 	t_map			map;
-	t_zombie		zombies[MAX_ZOMBIES];
+	t_zombie		*zombies;
 	int				num_zombies;
 	t_projectile	projectiles;
 	char			player_orientation;
@@ -231,5 +232,9 @@ void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
 void	draw_minimap(t_map *map, t_gen *gen);
+void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start,
+			int draw_end);
+void	add_zombie(t_gen *gen, double x, double y);
+void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
 
 #endif

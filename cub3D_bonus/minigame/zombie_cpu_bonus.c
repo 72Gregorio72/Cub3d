@@ -13,6 +13,26 @@
 #include "cub3d.h"
 #define ZOMBIE_SPEED 0.01
 
+void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start, int draw_end)
+{
+	int		y;
+	int		x_offset;
+	int		width = 10;
+
+	for (x_offset = -width / 2; x_offset <= width / 2; x_offset++)
+	{
+		int x = screen_x + x_offset;
+		if (x < 0 || x >= SCREEN_X)
+			continue ;
+		y = draw_start;
+		while (y < draw_end)
+		{
+			put_pixel(&gen->img, x, y, 0x00FF00);
+			y++;
+		}
+	}
+}
+
 size_t    get_current_time(void)
 {
     struct timeval    time;
@@ -22,64 +42,101 @@ size_t    get_current_time(void)
     return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	damage_player(t_gen *gen, int zombie_index)
+void	damage_player(t_zombie *z)
 {
-	gen->zombies[zombie_index].attacked = 1;
-	gen->zombies[zombie_index].last_attack_time = get_current_time();
+	z->attacked = 1;
+	z->last_attack_time = get_current_time();
 	printf(RED"Player damaged by zombie at position (%.2f, %.2f)!\n"RESET,
-		gen->zombies[zombie_index].x, gen->zombies[zombie_index].y);
+		z->x, z->y);
 }
 
-void	check_zombie_hit(t_gen *gen, int zombie_index)
+void	check_zombie_hits(t_gen *gen)
 {
-	if (gen->projectiles.active)
+	t_zombie *z = gen->zombies;
+	t_zombie *next;
+
+	while (z)
 	{
-		double dx = gen->projectiles.x - gen->zombies[zombie_index].x;
-		double dy = gen->projectiles.y - gen->zombies[zombie_index].y;
-		double dist = sqrt(dx * dx + dy * dy);
-		if (dist < 0.5)
+		next = z->next;
+		if (gen->projectiles.active)
 		{
-			printf(GREEN"Zombie at position (%.2f, %.2f) hit by projectile!\n"RESET,
-				gen->zombies[zombie_index].x, gen->zombies[zombie_index].y);
+			double dx = gen->projectiles.x - z->x;
+			double dy = gen->projectiles.y - z->y;
+			double dist = sqrt(dx * dx + dy * dy);
+			if (dist < 0.5)
+			{
+				printf(GREEN"Zombie at (%.2f, %.2f) hit and removed\n"RESET, z->x, z->y);
+				remove_zombie(gen, z);
+			}
 		}
+		z = next;
+	}
+}
+
+void	add_zombie(t_gen *gen, double x, double y)
+{
+    t_zombie *new_zombie;
+
+	new_zombie = malloc(sizeof(t_zombie));
+    if (!new_zombie)
+        return ;
+    new_zombie->x = x + 0.5;
+    new_zombie->y = y + 0.5;
+    new_zombie->health = 100;
+    new_zombie->max_health = 100;
+    new_zombie->attack_power = 10;
+    new_zombie->attacked = 0;
+    new_zombie->last_attack_time = 0;
+    new_zombie->next = NULL;
+    new_zombie->next = gen->zombies;
+    gen->zombies = new_zombie;
+    gen->num_zombies++;
+}
+
+void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove)
+{
+	t_zombie **ptr = &gen->zombies;
+	while (*ptr && *ptr != zombie_to_remove)
+		ptr = &(*ptr)->next;
+
+	if (*ptr)
+	{
+		t_zombie *tmp = *ptr;
+		*ptr = tmp->next;
+		free(tmp);
+		gen->num_zombies--;
 	}
 }
 
 void	update_zombies_position(t_gen *gen)
 {
-	int		i;
-	double	dx;
-	double	dy;
-	double	dist;
-	double	step_x;
-	double	step_y;
-	double	next_x;
-	double	next_y;
-	struct	timeval now;
+	t_zombie *z = gen->zombies;
+	double dx, dy, dist, step_x, step_y, next_x, next_y;
+	size_t now = get_current_time();
 
-	gettimeofday(&now, NULL);
-	i = 0;
-	while (i < gen->num_zombies)
+	printf("zombie number: %d\n", gen->num_zombies);
+	while (z)
 	{
-		check_zombie_hit(gen, i);
-		if (gen->zombies[i].last_attack_time - get_current_time() < (long unsigned int)-1000)
-			gen->zombies[i].attacked = 0;
-		dx = gen->player.x - gen->zombies[i].x;
-		dy = gen->player.y - gen->zombies[i].y;
+		if (now - z->last_attack_time > 1000)
+			z->attacked = 0;
+
+		dx = gen->player.x - z->x;
+		dy = gen->player.y - z->y;
 		dist = sqrt(dx * dx + dy * dy);
 		if (dist > 0.1)
 		{
 			step_x = dx / dist * ZOMBIE_SPEED;
 			step_y = dy / dist * ZOMBIE_SPEED;
-			next_x = gen->zombies[i].x + step_x;
-			next_y = gen->zombies[i].y + step_y;
-			if (gen->map.map_matrix[(int)gen->zombies[i].y][(int)next_x] != '1')
-				gen->zombies[i].x = next_x;
-			if (gen->map.map_matrix[(int)next_y][(int)gen->zombies[i].x] != '1')
-				gen->zombies[i].y = next_y;
+			next_x = z->x + step_x;
+			next_y = z->y + step_y;
+
+			if (gen->map.map_matrix[(int)z->y][(int)next_x] != '1')
+				z->x = next_x;
+			if (gen->map.map_matrix[(int)next_y][(int)z->x] != '1')
+				z->y = next_y;
 		}
-		if (dist < 0.2 && !gen->zombies[i].attacked)
-			damage_player(gen, i);
-		i++;
+		if (dist < 0.2 && !z->attacked)
+			damage_player(z);
+		z = z->next;
 	}
 }

@@ -15,6 +15,8 @@
 int	game_loop(t_gen *gen)
 {
 	check_movements(gen);
+	update_zombies_position(gen);
+	update_projectile_position(gen);
 	if (gen->keys.left)
 		rotate_player(gen, -ROTATE_SPEED);
 	if (gen->keys.right)
@@ -64,12 +66,50 @@ int	on_key_release(int keycode, t_gen *gen)
 	return (0);
 }
 
+int	on_mouse_move(int x, int y, t_gen *gen)
+{
+	const double	sensitivity = 0.003;
+	double			angle;
+	int				delta_x;
+
+	if (x == SCREEN_X / 2 && y == SCREEN_Y / 2)
+		return (0);
+	if (!gen->mouse_initialized)
+	{
+		gen->last_mouse_x = x;
+		gen->last_mouse_y = y;
+		gen->mouse_initialized = 1;
+		return (0);
+	}
+	delta_x = x - gen->last_mouse_x;
+	gen->last_mouse_x = x;
+	gen->last_mouse_y = y;
+
+	if (delta_x != 0)
+	{
+		angle = -delta_x * sensitivity;
+		rotate_player(gen, angle);
+	}
+	mlx_mouse_move(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
+	return (0);
+}
+
+
 int	main(int ac, char **av)
 {
 	t_gen	gen;
 
 	if (!pre_checks(ac, av, &gen))
 		return (0);
+	gen.num_zombies = 0;
+	gen.projectiles.active = 0;
+	gen.projectiles.last_shot_time = 0;
+	gen.projectiles.damage = 10;
+	gen.mouse_initialized = 0;
+	gen.ignore_next_mouse = 0;
+	gen.last_mouse_x = SCREEN_X / 2;
+	gen.last_mouse_y = SCREEN_Y / 2;
+	gen.zombies = NULL;
 	if (!read_map(av, &gen))
 		return (0);
 	if (!parsing_map(&gen))
@@ -86,6 +126,8 @@ int	main(int ac, char **av)
 		&close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);
 	mlx_hook(gen.win_ptr, KeyRelease, KeyReleaseMask, &on_key_release, &gen);
+	//mlx_mouse_hook(gen.win_ptr, &on_mouse_click, &gen);Add commentMore actions
+	mlx_hook(gen.win_ptr, MotionNotify, PointerMotionMask, &on_mouse_move, &gen);
 	rotate_view(&gen);
 	mlx_loop_hook(gen.mlx_ptr, game_loop, &gen);
 	mlx_loop(gen.mlx_ptr);

@@ -24,6 +24,8 @@ SRCS		=	main_bonus.c \
 
 OBJS		= $(SRCS:.c=.o)
 
+ARSG		= maps/ciao.cub
+
 INCLUDES = -Iincludes
 
 CC = cc
@@ -63,10 +65,14 @@ miniclean: fclean
 
 vale: re clean
 	@clear
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ciao.cub
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARSG)
 
 push: miniclean
 	bash -i -c "push"
+
+test: re clean
+	@clear
+	@./$(NAME) $(ARSG)
 
 .SILENT:	all clean fclean re
 .PHONY:		all clean fclean re

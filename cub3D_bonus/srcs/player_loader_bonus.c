@@ -12,16 +12,23 @@
 
 #include "cub3d.h"
 
+void	load_zombie(t_gen *gen, int i, int j)
+{
+	if (gen->map.map_matrix[i][j] == 'Z')
+		add_zombie(gen, j + 0.5, i + 0.5);
+}
+
 void	set_player_position(t_gen *gen)
 {
 	int	y;
 	int	x;
 
 	y = -1;
+	printf("Setting player position...\n");
 	while (++y < gen->map.height)
 	{
-		x = 0;
-		while (x < gen->map.width)
+		x = -1;
+		while (++x < gen->map.width)
 		{
 			if (gen->map.map_matrix[y][x] == 'N'
 				|| gen->map.map_matrix[y][x] == 'E'
@@ -34,9 +41,8 @@ void	set_player_position(t_gen *gen)
 				gen->player.dir_y = -1;
 				gen->player.plane_x = 0.66;
 				gen->player.plane_y = 0;
-				return ;
 			}
-			x++;
+			load_zombie(gen, y, x);
 		}
 	}
 }
