@@ -22,7 +22,7 @@ void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start, int draw_end)
 	{
 		int x = screen_x + x_offset;
 		if (x < 0 || x >= SCREEN_X)
-			continue;
+			continue ;
 		y = draw_start;
 		while (y < draw_end)
 		{
