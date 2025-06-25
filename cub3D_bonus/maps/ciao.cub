@@ -1,13 +1,13 @@
-NO ./textures/nord.xpm
-SO ./textures/sud.xpm
-WE ./textures/ovest.xpm
-EA ./textures/est.xpm
+NO ./textures/redbrick.xpm
+SO ./textures/eagle.xpm
+WE ./textures/wall_3.xpm
+EA ./textures/wood.xpm
 
-F 0,            255,              0
-C 225,0,0
+F 0,0,0
+C 255,255,                                     255
 
     1111111        111
-    1000001        101   
+    1000001        101           
 1111100N001       111111
 10000000001
 10100111111

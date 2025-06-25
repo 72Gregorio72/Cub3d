@@ -191,5 +191,7 @@ void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
 void	draw_minimap(t_map *map, t_gen *gen);
+int		get_x(t_map *map, char c);
+int		get_y(t_map *map, char c, int col);
 
 #endif

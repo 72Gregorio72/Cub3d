@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap_bonus.c                                          :+:      :+:    :+:   */
+/*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:10:48 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/24 17:20:18 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/25 10:43:09 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ void	draw_minimap(t_map *map, t_gen *gen)
 	int	x;
 	int	y;
 	int	color;
+	int	px;
+	int	py;
 
+	px = get_x(&gen->map, gen->player_orientation);
+	py = get_y(&gen->map, gen->player_orientation, px);
 	i = 0;
 	while (i < map->height)
 	{
@@ -42,8 +46,9 @@ void	draw_minimap(t_map *map, t_gen *gen)
 				x = 0;
 				while (x < TILE_SIZE)
 				{
-					put_pixel(&gen->img,
-						j * TILE_SIZE + x, i * TILE_SIZE + y, color);
+					if (x % 2 != 0 || y % 2 != 0)
+						put_pixel(&gen->img,
+							j * TILE_SIZE + x, i * TILE_SIZE + y, color);
 					x++;
 				}
 				y++;
@@ -54,4 +59,5 @@ void	draw_minimap(t_map *map, t_gen *gen)
 	}
 }
 
+// mettere un pixel si ed un pixel no per averla trasparente
 
