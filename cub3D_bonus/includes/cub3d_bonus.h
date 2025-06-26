@@ -27,7 +27,9 @@
 # include <stdlib.h>
 # include <limits.h>
 # include "../minilibx-linux/mlx.h"
-//# include "../minilibx-linux/mlx_int.h"
+# include <X11/cursorfont.h>
+# include <X11/Xlib.h>
+# include <X11/Xutil.h>
 # include "../libft/ft_printf/ft_printf.h"
 # include <math.h>
 # include <fcntl.h>
