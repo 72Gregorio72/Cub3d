@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 14:17:44 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:25:43 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ void	init_main(t_gen *gen)
 	gen->last_mouse_x = SCREEN_X / 2;
 	gen->last_mouse_y = SCREEN_Y / 2;
 	gen->zombies = NULL;
+	gen->zombie_sprite_index = 0;
+	gen->max_health = 100;
+	gen->health = gen->max_health;
+	gen->ammo = 10;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)
@@ -33,7 +37,7 @@ t_tex	*get_texture(char *path, t_gen *gen)
 	if (!(*tex).img_ptr)
 		printf(RED "Error loading texture: %s\n" RESET, path);
 	(*tex).data = mlx_get_data_addr((*tex).img_ptr, &(*tex).bpp,
-		&(*tex).line_length, &(*tex).endian);
+			&(*tex).line_length, &(*tex).endian);
 	return (tex);
 }
 
@@ -45,5 +49,9 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
-	gen->zombie_tex = get_texture("textures/creeper.xpm", gen);
+	gen->zombie_tex_walking[0] = get_texture("textures/zombie/zombie_walking1.xpm", gen);
+	gen->zombie_tex_walking[1] = get_texture("textures/zombie/zombie_walking2.xpm", gen);
+	gen->zombie_tex_walking[2] = get_texture("textures/zombie/zombie_walking3.xpm", gen);
+	gen->zombie_tex_walking[3] = get_texture("textures/zombie/zombie_walking4.xpm", gen);
+	gen->zombie_tex_walking[4] = get_texture("textures/zombie/zombie_walking5.xpm", gen);
 }

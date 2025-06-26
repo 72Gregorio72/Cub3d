@@ -47,12 +47,30 @@ void	free_gen(t_gen *gen, int flag)
 	free(gen->map.e_tex);
 	free(gen->map.f_tex);
 	free(gen->map.c_tex);
-	free(gen->zombie_tex);
 	free(gen->map.ceil_color);
 	free(gen->map.floor_color);
+	free(gen->zombie_tex_walking[0]);
+	free(gen->zombie_tex_walking[1]);
+	free(gen->zombie_tex_walking[2]);
+	free(gen->zombie_tex_walking[3]);
+	free(gen->zombie_tex_walking[4]);
 	if (flag)
 		free_matrix(gen->map.map_matrix, gen->map.height);
 	free_zombies(gen->zombies);
+}
+
+void	destroy_zombie_tex(t_gen *gen)
+{
+	if (gen->zombie_tex_walking[0] && gen->zombie_tex_walking[0]->img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_walking[0]->img_ptr);
+	if (gen->zombie_tex_walking[1] && gen->zombie_tex_walking[1]->img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_walking[1]->img_ptr);
+	if (gen->zombie_tex_walking[2] && gen->zombie_tex_walking[2]->img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_walking[2]->img_ptr);
+	if (gen->zombie_tex_walking[3] && gen->zombie_tex_walking[3]->img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_walking[3]->img_ptr);
+	if (gen->zombie_tex_walking[4] && gen->zombie_tex_walking[4]->img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_walking[4]->img_ptr);
 }
 
 int	close_window(t_gen *gen)
@@ -67,12 +85,11 @@ int	close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.east.img_ptr);
 	if (gen->map.west.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.west.img_ptr);
-	if (gen->zombie_tex && gen->zombie_tex->img_ptr)
-		mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex->img_ptr);
 	if (gen->win_ptr)
 		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
 	if (gen->mlx_ptr)
 		mlx_destroy_display(gen->mlx_ptr);
+	destroy_zombie_tex(gen);
 	free_gen(gen, 1);
 	free(gen->mlx_ptr);
 	ft_lstclear_proj(&gen->projectiles);

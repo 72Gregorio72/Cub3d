@@ -72,6 +72,10 @@
 # define RADAR_COLOR 0x555555             // Colore sfondo radar
 # define GRID_COLOR 0x003F00              // Colore della griglia dei tile
 # define ZOMBIE_SPEED 0.01
+# define MAX_SPRITE_HEIGHT 1000
+# define MIN_SPRITE_HEIGHT 100
+# define MAX_SPRITE_WIDTH 1000
+# define MIN_SPRITE_WIDTH 100
 
 typedef struct s_point
 {
@@ -206,7 +210,11 @@ typedef struct s_gen
 	t_projectile	*projectiles;
 	char			player_orientation;
 	char			arrow_orientation;
-	t_tex			*zombie_tex;
+	t_tex			*zombie_tex_walking[5];
+	int				zombie_sprite_index;
+	int				max_health;
+	int				health;
+	int				ammo;
 }				t_gen;
 
 typedef struct s_ray
@@ -301,9 +309,10 @@ void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
 void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d);
 void	update_zombies_position(t_gen *gen);
 size_t	get_current_time(void);
-void	damage_player(t_zombie *z);
+void	damage_player(t_zombie *z, t_gen *gen);
 int		unclosed_zero(t_map *map);
 void	ft_lstclear_proj(t_projectile **stackA);
 void	draw_zombie_sprite(t_gen *gen, t_draw_data *d);
+void	draw_healthbar(t_gen *gen);
 
 #endif

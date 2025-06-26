@@ -47,12 +47,11 @@ size_t	get_current_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	damage_player(t_zombie *z)
+void	damage_player(t_zombie *z, t_gen *gen)
 {
 	z->attacked = 1;
 	z->last_attack_time = get_current_time();
-	printf(RED"Player damaged by zombie at position (%.2f, %.2f)!\n"RESET,
-		z->x, z->y);
+	gen->health -= z->attack_power;
 }
 
 int	check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d)
