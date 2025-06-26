@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-#define ZOMBIE_SPEED 0.01
 
 void	draw_zombie_column(t_gen *gen, int screen_x,
 		int draw_start, int draw_end)

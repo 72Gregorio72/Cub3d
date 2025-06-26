@@ -71,6 +71,7 @@
 # define MINIMAP_CENTER_Y 100             // Centro fisso verticale (idem)
 # define RADAR_COLOR 0x555555             // Colore sfondo radar
 # define GRID_COLOR 0x003F00              // Colore della griglia dei tile
+# define ZOMBIE_SPEED 0.01
 
 typedef struct s_point
 {
@@ -274,12 +275,10 @@ void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
 void	draw_minimap(t_map *map, t_gen *gen);
-<<<<<<< HEAD:cub3D_bonus/includes/cub3d.h
 int		get_x(t_map *map, char c);
 int		get_y(t_map *map, char c, int col);
 void	draw_minimap_arrow(t_gen *gen);
 void	draw_minimap_grid(t_img *img, t_gen *gen);
-=======
 void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start,
 			int draw_end);
 void	add_zombie(t_gen *gen, double x, double y);
@@ -304,6 +303,6 @@ void	update_zombies_position(t_gen *gen);
 size_t	get_current_time(void);
 void	damage_player(t_zombie *z);
 int		unclosed_zero(t_map *map);
->>>>>>> 6953c99213c3ca91b0f6869693959b8003b0bc28:cub3D_bonus/includes/cub3d_bonus.h
+void	ft_lstclear_proj(t_projectile **stackA);
 
 #endif

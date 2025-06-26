@@ -6,11 +6,11 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:24 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 12:37:18 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:29:12 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	is_inside_triangle(int px, int py, t_point a[3])
 {

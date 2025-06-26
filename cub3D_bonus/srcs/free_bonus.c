@@ -72,6 +72,7 @@ int	close_window(t_gen *gen)
 		mlx_destroy_display(gen->mlx_ptr);
 	free_gen(gen, 1);
 	free(gen->mlx_ptr);
+	ft_lstclear_proj(&gen->projectiles);
 	exit(EXIT_SUCCESS);
 }
 
