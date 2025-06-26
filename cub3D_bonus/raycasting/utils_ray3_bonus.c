@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ray3_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:59:40 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 12:35:25 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:24:55 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,15 @@ void	rotate_player(t_gen *gen, double angle)
 		- gen->player.plane_y * sin(angle);
 	gen->player.plane_y = old_plane_x * sin(angle)
 		+ gen->player.plane_y * cos(angle);
+	angle = atan2(gen->player.dir_x, gen->player.dir_y);
+	if (angle >= -M_PI_4 && angle < M_PI_4)
+		gen->arrow_orientation = ('E');
+	else if (angle >= M_PI_4 && angle < 3 * M_PI_4)
+		gen->arrow_orientation = ('S');
+	else if (angle >= -3 * M_PI_4 && angle < -M_PI_4)
+		gen->arrow_orientation = ('N');
+	else
+		gen->arrow_orientation = ('W');
 }
 
 int	is_walkable(t_gen *gen, double x, double y)
