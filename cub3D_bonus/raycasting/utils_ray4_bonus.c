@@ -6,11 +6,11 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:02:12 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 12:42:13 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:25:04 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	rotate_view(t_gen *gen)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_map_check_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:55:08 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/24 17:29:39 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:35:01 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	util_map_check(t_gen *gen, int i, int j)
 {
@@ -20,7 +20,8 @@ int	util_map_check(t_gen *gen, int i, int j)
 	&& gen->map.map_matrix[i][j] != '2'
 	&& gen->map.map_matrix[i][j] != 'S'
 	&& gen->map.map_matrix[i][j] != 'W'
-	&& gen->map.map_matrix[i][j] != 'E')
+	&& gen->map.map_matrix[i][j] != 'E'
+	&& gen->map.map_matrix[i][j] != 'Z')
 		return (1);
 	return (0);
 }

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 11:07:51 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/25 11:07:51 by gpicchio         ###   ########.fr       */
+/*   Created: 2025/06/26 12:40:18 by gpicchio          #+#    #+#             */
+/*   Updated: 2025/06/26 12:40:18 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -78,15 +78,38 @@ typedef struct s_point
 	float	y;
 }	t_point;
 
+typedef struct s_draw_data
+{
+	double	dx;
+	double	dy;
+	double	inv_det;
+	double	transform_x;
+	double	transform_y;
+	int		sprite_screen_x;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		screen_x;
+	int		screen_y;
+	int		radius;
+	int		px;
+	int		py;
+	double	dist;
+	double	step_x;
+	double	step_y;
+	double	next_x;
+	double	next_y;
+}	t_draw_data;
+
 typedef struct s_projectile
 {
-	double	x;
-	double	y;
-	double	dir_x;
-	double	dir_y;
-	int		damage;
-	long	last_shot_time;
-	int		active;
+	double				x;
+	double				y;
+	double				dir_x;
+	double				dir_y;
+	int					damage;
+	int					active;
+	struct s_projectile	*next;
 }	t_projectile;
 
 typedef struct s_tex
@@ -153,7 +176,7 @@ typedef struct s_keys
 	int	right;
 }	t_keys;
 
-typedef struct zombie
+typedef struct s_zombie
 {
 	double			x;
 	double			y;
@@ -162,6 +185,7 @@ typedef struct zombie
 	int				attack_power;
 	int				attacked;
 	long			last_attack_time;
+	struct s_zombie	*next;
 }	t_zombie;
 
 typedef struct s_gen
@@ -176,9 +200,9 @@ typedef struct s_gen
 	t_player		player;
 	t_keys			keys;
 	t_map			map;
-	t_zombie		zombies[MAX_ZOMBIES];
+	t_zombie		*zombies;
 	int				num_zombies;
-	t_projectile	projectiles;
+	t_projectile	*projectiles;
 	char			player_orientation;
 	char			arrow_orientation;
 }				t_gen;
@@ -250,9 +274,36 @@ void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
 void	draw_minimap(t_map *map, t_gen *gen);
+<<<<<<< HEAD:cub3D_bonus/includes/cub3d.h
 int		get_x(t_map *map, char c);
 int		get_y(t_map *map, char c, int col);
 void	draw_minimap_arrow(t_gen *gen);
 void	draw_minimap_grid(t_img *img, t_gen *gen);
+=======
+void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start,
+			int draw_end);
+void	add_zombie(t_gen *gen, double x, double y);
+void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
+void	cleanup_projectiles(t_gen *gen);
+void	add_projectile(t_gen *gen);
+void	check_zombie_hits(t_gen *gen);
+void	init_main(t_gen *gen);
+void	load_textures(t_gen *gen);
+int		on_key_press(int keycode, t_gen *gen);
+int		on_key_release(int keycode, t_gen *gen);
+int		on_mouse_move(int x, int y, t_gen *gen);
+int		on_mouse_click(int button, int x, int y, t_gen *gen);
+void	init_main(t_gen *gen);
+void	load_textures(t_gen *gen);
+void	draw_zombies(t_gen *gen);
+void	draw_projectiles(t_gen *gen);
+void	add_zombie(t_gen *gen, double x, double y);
+void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
+void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d);
+void	update_zombies_position(t_gen *gen);
+size_t	get_current_time(void);
+void	damage_player(t_zombie *z);
+int		unclosed_zero(t_map *map);
+>>>>>>> 6953c99213c3ca91b0f6869693959b8003b0bc28:cub3D_bonus/includes/cub3d_bonus.h
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:59:40 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/25 15:56:28 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:24:55 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	put_pixel(t_img *img, int x, int y, int color)
 {

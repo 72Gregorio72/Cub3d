@@ -4,6 +4,8 @@ SRCS		=	main_bonus.c \
 				\
 				srcs/free_bonus.c \
 				srcs/player_loader_bonus.c \
+				srcs/init_bonus.c \
+				srcs/key_listener_bonus.c \
 				\
 				map_loader/utils_map_loader_bonus.c \
 				map_loader/check_map_bonus.c \
@@ -19,12 +21,16 @@ SRCS		=	main_bonus.c \
 				raycasting/utils_ray2_bonus.c \
 				raycasting/utils_ray3_bonus.c \
 				raycasting/utils_ray4_bonus.c \
+				raycasting/draw_minigame_bonus.c \
 				\
 				minigame/zombie_cpu_bonus.c \
 				minigame/fps_bonus.c \
+				minigame/zombie_utils_bonus.c \
 				
 
 OBJS		= $(SRCS:.c=.o)
+
+ARSG		= maps/ciao.cub
 
 INCLUDES = -Iincludes
 
@@ -65,10 +71,15 @@ miniclean: fclean
 
 vale: re clean
 	@clear
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ciao.cub
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARSG)
 
 push: miniclean
 	bash -i -c "push"
+
+test: re
+	make clean
+	@clear
+	@./$(NAME) $(ARSG)
 
 .SILENT:	all clean fclean re
 .PHONY:		all clean fclean re

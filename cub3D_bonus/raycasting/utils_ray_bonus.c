@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ray_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:02 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/24 17:30:02 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:35:19 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	get_step(t_ray *ray, t_gen *gen)
 {

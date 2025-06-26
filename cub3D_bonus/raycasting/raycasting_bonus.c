@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 static void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x)
 {
@@ -95,5 +95,7 @@ void	raycasting(t_gen *gen)
 		calculate_distance(&ray, gen);
 		draw_map(&ray, gen);
 	}
+	draw_zombies(gen);
+	draw_projectiles(gen);
 	draw_minimap(&gen->map, gen);
 }

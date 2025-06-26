@@ -10,11 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	game_loop(t_gen *gen)
 {
 	check_movements(gen);
+	update_projectile_position(gen);
+	check_zombie_hits(gen);
+	cleanup_projectiles(gen);
+	update_zombies_position(gen);
 	if (gen->keys.left)
 		rotate_player(gen, -ROTATE_SPEED);
 	if (gen->keys.right)
@@ -25,67 +29,27 @@ int	game_loop(t_gen *gen)
 	return (0);
 }
 
-int	on_key_press(int keycode, t_gen *gen)
-{
-	if (keycode == KB_ESC)
-	{
-		close_window(gen);
-		exit(0);
-	}
-	if (keycode == KB_W)
-		gen->keys.w = 1;
-	if (keycode == KB_A)
-		gen->keys.a = 1;
-	if (keycode == KB_S)
-		gen->keys.s = 1;
-	if (keycode == KB_D)
-		gen->keys.d = 1;
-	if (keycode == KB_LEFT)
-		gen->keys.left = 1;
-	if (keycode == KB_RIGHT)
-		gen->keys.right = 1;
-	return (0);
-}
-
-int	on_key_release(int keycode, t_gen *gen)
-{
-	if (keycode == KB_W)
-		gen->keys.w = 0;
-	if (keycode == KB_A)
-		gen->keys.a = 0;
-	if (keycode == KB_S)
-		gen->keys.s = 0;
-	if (keycode == KB_D)
-		gen->keys.d = 0;
-	if (keycode == KB_LEFT)
-		gen->keys.left = 0;
-	if (keycode == KB_RIGHT)
-		gen->keys.right = 0;
-	return (0);
-}
-
 int	main(int ac, char **av)
 {
 	t_gen	gen;
 
 	if (!pre_checks(ac, av, &gen))
 		return (0);
+	init_main(&gen);
 	if (!read_map(av, &gen))
 		return (0);
 	if (!parsing_map(&gen))
 		return (free_gen(&gen, 1), 0);
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
-	gen.keys = (t_keys){0, 0, 0, 0, 0, 0};
-	init_image(&gen);
-	load_texture(gen.mlx_ptr, gen.map.n_tex, &gen.map.north);
-	load_texture(gen.mlx_ptr, gen.map.s_tex, &gen.map.south);
-	load_texture(gen.mlx_ptr, gen.map.e_tex, &gen.map.east);
-	load_texture(gen.mlx_ptr, gen.map.w_tex, &gen.map.west);
+	load_textures(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);
 	mlx_hook(gen.win_ptr, KeyRelease, KeyReleaseMask, &on_key_release, &gen);
+	mlx_mouse_hook(gen.win_ptr, &on_mouse_click, &gen);
+	mlx_hook(gen.win_ptr, MotionNotify, PointerMotionMask,
+		&on_mouse_move, &gen);
 	rotate_view(&gen);
 	mlx_loop_hook(gen.mlx_ptr, game_loop, &gen);
 	mlx_loop(gen.mlx_ptr);
