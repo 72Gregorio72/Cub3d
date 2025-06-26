@@ -10,36 +10,81 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
-void	shoot_projectile(t_gen *gen, int x, int y)
+void	cleanup_projectiles(t_gen *gen)
 {
-	(void)x;
-	(void)y;
-	if (gen->projectiles.active)
+	t_projectile	**curr;
+	t_projectile	*tmp;
+
+	curr = &gen->projectiles;
+	while (*curr)
+	{
+		if (!(*curr)->active)
+		{
+			tmp = *curr;
+			*curr = tmp->next;
+			free(tmp);
+		}
+		else
+			curr = &(*curr)->next;
+	}
+}
+
+void	add_projectile(t_gen *gen)
+{
+	t_projectile	*new_proj;
+
+	new_proj = malloc(sizeof(t_projectile));
+	if (!new_proj)
 		return ;
-	gen->projectiles.x = gen->player.x;
-	gen->projectiles.y = gen->player.y;
-	gen->projectiles.dir_x = gen->player.dir_x;
-	gen->projectiles.dir_y = gen->player.dir_y;
-	gen->projectiles.damage = 20;
+	new_proj->x = gen->player.x;
+	new_proj->y = gen->player.y;
+	new_proj->dir_x = gen->player.dir_x;
+	new_proj->dir_y = gen->player.dir_y;
+	new_proj->damage = 20;
+	new_proj->active = 1;
+	new_proj->next = gen->projectiles;
+	gen->projectiles = new_proj;
+}
+
+void	check_draw(t_gen *gen, double next_x, double next_y, t_projectile *curr)
+{
+	int	screen_xy[2];
+
+	if (gen->map.map_matrix[(int)next_y][(int)next_x] == '1')
+		curr->active = 0;
+	else
+	{
+		curr->x = next_x;
+		curr->y = next_y;
+		screen_xy[0] = SCREEN_X / 2;
+		screen_xy[1] = SCREEN_Y / 2;
+		put_pixel(&gen->img, screen_xy[0], screen_xy[1], 0xFF0000);
+	}
 }
 
 void	update_projectile_position(t_gen *gen)
 {
-	if (!gen->projectiles.active)
-		return ;
-	double next_x = gen->projectiles.x + gen->projectiles.dir_x * MOVE_SPEED;
-	double next_y = gen->projectiles.y + gen->projectiles.dir_y * MOVE_SPEED;
+	t_projectile	*curr;
+	t_projectile	*prev;
+	double			next_x;
+	double			next_y;
 
-	if (gen->map.map_matrix[(int)next_y][(int)next_x] == '1')
-		gen->projectiles.active = 0;
-	else
+	prev = NULL;
+	curr = gen->projectiles;
+	while (curr)
 	{
-		gen->projectiles.x = next_x;
-		gen->projectiles.y = next_y;
-		int screen_x = SCREEN_X / 2;
-		int screen_y = SCREEN_Y / 2;
-		put_pixel(&gen->img, screen_x, screen_y, 0xFF0000);
+		if (!curr->active)
+		{
+			prev = curr;
+			curr = curr->next;
+			continue ;
+		}
+		next_x = curr->x + curr->dir_x * MOVE_SPEED;
+		next_y = curr->y + curr->dir_y * MOVE_SPEED;
+		check_draw(gen, next_x, next_y, curr);
+		prev = curr;
+		curr = curr->next;
 	}
 }

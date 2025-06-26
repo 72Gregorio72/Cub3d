@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ray4_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:02:12 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/24 17:30:32 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:35:27 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	rotate_view(t_gen *gen)
 {

@@ -6,11 +6,11 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:55:08 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/25 11:21:46 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:35:01 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	util_map_check(t_gen *gen, int i, int j)
 {

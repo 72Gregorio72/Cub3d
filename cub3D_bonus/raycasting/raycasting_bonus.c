@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 static void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x)
 {
@@ -82,32 +82,6 @@ void	draw_map(t_ray *ray, t_gen *gen)
 	draw_ceiling_and_floor(ray, gen);
 }
 
-void	draw_zombies(t_gen *gen)
-{
-	t_zombie	*z;
-
-	z = gen->zombies;
-	while (z)
-	{
-		double dx = z->x - gen->player.x;
-		double dy = z->y - gen->player.y;
-		double invDet = 1.0 / (gen->player.plane_x * gen->player.dir_y - gen->player.dir_x * gen->player.plane_y);
-		double transformX = invDet * (gen->player.dir_y * dx - gen->player.dir_x * dy);
-		double transformY = invDet * (-gen->player.plane_y * dx + gen->player.plane_x * dy);
-		if (transformY > 0)
-		{
-			int spriteScreenX = (int)((SCREEN_X / 2) * (1 + transformX / transformY));
-			int lineHeight = abs((int)(SCREEN_Y / transformY));
-			int drawStart = -lineHeight / 2 + SCREEN_Y / 2;
-			int drawEnd = lineHeight / 2 + SCREEN_Y / 2;
-			if (spriteScreenX >= 0 && spriteScreenX < SCREEN_X)
-				draw_zombie_column(gen, spriteScreenX, drawStart, drawEnd);
-		}
-		z = z->next;
-	}
-}
-
-
 void	raycasting(t_gen *gen)
 {
 	t_ray	ray;
@@ -122,5 +96,6 @@ void	raycasting(t_gen *gen)
 		draw_map(&ray, gen);
 	}
 	draw_zombies(gen);
+	draw_projectiles(gen);
 	draw_minimap(&gen->map, gen);
 }

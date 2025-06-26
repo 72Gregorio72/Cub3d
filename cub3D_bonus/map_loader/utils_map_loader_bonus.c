@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_map_loader_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:48:56 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/24 17:29:52 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:35:04 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 char	*get_path(char *line)
 {

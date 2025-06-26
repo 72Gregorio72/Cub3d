@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 11:07:51 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/25 11:07:51 by gpicchio         ###   ########.fr       */
+/*   Created: 2025/06/26 12:40:18 by gpicchio          #+#    #+#             */
+/*   Updated: 2025/06/26 12:40:18 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -60,15 +60,38 @@
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
 
+typedef struct s_draw_data
+{
+	double	dx;
+	double	dy;
+	double	inv_det;
+	double	transform_x;
+	double	transform_y;
+	int		sprite_screen_x;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		screen_x;
+	int		screen_y;
+	int		radius;
+	int		px;
+	int		py;
+	double	dist;
+	double	step_x;
+	double	step_y;
+	double	next_x;
+	double	next_y;
+}	t_draw_data;
+
 typedef struct s_projectile
 {
-	double	x;
-	double	y;
-	double	dir_x;
-	double	dir_y;
-	int		damage;
-	long	last_shot_time;
-	int		active;
+	double				x;
+	double				y;
+	double				dir_x;
+	double				dir_y;
+	int					damage;
+	int					active;
+	struct s_projectile	*next;
 }	t_projectile;
 
 typedef struct s_tex
@@ -161,7 +184,7 @@ typedef struct s_gen
 	t_map			map;
 	t_zombie		*zombies;
 	int				num_zombies;
-	t_projectile	projectiles;
+	t_projectile	*projectiles;
 	char			player_orientation;
 }				t_gen;
 
@@ -236,5 +259,25 @@ void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start,
 			int draw_end);
 void	add_zombie(t_gen *gen, double x, double y);
 void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
+void	cleanup_projectiles(t_gen *gen);
+void	add_projectile(t_gen *gen);
+void	check_zombie_hits(t_gen *gen);
+void	init_main(t_gen *gen);
+void	load_textures(t_gen *gen);
+int		on_key_press(int keycode, t_gen *gen);
+int		on_key_release(int keycode, t_gen *gen);
+int		on_mouse_move(int x, int y, t_gen *gen);
+int		on_mouse_click(int button, int x, int y, t_gen *gen);
+void	init_main(t_gen *gen);
+void	load_textures(t_gen *gen);
+void	draw_zombies(t_gen *gen);
+void	draw_projectiles(t_gen *gen);
+void	add_zombie(t_gen *gen, double x, double y);
+void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
+void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d);
+void	update_zombies_position(t_gen *gen);
+size_t	get_current_time(void);
+void	damage_player(t_zombie *z);
+int		unclosed_zero(t_map *map);
 
 #endif

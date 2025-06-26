@@ -6,11 +6,11 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:10:48 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/25 11:09:06 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:40:50 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 #define TILE_SIZE 10
 
@@ -21,11 +21,7 @@ void	draw_minimap(t_map *map, t_gen *gen)
 	int	x;
 	int	y;
 	int	color;
-	// int	px;
-	// int	py;
 
-	// px = get_x(&gen->map, gen->player_orientation);
-	// py = get_y(&gen->map, gen->player_orientation, px);
 	i = 0;
 	while (i < map->height)
 	{
