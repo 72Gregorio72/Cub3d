@@ -3,6 +3,7 @@ NAME		= cub3D_bonus
 SRCS		=	main_bonus.c \
 				\
 				srcs/free_bonus.c \
+				srcs/free_utils_bonus.c \
 				srcs/player_loader_bonus.c \
 				srcs/init_bonus.c \
 				srcs/key_listener_bonus.c \
@@ -70,7 +71,8 @@ bonus: all
 miniclean: fclean
 	$(RM) minilibx-linux
 
-vale: re clean
+vale: re
+	make clean
 	@clear
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARSG)
 

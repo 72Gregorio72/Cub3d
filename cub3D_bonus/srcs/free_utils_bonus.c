@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 12:42:27 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:40:17 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,20 @@ int	unclosed_zero(t_map *map)
 		}
 	}
 	return (1);
+}
+
+void	ft_lstclear_proj(t_projectile **stackA)
+{
+	t_projectile	*temp;
+
+	temp = NULL;
+	while (*stackA)
+	{
+		temp = (*stackA)->next;
+		free(*stackA);
+		*stackA = NULL;
+		if (temp == NULL)
+			break ;
+		*stackA = temp;
+	}
 }

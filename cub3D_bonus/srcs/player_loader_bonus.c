@@ -24,7 +24,6 @@ void	set_player_position(t_gen *gen)
 	int	x;
 
 	y = -1;
-	printf("Setting player position...\n");
 	while (++y < gen->map.height)
 	{
 		x = -1;

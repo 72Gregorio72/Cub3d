@@ -71,6 +71,7 @@
 # define MINIMAP_CENTER_Y 100             // Centro fisso verticale (idem)
 # define RADAR_COLOR 0x555555             // Colore sfondo radar
 # define GRID_COLOR 0x003F00              // Colore della griglia dei tile
+# define ZOMBIE_SPEED 0.01
 
 typedef struct s_point
 {
@@ -301,5 +302,6 @@ void	update_zombies_position(t_gen *gen);
 size_t	get_current_time(void);
 void	damage_player(t_zombie *z);
 int		unclosed_zero(t_map *map);
+void	ft_lstclear_proj(t_projectile **stackA);
 
 #endif
