@@ -43,6 +43,7 @@ int	main(int ac, char **av)
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	load_textures(&gen);
+	rotate_view(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);
@@ -50,7 +51,6 @@ int	main(int ac, char **av)
 	mlx_mouse_hook(gen.win_ptr, &on_mouse_click, &gen);
 	mlx_hook(gen.win_ptr, MotionNotify, PointerMotionMask,
 		&on_mouse_move, &gen);
-	rotate_view(&gen);
 	mlx_loop_hook(gen.mlx_ptr, game_loop, &gen);
 	mlx_loop(gen.mlx_ptr);
 	return (0);

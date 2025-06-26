@@ -25,13 +25,14 @@ void	draw_zombie_column(t_gen *gen, int screen_x,
 	while (x_offset <= width / 2)
 	{
 		x = screen_x + x_offset;
-		if (x < 0 || x >= SCREEN_X)
-			continue ;
-		y = draw_start;
-		while (y < draw_end)
+		if (x >= 0 && x < SCREEN_X)
 		{
-			put_pixel(&gen->img, x, y, 0x00FF00);
-			y++;
+			y = draw_start;
+			while (y < draw_end)
+			{
+				put_pixel(&gen->img, x, y, 0x00FF00);
+				y++;
+			}
 		}
 		x_offset++;
 	}

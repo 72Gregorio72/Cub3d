@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 12:41:32 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:59:11 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,12 @@ void	update_zombies_position(t_gen *gen)
 	now = get_current_time();
 	while (z)
 	{
+		printf("Zombie at (%.2f, %.2f)\n", z->x, z->y);
+		if (z == z->next)
+		{
+			printf("ERROR: Zombie next points to itself!\n");
+			break ;
+		}
 		if (now - z->last_attack_time > 1000)
 			z->attacked = 0;
 		d.dx = gen->player.x - z->x;
