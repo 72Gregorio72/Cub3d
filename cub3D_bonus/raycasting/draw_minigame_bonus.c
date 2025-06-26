@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 12:41:51 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:12:30 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,38 @@ void	calculate_zombie(t_gen *gen, t_draw_data draw_data)
 		draw_data.draw_end = draw_data.line_height / 2 + SCREEN_Y / 2;
 		if (draw_data.sprite_screen_x >= 0
 			&& draw_data.sprite_screen_x < SCREEN_X)
-			draw_zombie_column(gen, draw_data.sprite_screen_x,
-				draw_data.draw_start, draw_data.draw_end);
+			draw_zombie_sprite(gen, &draw_data);
+	}
+}
+
+void	draw_zombie_sprite(t_gen *gen, t_draw_data *d)
+{
+	t_tex	*tex = gen->zombie_tex;
+	int		y, x;
+	int		tex_x, tex_y;
+	double	tex_pos;
+
+	int	sprite_screen_x = d->sprite_screen_x;
+	int	sprite_height = d->line_height;
+	int	draw_start_y = fmax(0, d->draw_start);
+	int	draw_end_y = fmin(SCREEN_Y - 1, d->draw_end);
+
+	int	sprite_width = sprite_height;
+	int	draw_start_x = fmax(0, sprite_screen_x - sprite_width / 2);
+	int	draw_end_x = fmin(SCREEN_X - 1, sprite_screen_x + sprite_width / 2);
+
+	for (x = draw_start_x; x < draw_end_x; x++)
+	{
+		tex_x = (int)((double)(x - (sprite_screen_x - sprite_width / 2)) / sprite_width * tex->width);
+		tex_pos = (draw_start_y - SCREEN_Y / 2 + sprite_height / 2) * ((double)tex->height / sprite_height);
+		for (y = draw_start_y; y < draw_end_y; y++)
+		{
+			tex_y = (int)tex_pos;
+			tex_pos += (double)tex->height / sprite_height;
+			unsigned int color = *(unsigned int *)(tex->data + tex_y * tex->line_length + tex_x * (tex->bpp / 8));
+			if ((color & 0x00FFFFFF) != 0x000000)
+				put_pixel(&gen->img, x, y, color);
+		}
 	}
 }
 

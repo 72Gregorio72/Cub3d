@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 12:36:49 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:17:44 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ void	init_main(t_gen *gen)
 	gen->zombies = NULL;
 }
 
+t_tex	*get_texture(char *path, t_gen *gen)
+{
+	t_tex	*tex;
+
+	tex = malloc(sizeof(t_tex));
+	(*tex).img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr, path,
+			&(*tex).width, &(*tex).height);
+	if (!(*tex).img_ptr)
+		printf(RED "Error loading texture: %s\n" RESET, path);
+	(*tex).data = mlx_get_data_addr((*tex).img_ptr, &(*tex).bpp,
+		&(*tex).line_length, &(*tex).endian);
+	return (tex);
+}
+
 void	load_textures(t_gen *gen)
 {
 	gen->keys = (t_keys){0, 0, 0, 0, 0, 0};
@@ -31,4 +45,5 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
+	gen->zombie_tex = get_texture("textures/creeper.xpm", gen);
 }

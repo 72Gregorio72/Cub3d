@@ -47,6 +47,7 @@ void	free_gen(t_gen *gen, int flag)
 	free(gen->map.e_tex);
 	free(gen->map.f_tex);
 	free(gen->map.c_tex);
+	free(gen->zombie_tex);
 	free(gen->map.ceil_color);
 	free(gen->map.floor_color);
 	if (flag)
@@ -66,6 +67,8 @@ int	close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.east.img_ptr);
 	if (gen->map.west.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.west.img_ptr);
+	if (gen->zombie_tex && gen->zombie_tex->img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex->img_ptr);
 	if (gen->win_ptr)
 		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
 	if (gen->mlx_ptr)

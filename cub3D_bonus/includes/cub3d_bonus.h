@@ -206,6 +206,7 @@ typedef struct s_gen
 	t_projectile	*projectiles;
 	char			player_orientation;
 	char			arrow_orientation;
+	t_tex			*zombie_tex;
 }				t_gen;
 
 typedef struct s_ray
@@ -303,5 +304,6 @@ size_t	get_current_time(void);
 void	damage_player(t_zombie *z);
 int		unclosed_zero(t_map *map);
 void	ft_lstclear_proj(t_projectile **stackA);
+void	draw_zombie_sprite(t_gen *gen, t_draw_data *d);
 
 #endif
