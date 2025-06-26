@@ -17,6 +17,10 @@
 #  define M_PI 3.14159265358979323846
 # endif
 
+# ifndef M_PI_4
+#  define M_PI_4 0.78539816
+# endif
+
 # include "../libft/libft.h"
 # include "../libft/get_next_line/get_next_line.h"
 # include <stdio.h>
@@ -59,6 +63,20 @@
 # define MOUSE_RIGHT_CLICK 3
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
+# define MINIMAP_RADIUS 5                 // Visualizza 11x11 tile
+# define MINIMAP_TILE_AREA 11
+# define TILE_SIZE 18                     // Dimensione visiva di ogni tile
+# define RADAR_RADIUS_PIXELS 92           // Raggio visibile più ampio
+# define MINIMAP_CENTER_X 100             // Centro fisso orizzontale
+# define MINIMAP_CENTER_Y 100             // Centro fisso verticale (idem)
+# define RADAR_COLOR 0x555555             // Colore sfondo radar
+# define GRID_COLOR 0x003F00              // Colore della griglia dei tile
+
+typedef struct s_point
+{
+	float	x;
+	float	y;
+}	t_point;
 
 typedef struct s_projectile
 {
@@ -162,6 +180,7 @@ typedef struct s_gen
 	int				num_zombies;
 	t_projectile	projectiles;
 	char			player_orientation;
+	char			arrow_orientation;
 }				t_gen;
 
 typedef struct s_ray
@@ -231,5 +250,9 @@ void	get_map_dimensions(char *file, t_map *map);
 void	fill_map_row(t_gen *gen, char *line, int y);
 int		unclosed_zero(t_map *map);
 void	draw_minimap(t_map *map, t_gen *gen);
+int		get_x(t_map *map, char c);
+int		get_y(t_map *map, char c, int col);
+void	draw_minimap_arrow(t_gen *gen);
+void	draw_minimap_grid(t_img *img, t_gen *gen);
 
 #endif

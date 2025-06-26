@@ -76,7 +76,10 @@ void	fill_map_row(t_gen *gen, char *line, int y)
 			gen->map.map_matrix[y][i] = line[i];
 		if (line[i] == 'N' || line[i] == 'S'
 			|| line[i] == 'E' || line[i] == 'W')
+		{
 			gen->player_orientation = line[i];
+			gen->arrow_orientation = gen->player_orientation;
+		}
 		i++;
 	}
 	while (i < gen->map.width)
