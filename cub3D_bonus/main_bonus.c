@@ -14,17 +14,17 @@
 
 int	game_loop(t_gen *gen)
 {
-	check_movements(gen);
-	update_projectile_position(gen);
-	check_zombie_hits(gen);
-	cleanup_projectiles(gen);
-	update_zombies_position(gen);
 	if (gen->keys.left)
 		rotate_player(gen, -ROTATE_SPEED);
 	if (gen->keys.right)
 		rotate_player(gen, ROTATE_SPEED);
 	clear_image(&gen->img);
 	raycasting(gen);
+	check_movements(gen);
+	update_projectile_position(gen);
+	check_zombie_hits(gen);
+	cleanup_projectiles(gen);
+	update_zombies_position(gen);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 	return (0);
 }
