@@ -26,6 +26,7 @@ int	game_loop(t_gen *gen)
 	cleanup_projectiles(gen);
 	update_zombies_position(gen);
 	draw_healthbar(gen);
+	animate_zombies(gen);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 	return (0);
 }

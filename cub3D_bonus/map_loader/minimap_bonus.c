@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:10:48 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 13:24:39 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:03:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,8 @@ void	draw_minimap_tiles(t_gen *gen)
 {
 	int			i;
 	int			j;
-	double		px;
-	double		py;
 	int			color;
 
-	px = gen->player.x;
-	py = gen->player.y;
 	i = -MINIMAP_RADIUS;
 	while (i <= MINIMAP_RADIUS)
 	{
@@ -110,6 +106,8 @@ void	draw_minimap_tiles(t_gen *gen)
 void	draw_minimap(t_map *map, t_gen *gen)
 {
 	map = &gen->map;
+	if (!map)
+		return;
 	draw_minimap_background(&gen->img);
 	draw_minimap_tiles(gen);
 	draw_minimap_grid(&gen->img, gen);

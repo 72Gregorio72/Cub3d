@@ -191,6 +191,13 @@ typedef struct s_zombie
 	int				attacked;
 	long			last_attack_time;
 	struct s_zombie	*next;
+	int				sprite_index;
+	int				is_dead;
+	int				is_walking;
+	int				is_attacking;
+	int				is_hit;
+	int				animation_frame;
+	t_tex			*texture;
 }	t_zombie;
 
 typedef struct s_gen
@@ -210,8 +217,10 @@ typedef struct s_gen
 	t_projectile	*projectiles;
 	char			player_orientation;
 	char			arrow_orientation;
-	t_tex			*zombie_tex_walking[5];
-	int				zombie_sprite_index;
+	t_tex			*zombie_tex_walking[26];
+	t_tex			*zombie_tex_attacking[17];
+	t_tex			*zombie_tex_dead[21];
+	t_tex			*zombie_tex_hit[13];
 	int				max_health;
 	int				health;
 	int				ammo;
@@ -312,7 +321,12 @@ size_t	get_current_time(void);
 void	damage_player(t_zombie *z, t_gen *gen);
 int		unclosed_zero(t_map *map);
 void	ft_lstclear_proj(t_projectile **stackA);
-void	draw_zombie_sprite(t_gen *gen, t_draw_data *d);
+void	draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z);
 void	draw_healthbar(t_gen *gen);
+void	animate_zombies(t_gen *gen);
+void	update_walking(t_zombie *z);
+void	update_attacking(t_zombie *z);
+void	update_dead(t_zombie *z);
+void	update_hit(t_zombie *z);
 
 #endif

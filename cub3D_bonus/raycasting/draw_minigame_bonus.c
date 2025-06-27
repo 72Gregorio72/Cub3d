@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minigame_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 15:52:05 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/27 11:02:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	calculate_zombie(t_gen *gen, t_draw_data draw_data)
+void	calculate_zombie(t_gen *gen, t_draw_data draw_data, t_zombie *z)
 {
 	if (draw_data.transform_y > 0)
 	{
@@ -24,15 +24,15 @@ void	calculate_zombie(t_gen *gen, t_draw_data draw_data)
 		draw_data.draw_end = draw_data.line_height / 2 + SCREEN_Y / 2;
 		if (draw_data.sprite_screen_x >= 0
 			&& draw_data.sprite_screen_x < SCREEN_X)
-			draw_zombie_sprite(gen, &draw_data);
+			draw_zombie_sprite(gen, &draw_data, z);
 	}
 }
 
-void draw_zombie_sprite(t_gen *gen, t_draw_data *d)
+void draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z)
 {
-    t_tex *tex = gen->zombie_tex_walking[gen->zombie_sprite_index];
-    if (!tex || !tex->data) return;
-
+    t_tex *tex = z->texture;
+    if (!tex || !tex->data)
+		return;
     int y, x;
     int tex_x, tex_y;
     double tex_pos;
@@ -79,18 +79,8 @@ void draw_zombie_sprite(t_gen *gen, t_draw_data *d)
 
 void	draw_zombies(t_gen *gen)
 {
-	static unsigned long	last_update;
-	unsigned long		current_time;
 	t_zombie			*z;
 	t_draw_data			draw_data;
-
-	current_time = get_current_time();
-	if (current_time - last_update >= 500)
-	{
-		gen->zombie_sprite_index = (gen->zombie_sprite_index + 1) % 5;
-		last_update = current_time;
-	}
-
 	z = gen->zombies;
 	while (z)
 	{
@@ -104,7 +94,7 @@ void	draw_zombies(t_gen *gen)
 		draw_data.transform_y = draw_data.inv_det
 			* (-gen->player.plane_y * draw_data.dx
 				+ gen->player.plane_x * draw_data.dy);
-		calculate_zombie(gen, draw_data);
+		calculate_zombie(gen, draw_data, z);
 		z = z->next;
 	}
 }
