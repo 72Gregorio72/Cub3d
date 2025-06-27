@@ -49,9 +49,21 @@ size_t	get_current_time(void)
 
 void	damage_player(t_zombie *z, t_gen *gen)
 {
-	z->attacked = 1;
-	z->last_attack_time = get_current_time();
-	gen->health -= z->attack_power;
+	t_draw_data	d;
+
+	d.dx = gen->player.x - z->x;
+	d.dy = gen->player.y - z->y;
+	d.dist = sqrt(d.dx * d.dx + d.dy * d.dy);
+	if (d.dist <= 0.5 && !z->attacked)
+	{
+		z->attacked = 1;
+		z->last_attack_time = get_current_time();
+		gen->health -= z->attack_power;
+		z->animation_frame = 0;
+		z->is_attacking = 0;
+	}
+	else if (d.dist > 0.5)
+		update_walking(z);
 }
 
 int	check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d)
@@ -61,7 +73,7 @@ int	check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d)
 		d.dx = p->x - z->x;
 		d.dy = p->y - z->y;
 		d.dist = sqrt(d.dx * d.dx + d.dy * d.dy);
-		if (d.dist < 0.5)
+		if (d.dist < 0.2)
 		{
 			remove_zombie(gen, z);
 			p->active = 0;

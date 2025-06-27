@@ -27,7 +27,6 @@ void	update_attacking(t_zombie *z)
 	z->is_attacking = 1;
 	z->is_dead = 0;
 	z->is_hit = 0;
-	z->animation_frame = 0;
 }
 
 void	update_dead(t_zombie *z)
@@ -58,7 +57,7 @@ void	animate_zombies(t_gen *gen)
 		if (z->is_walking)
 		{
 			z->animation_frame++;
-			if (z->animation_frame >= 17)//26 per l'animazione di camminata
+			if (z->animation_frame >= 26)
 				z->animation_frame = 0;
 			z->texture = gen->zombie_tex_walking[z->animation_frame];
 		}
@@ -66,7 +65,7 @@ void	animate_zombies(t_gen *gen)
 		{
 			z->animation_frame++;
 			if (z->animation_frame >= 17)
-				z->animation_frame = 0;
+				damage_player(z, gen);
 			z->texture = gen->zombie_tex_attacking[z->animation_frame];
 		}
 		else if (z->is_dead)

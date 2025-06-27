@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/27 11:04:07 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/27 12:10:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove)
 
 void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 {
-	if (d.dist > 0.1)
+	if (d.dist > 0.4)
 	{
 		d.step_x = d.dx / d.dist * ZOMBIE_SPEED;
 		d.step_y = d.dy / d.dist * ZOMBIE_SPEED;
@@ -70,6 +70,10 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 			z->x = d.next_x;
 		if (gen->map.map_matrix[(int)d.next_y][(int)z->x] != '1')
 			z->y = d.next_y;
+	}
+	else
+	{
+		z->is_walking = 0;
 	}
 }
 
@@ -89,8 +93,10 @@ void	update_zombies_position(t_gen *gen)
 		d.dy = gen->player.y - z->y;
 		d.dist = sqrt(d.dx * d.dx + d.dy * d.dy);
 		move_zombie(gen, z, d);
-		if (d.dist < 0.2 && !z->attacked)
-			damage_player(z, gen);
+		if (d.dist <= 0.5 && !z->attacked)
+			update_attacking(z);
+		else if (!z->is_walking && d.dist > 0.5)
+			update_walking(z);
 		z = z->next;
 	}
 }

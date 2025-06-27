@@ -59,7 +59,7 @@ void	destroy_zombie_tex(t_gen *gen)
 	int	i;
 
 	i = 0;
-	while (i < 17)// 26
+	while (i < 26)
 	{
 		if (gen->zombie_tex_walking[i])
 		{
@@ -69,17 +69,17 @@ void	destroy_zombie_tex(t_gen *gen)
 		}
 		i++;
 	}
-	// i = 0;
-	// while (i < 17)
-	// {
-	// 	if (gen->zombie_tex_attacking[i])
-	// 	{
-	// 		if (gen->zombie_tex_attacking[i]->img_ptr)
-	// 			mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_attacking[i]->img_ptr);
-	// 		free(gen->zombie_tex_attacking[i]);
-	// 	}
-	// 	i++;
-	// }
+	i = 0;
+	while (i < 17)
+	{
+		if (gen->zombie_tex_attacking[i])
+		{
+			if (gen->zombie_tex_attacking[i]->img_ptr)
+				mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_attacking[i]->img_ptr);
+			free(gen->zombie_tex_attacking[i]);
+		}
+		i++;
+	}
 	// i = 0;
 	// while (i < 21)
 	// {

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/27 11:13:13 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/27 12:05:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,28 @@ t_tex *get_texture(char *path, t_gen *gen)
 	return (tex);
 }
 
+void	load_animation(t_gen *gen, const char *base_path, t_tex **tex_array, int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		char *num = ft_itoa(i);
+		char *ext = ft_strjoin(base_path, num);
+		char *path = ft_strjoin(ext, ".xpm");
+		free(num);
+		free(ext);
+		if (!path)
+			continue;
+		tex_array[i] = get_texture(path, gen);
+		if (!tex_array[i])
+		{
+			fprintf(stderr, RED "Failed to load texture: %s\n" RESET, path);
+			free(path);
+			continue;
+		}
+		free(path);
+	}
+}
+
 void	load_textures(t_gen *gen)
 {
 	gen->keys = (t_keys){0, 0, 0, 0, 0, 0};
@@ -50,27 +72,9 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
-
-	for (int i = 0; i < 17; i++)
-	{
-		char *base = ft_strdup("zombie_anim/attacking_xpm/Zattacking");
-		char *num = ft_itoa(i);
-		char *tmp = ft_strjoin(base, num);
-		char *path = ft_strjoin(tmp, ".xpm");
-
-		free(base);
-		free(num);
-		free(tmp);
-
-		t_tex *tex = get_texture(path, gen);
-		if (!tex)
-		{
-			fprintf(stderr, RED "Failed to load zombie texture frame %d\n" RESET, i);
-			free(path);
-			continue;
-		}
-		gen->zombie_tex_walking[i] = tex;
-		free(path);
-	}
+	load_animation(gen, "zombie_anim/walking_xpm/Zwalking", gen->zombie_tex_walking, 26);
+	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking", gen->zombie_tex_attacking, 17);
+	// load_animation(gen, "textures/zombie/dead/Zdying", gen->zombie_tex_dead, 21);
+	// load_animation(gen, "textures/zombie/hit/Zhitted", gen->zombie_tex_hit, 13);
 }
 
