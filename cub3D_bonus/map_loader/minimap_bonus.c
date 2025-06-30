@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:10:48 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 14:47:10 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/30 10:39:15 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	assign_color_tiles(int *color, t_gen *gen, int i, int j)
 		else if (gen->map.map_matrix[map_y][map_x] == '0'
 				|| gen->map.map_matrix[map_y][map_x] == '2')
 			*color = 0x005F00;
-		else if (gen->map.map_matrix[map_y][map_x] == 'Z')
-			*color = 0x3F002A;
 		else
 			*color = 0x005F00;
 	}
@@ -116,4 +114,5 @@ void	draw_minimap(t_map *map, t_gen *gen)
 	draw_minimap_tiles(gen);
 	draw_minimap_grid(&gen->img, gen);
 	draw_minimap_arrow(gen);
+	draw_zombie_dots(gen);
 }

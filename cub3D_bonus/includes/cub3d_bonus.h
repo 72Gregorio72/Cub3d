@@ -305,5 +305,6 @@ size_t	get_current_time(void);
 void	damage_player(t_zombie *z);
 int		unclosed_zero(t_map *map);
 void	ft_lstclear_proj(t_projectile **stackA);
+void	draw_zombie_dots(t_gen *gen);
 
 #endif

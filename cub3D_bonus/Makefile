@@ -16,6 +16,7 @@ SRCS		=	main_bonus.c \
 				map_loader/map_loader_bonus.c \
 				map_loader/minimap_arrow_bonus.c \
 				map_loader/minimap_grid_bonus.c \
+				map_loader/minimap_zombie_bonus.c \
 				\
 				raycasting/raycasting_bonus.c \
 				raycasting/utils_ray_bonus.c \
