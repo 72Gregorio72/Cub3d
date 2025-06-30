@@ -76,6 +76,7 @@
 # define MIN_SPRITE_HEIGHT 100
 # define MAX_SPRITE_WIDTH 1000
 # define MIN_SPRITE_WIDTH 100
+# define MOUSE_SENSITIVITY 0.001
 
 typedef struct s_point
 {
@@ -224,6 +225,8 @@ typedef struct s_gen
 	int				max_health;
 	int				health;
 	int				ammo;
+	int				mouse_vertical_offset;
+	double			zbuffer[SCREEN_X];
 }				t_gen;
 
 typedef struct s_ray
@@ -280,7 +283,6 @@ void	clear_image(t_img *img);
 int		pre_checks(int ac, char **av, t_gen *gen);
 void	clean_path(char *path);
 void	load_texture(void *mlx, char *path, t_tex *tex);
-void	put_pixel(t_img *img, int x, int y, int color);
 void	init_image(t_gen *gen);
 void	rotate_player(t_gen *gen, double angle);
 int		is_walkable(t_gen *gen, double x, double y);
@@ -328,5 +330,6 @@ void	update_walking(t_zombie *z);
 void	update_attacking(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_hit(t_zombie *z);
+void	draw_menu(t_gen *gen);
 
 #endif

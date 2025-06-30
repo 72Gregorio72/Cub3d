@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 10:56:02 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/30 14:57:41 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,51 +30,54 @@ void	calculate_zombie(t_gen *gen, t_draw_data draw_data, t_zombie *z)
 
 void draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z)
 {
-    t_tex *tex = z->texture;
-    if (!tex || !tex->data)
+	t_tex *tex = z->texture;
+	if (!tex || !tex->data)
 		return;
-    int y, x;
-    int tex_x, tex_y;
-    double tex_pos;
+	int y, x;
+	int tex_x, tex_y;
+	double tex_pos;
 
-    int sprite_screen_x = d->sprite_screen_x;
-    int sprite_height = d->line_height;
-    int sprite_width = sprite_height;
+	int sprite_screen_x = d->sprite_screen_x;
+	int sprite_height = d->line_height;
+	int sprite_width = sprite_height;
 
-    if (sprite_height > MAX_SPRITE_HEIGHT)
-        sprite_height = MAX_SPRITE_HEIGHT;
-    else if (sprite_height < MIN_SPRITE_HEIGHT)
-        sprite_height = MIN_SPRITE_HEIGHT;
+	if (sprite_height > MAX_SPRITE_HEIGHT)
+		sprite_height = MAX_SPRITE_HEIGHT;
+	else if (sprite_height < MIN_SPRITE_HEIGHT)
+		sprite_height = MIN_SPRITE_HEIGHT;
 
-    if (sprite_width > MAX_SPRITE_WIDTH)
-        sprite_width = MAX_SPRITE_WIDTH;
-    else if (sprite_width < MIN_SPRITE_WIDTH)
-        sprite_width = MIN_SPRITE_WIDTH;
+	if (sprite_width > MAX_SPRITE_WIDTH)
+		sprite_width = MAX_SPRITE_WIDTH;
+	else if (sprite_width < MIN_SPRITE_WIDTH)
+		sprite_width = MIN_SPRITE_WIDTH;
 
-    int draw_start_y = fmax(0, d->draw_start);
-    int draw_end_y = fmin(SCREEN_Y - 1, d->draw_end);
-    int draw_start_x = fmax(0, sprite_screen_x - sprite_width / 2);
-    int draw_end_x = fmin(SCREEN_X - 1, sprite_screen_x + sprite_width / 2);
+	int draw_start_y = fmax(0, d->draw_start);
+	int draw_end_y = fmin(SCREEN_Y - 1, d->draw_end);
+	int draw_start_x = fmax(0, sprite_screen_x - sprite_width / 2);
+	int draw_end_x = fmin(SCREEN_X - 1, sprite_screen_x + sprite_width / 2);
 
     for (x = draw_start_x; x < draw_end_x; x++)
-    {
-        tex_x = (int)((double)(x - (sprite_screen_x - sprite_width / 2)) / sprite_width * tex->width);
-        if (tex_x < 0) tex_x = 0;
-        if (tex_x >= tex->width) tex_x = tex->width - 1;
+	{
+		tex_x = (int)((double)(x - (sprite_screen_x - sprite_width / 2)) / sprite_width * tex->width);
+		if (tex_x < 0) tex_x = 0;
+		if (tex_x >= tex->width) tex_x = tex->width - 1;
 
-        tex_pos = (draw_start_y - SCREEN_Y / 2 + sprite_height / 2) * ((double)tex->height / sprite_height);
-        for (y = draw_start_y; y < draw_end_y; y++)
-        {
-            tex_y = (int)tex_pos;
-            tex_pos += (double)tex->height / sprite_height;
-            if (tex_y < 0) tex_y = 0;
-            if (tex_y >= tex->height) tex_y = tex->height - 1;
+		if (d->transform_y > 0 && x >= 0 && x < SCREEN_X && d->transform_y < gen->zbuffer[x]) // 👈 AGGIUNTA
+		{
+			tex_pos = (draw_start_y - SCREEN_Y / 2 + sprite_height / 2) * ((double)tex->height / sprite_height);
+			for (y = draw_start_y; y < draw_end_y; y++)
+			{
+				tex_y = (int)tex_pos;
+				tex_pos += (double)tex->height / sprite_height;
+				if (tex_y < 0) tex_y = 0;
+				if (tex_y >= tex->height) tex_y = tex->height - 1;
 
-            unsigned int color = *(unsigned int *)(tex->data + tex_y * tex->line_length + tex_x * (tex->bpp / 8));
-            if ((color & 0x00FFFFFF) != 0x000000)
-                put_pixel(&gen->img, x, y, color);
-        }
-    }
+				unsigned int color = *(unsigned int *)(tex->data + tex_y * tex->line_length + tex_x * (tex->bpp / 8));
+				if ((color & 0x00FFFFFF) != 0x000000)
+					put_pixel(&gen->img, x, y, color);
+			}
+		}
+	}
 }
 
 void	draw_zombies(t_gen *gen)
@@ -127,8 +130,11 @@ void	calculate_proj(t_gen *gen, t_draw_data d, int x, int y)
 					d.px = d.screen_x + x;
 					d.py = d.screen_y + y;
 					if (d.px >= 0 && d.px < SCREEN_X
-						&& d.py >= 0 && d.py < SCREEN_Y)
+						&& d.py >= 0 && d.py < SCREEN_Y
+						&& d.transform_y < gen->zbuffer[d.px])
+					{
 						put_pixel(&gen->img, d.px, d.py, 0xFF0000);
+					}
 				}
 				x++;
 			}

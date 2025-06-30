@@ -93,6 +93,9 @@ void	raycasting(t_gen *gen)
 		get_step(&ray, gen);
 		check_hit(&ray, gen);
 		calculate_distance(&ray, gen);
+
+		gen->zbuffer[ray.x] = ray.perp_wall_dist;
+
 		draw_map(&ray, gen);
 	}
 	draw_zombies(gen);

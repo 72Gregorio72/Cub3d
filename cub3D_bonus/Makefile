@@ -31,6 +31,8 @@ SRCS		=	main_bonus.c \
 				ui/draw_healthbar_bonus.c \
 				\
 				animator/zombie_animator_bonus.c \
+				\
+				menu/menu_bonus.c \
 				
 
 OBJS		= $(SRCS:.c=.o)
