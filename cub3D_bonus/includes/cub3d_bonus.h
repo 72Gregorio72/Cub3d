@@ -312,7 +312,6 @@ int		on_key_release(int keycode, t_gen *gen);
 int		on_mouse_move(int x, int y, t_gen *gen);
 int		on_mouse_click(int button, int x, int y, t_gen *gen);
 void	init_main(t_gen *gen);
-void	load_textures(t_gen *gen);
 void	draw_zombies(t_gen *gen);
 void	draw_projectiles(t_gen *gen);
 void	add_zombie(t_gen *gen, double x, double y);
@@ -331,5 +330,6 @@ void	update_attacking(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_hit(t_zombie *z);
 void	draw_zombie_dots(t_gen *gen);
+void	load_zombie(t_gen *gen, int i, int j);
 
 #endif

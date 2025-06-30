@@ -14,6 +14,9 @@
 
 int	game_loop(t_gen *gen)
 {
+	static unsigned long	last_time;
+	unsigned long			current_time;
+
 	if (gen->keys.left)
 		rotate_player(gen, -ROTATE_SPEED);
 	if (gen->keys.right)
@@ -26,9 +29,7 @@ int	game_loop(t_gen *gen)
 	cleanup_projectiles(gen);
 	update_zombies_position(gen);
 	draw_healthbar(gen);
-	static unsigned long	last_time = 0;
-	unsigned long		current_time;
-
+	last_time = 0;
 	current_time = get_current_time();
 	if (current_time - last_time >= 50)
 	{

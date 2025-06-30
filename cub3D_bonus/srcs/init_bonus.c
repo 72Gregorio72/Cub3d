@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/27 12:05:40 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/30 11:39:02 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_tex *get_texture(char *path, t_gen *gen)
 	t_tex *tex = malloc(sizeof(t_tex));
 	if (!tex)
 		return (NULL);
+	//load_texture(gen->mlx_ptr, path, tex);
 	tex->img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr, path, &tex->width, &tex->height);
 	if (!tex->img_ptr)
 	{
@@ -39,6 +40,7 @@ t_tex *get_texture(char *path, t_gen *gen)
 		return (NULL);
 	}
 	tex->data = mlx_get_data_addr(tex->img_ptr, &tex->bpp, &tex->line_length, &tex->endian);
+	//ft_printf("texture: %s\n", tex->data);
 	return (tex);
 }
 
@@ -52,13 +54,13 @@ void	load_animation(t_gen *gen, const char *base_path, t_tex **tex_array, int co
 		free(num);
 		free(ext);
 		if (!path)
-			continue;
+			continue ;
 		tex_array[i] = get_texture(path, gen);
 		if (!tex_array[i])
 		{
 			fprintf(stderr, RED "Failed to load texture: %s\n" RESET, path);
 			free(path);
-			continue;
+			continue ;
 		}
 		free(path);
 	}

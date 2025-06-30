@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minigame_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/27 11:02:48 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/30 11:03:37 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	draw_zombies(t_gen *gen)
 {
 	t_zombie			*z;
 	t_draw_data			draw_data;
+
 	z = gen->zombies;
 	while (z)
 	{
