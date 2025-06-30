@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 12:14:32 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:22:09 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	init_main(t_gen *gen)
 	gen->max_health = 100;
 	gen->health = gen->max_health;
 	gen->ammo = 10;
+	gen->mouse_vertical_offset = 0;
+	gen->in_menu = 1;
+	gen->map_button_count = 0;
 }
 
 t_tex *get_texture(char *path, t_gen *gen)

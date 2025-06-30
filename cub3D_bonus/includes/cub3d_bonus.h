@@ -77,6 +77,7 @@
 # define MAX_SPRITE_WIDTH 1000
 # define MIN_SPRITE_WIDTH 100
 # define MOUSE_SENSITIVITY 0.001
+# define MAX_MAPS 100
 
 typedef struct s_point
 {
@@ -201,6 +202,11 @@ typedef struct s_zombie
 	t_tex			*texture;
 }	t_zombie;
 
+typedef struct s_map_button {
+	int x0, y0, x1, y1;
+	char *filepath;
+}	t_map_button;
+
 typedef struct s_gen
 {
 	void			*mlx_ptr;
@@ -227,6 +233,9 @@ typedef struct s_gen
 	int				ammo;
 	int				mouse_vertical_offset;
 	double			zbuffer[SCREEN_X];
+	int				in_menu;
+	t_map_button	map_buttons[MAX_MAPS];
+	int				map_button_count;
 }				t_gen;
 
 typedef struct s_ray

@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 14:18:38 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:25:48 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@ int	on_key_press(int keycode, t_gen *gen)
 	{
 		close_window(gen);
 		exit(0);
+	}
+	if (gen->in_menu)
+	{
+		if (keycode == 'w' || keycode == 'W')
+		{
+			gen->in_menu = 0;
+			mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+		}
+		if (keycode == 'q' || keycode == 'Q')
+		{
+			close_window(gen);
+			exit(0);
+		}
+		return (0);
 	}
 	if (keycode == KB_W)
 		gen->keys.w = 1;
@@ -53,6 +67,8 @@ int	on_key_release(int keycode, t_gen *gen)
 
 int	on_mouse_move(int x, int y, t_gen *gen)
 {
+	if (gen->in_menu)
+		return (0);
 	const double	sensitivity = 0.0005;
 	int				delta_x;
 	int				delta_y;
@@ -84,9 +100,22 @@ int	on_mouse_move(int x, int y, t_gen *gen)
 
 int	on_mouse_click(int button, int x, int y, t_gen *gen)
 {
-	(void)x;
-	(void)y;
 	if (button == MOUSE_LEFT_CLICK)
 		add_projectile(gen);
+	if (button != 1)
+		return (0);
+	for (int i = 0; i < gen->map_button_count; i++)
+	{
+		t_map_button *b = &gen->map_buttons[i];
+		if (x >= b->x0 && x <= b->x1 && y >= b->y0 && y <= b->y1)
+		{
+			printf("Hai selezionato: %s\n", b->filepath);
+			char *args[2] = {"./cub3D", b->filepath};
+			read_map(args, gen);
+			parsing_map(gen);
+			gen->in_menu = 0;
+			return (1);
+		}
+	}
 	return (0);
 }

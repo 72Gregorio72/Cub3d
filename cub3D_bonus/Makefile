@@ -37,7 +37,7 @@ SRCS		=	main_bonus.c \
 
 OBJS		= $(SRCS:.c=.o)
 
-ARSG		= maps/ciao.cub
+ARSG		= maps/test.cub
 
 INCLUDES = -Iincludes
 

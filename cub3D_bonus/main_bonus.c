@@ -14,6 +14,8 @@
 
 int	game_loop(t_gen *gen)
 {
+	if (gen->in_menu)
+		return (0);
 	static unsigned long	last_time;
 	unsigned long			current_time;
 
@@ -77,6 +79,7 @@ int	main(int ac, char **av)
 	load_textures(&gen);
 	load_zombies(&gen);
 	rotate_view(&gen);
+	draw_menu(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);
