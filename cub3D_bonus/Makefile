@@ -82,7 +82,7 @@ vale: re
 push: miniclean
 	bash -i -c "push"
 
-test: re
+testosterone: re
 	make clean
 	@clear
 	@./$(NAME) $(ARSG)

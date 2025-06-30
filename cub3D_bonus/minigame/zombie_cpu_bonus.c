@@ -68,7 +68,6 @@ void	damage_player(t_zombie *z, t_gen *gen)
 
 void	damage_zombie(t_zombie *z, t_gen *gen)
 {
-	
 	z->health -= 10;
 	if (z->health <= 0)
 	{
