@@ -14,6 +14,10 @@
 
 int	game_loop(t_gen *gen)
 {
+	static unsigned long	last_time;
+	unsigned long			current_time;
+
+	last_time = 0;
 	if (gen->keys.left)
 		rotate_player(gen, -ROTATE_SPEED);
 	if (gen->keys.right)
@@ -26,9 +30,6 @@ int	game_loop(t_gen *gen)
 	cleanup_projectiles(gen);
 	update_zombies_position(gen);
 	draw_healthbar(gen);
-	static unsigned long	last_time = 0;
-	unsigned long		current_time;
-
 	current_time = get_current_time();
 	if (current_time - last_time >= 50)
 	{
@@ -37,6 +38,27 @@ int	game_loop(t_gen *gen)
 	}
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 	return (0);
+}
+
+void	load_zombies(t_gen *gen)
+{
+	int	i;
+	int	j;
+
+	gen->zombies = NULL;
+	gen->num_zombies = 0;
+	i = 0;
+	while (i < gen->map.height)
+	{
+		j = 0;
+		while (j < gen->map.width)
+		{
+			if (gen->map.map_matrix[i][j] == 'Z')
+				add_zombie(gen, j + 0.5, i + 0.5);
+			j++;
+		}
+		i++;
+	}
 }
 
 int	main(int ac, char **av)
@@ -53,6 +75,7 @@ int	main(int ac, char **av)
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	load_textures(&gen);
+	load_zombies(&gen);
 	rotate_view(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);

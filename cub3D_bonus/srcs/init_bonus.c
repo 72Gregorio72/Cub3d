@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/27 12:05:40 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/30 11:27:58 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_tex *get_texture(char *path, t_gen *gen)
 		return (NULL);
 	}
 	tex->data = mlx_get_data_addr(tex->img_ptr, &tex->bpp, &tex->line_length, &tex->endian);
+	ft_printf(GREEN "Loaded texture: %s\n" RESET, tex->data);
 	return (tex);
 }
 
@@ -52,13 +53,13 @@ void	load_animation(t_gen *gen, const char *base_path, t_tex **tex_array, int co
 		free(num);
 		free(ext);
 		if (!path)
-			continue;
+			continue ;
 		tex_array[i] = get_texture(path, gen);
 		if (!tex_array[i])
 		{
 			fprintf(stderr, RED "Failed to load texture: %s\n" RESET, path);
 			free(path);
-			continue;
+			continue ;
 		}
 		free(path);
 	}
