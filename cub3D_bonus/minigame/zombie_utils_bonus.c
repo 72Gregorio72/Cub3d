@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:35:57 by vcastald         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/06/30 11:41:57 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "cub3d_bonus.h"
@@ -36,6 +37,7 @@ void	add_zombie(t_gen *gen, double x, double y)
 	new_zombie->is_attacking = 0;
 	new_zombie->is_hit = 0;
 	new_zombie->animation_frame = 0;
+	ft_printf("zombie texture: %p\n", gen->zombie_tex_walking[0]);
 	new_zombie->texture = gen->zombie_tex_walking[0];
 	gen->num_zombies++;
 }

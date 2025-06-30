@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:39:02 by vcastald         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/06/30 11:42:27 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "cub3d_bonus.h"
 
@@ -40,7 +41,7 @@ t_tex *get_texture(char *path, t_gen *gen)
 		return (NULL);
 	}
 	tex->data = mlx_get_data_addr(tex->img_ptr, &tex->bpp, &tex->line_length, &tex->endian);
-	//ft_printf("texture: %s\n", tex->data);
+	ft_printf(GREEN "Loaded texture: %s\n" RESET, tex->data);
 	return (tex);
 }
 
