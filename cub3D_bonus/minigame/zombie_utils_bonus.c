@@ -6,11 +6,9 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/30 11:41:57 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:15:36 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "cub3d_bonus.h"
 
@@ -37,7 +35,6 @@ void	add_zombie(t_gen *gen, double x, double y)
 	new_zombie->is_attacking = 0;
 	new_zombie->is_hit = 0;
 	new_zombie->animation_frame = 0;
-	ft_printf("zombie texture: %p\n", gen->zombie_tex_walking[0]);
 	new_zombie->texture = gen->zombie_tex_walking[0];
 	gen->num_zombies++;
 }
@@ -70,12 +67,20 @@ void	update_matrix_zombie(int old_x, int old_y, t_zombie *zombie, t_gen *gen)
 
 	if (old_y >= 0 && old_y < gen->map.height
 		&& old_x >= 0 && old_x < gen->map.width)
+	{
+		if (gen->map.map_matrix[old_y][old_x] == 'D')
+			return ;
 		gen->map.map_matrix[old_y][old_x] = '0';
+	}
 	new_x = (int)zombie->x;
 	new_y = (int)zombie->y;
 	if (new_y >= 0 && new_y < gen->map.height
 		&& new_x >= 0 && new_x < gen->map.width)
+	{
+		if (gen->map.map_matrix[new_y][new_x] == 'D')
+			return ;
 		gen->map.map_matrix[new_y][new_x] = 'Z';
+	}
 }
 
 void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)

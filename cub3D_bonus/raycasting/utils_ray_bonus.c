@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ray_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:02 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 12:35:19 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:12:54 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,22 @@ void	init_ray(t_ray *ray, t_gen *gen)
 	ray->delta_disty = fabs(1 / gen->player.ray_dir_y);
 }
 
+void	util_check_hit(t_ray *ray, t_gen *gen)
+{
+	double	dist;
+
+	if (gen->map.map_matrix[ray->map_y][ray->map_x] == 'D')
+	{
+		dist = sqrt(pow(gen->player.x - (ray->map_x + 0.5), 2)
+				+ pow(gen->player.y - (ray->map_y + 0.5), 2));
+		if (dist >= 1.0)
+		{
+			ray->hit = 1;
+			ray->hit_tile = 'D';
+		}
+	}
+}
+
 void	check_hit(t_ray *ray, t_gen *gen)
 {
 	ray->hit = 0;
@@ -68,6 +84,8 @@ void	check_hit(t_ray *ray, t_gen *gen)
 		}
 		if (gen->map.map_matrix[ray->map_y][ray->map_x] == '1')
 			ray->hit = 1;
+		if (gen->map.map_matrix[ray->map_y][ray->map_x] == 'D')
+			util_check_hit(ray, gen);
 	}
 }
 
@@ -86,22 +104,4 @@ void	calculate_distance(t_ray *ray, t_gen *gen)
 		ray->draw_start = 0;
 	if (ray->draw_end >= SCREEN_Y)
 		ray->draw_end = SCREEN_Y - 1;
-}
-
-void	draw_map_col(t_ray *ray, t_gen *gen)
-{
-	int	y;
-	int	color;
-
-	y = ray->draw_start;
-	if (ray->side == 0)
-		color = 0xFF0000;
-	else
-		color = 0x00FF00;
-	while (y < ray->draw_end)
-	{
-		put_pixel(&gen->img, ray->x, y, color);
-		y++;
-	}
-	ray->x++;
 }

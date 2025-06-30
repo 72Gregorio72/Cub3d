@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map1_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:53:20 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 12:34:55 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/30 11:53:25 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,5 @@ int	check_closed(t_gen *gen)
 		free(visited[i]);
 	if (!valid)
 		return (free(visited), 0);
-	return (free(visited), unclosed_zero(&gen->map));
+	return (free(visited), unclosed_zero(&gen->map), unclosed_door(&gen->map));
 }

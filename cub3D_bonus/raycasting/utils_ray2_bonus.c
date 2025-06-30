@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:55:35 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/30 11:36:44 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:12:10 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void	clean_path(char *path)
 void	load_texture(void *mlx, char *path, t_tex *tex)
 {
 	clean_path(path);
-/* 	tex->img_ptr = NULL;
-	tex->img_ptr = mlx_new_image(mlx, SCREEN_X, SCREEN_Y); */
 	tex->img_ptr = mlx_xpm_file_to_image(mlx, path, &tex->width, &tex->height);
 	if (!tex->img_ptr)
 	{

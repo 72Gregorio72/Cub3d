@@ -12,7 +12,7 @@
 
 #include "cub3d_bonus.h"
 
-static void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x)
+void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x)
 {
 	int		y;
 	double	step;
@@ -68,6 +68,11 @@ void	draw_map(t_ray *ray, t_gen *gen)
 	double	wall_x;
 	int		tex_x;
 
+	if (ray->hit_tile == 'D')
+	{
+		draw_doors(gen, ray);
+		return ;
+	}
 	tex = select_texture(ray, gen);
 	if (ray->side == 0)
 		wall_x = gen->player.y + ray->perp_wall_dist * gen->player.ray_dir_y;
@@ -94,6 +99,7 @@ void	raycasting(t_gen *gen)
 		check_hit(&ray, gen);
 		calculate_distance(&ray, gen);
 		draw_map(&ray, gen);
+		ray.hit_tile = 'A';
 	}
 	draw_zombies(gen);
 	draw_projectiles(gen);

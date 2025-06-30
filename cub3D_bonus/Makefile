@@ -23,6 +23,7 @@ SRCS		=	main_bonus.c \
 				raycasting/utils_ray2_bonus.c \
 				raycasting/utils_ray3_bonus.c \
 				raycasting/utils_ray4_bonus.c \
+				raycasting/utils_ray5_bonus.c \
 				raycasting/draw_minigame_bonus.c \
 				\
 				minigame/zombie_cpu_bonus.c \

@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 14:06:55 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/30 11:52:54 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,33 @@ void	ft_lstclear_proj(t_projectile **stackA)
 			break ;
 		*stackA = temp;
 	}
+}
+
+int	unclosed_door(t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < map->height)
+	{
+		j = 0;
+		while (map->map_matrix[i][j])
+		{
+			if (map->map_matrix[i][j] == 'D')
+			{
+				if (i == 0 || i == map->height - 1
+					|| j == 0 || !map->map_matrix[i][j + 1]
+					|| j >= (int)ft_strlen(map->map_matrix[i - 1])
+					|| j >= (int)ft_strlen(map->map_matrix[i + 1])
+					|| map->map_matrix[i + 1][j] == '2'
+					|| map->map_matrix[i - 1][j] == '2'
+					|| map->map_matrix[i][j + 1] == '2'
+					|| map->map_matrix[i][j - 1] == '2')
+					return (0);
+			}
+			j++;
+		}
+	}
+	return (1);
 }

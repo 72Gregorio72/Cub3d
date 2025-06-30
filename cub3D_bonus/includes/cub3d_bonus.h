@@ -36,6 +36,7 @@
 # include "X11/X.h"
 # include "X11/keysym.h"
 # include <sys/time.h>
+# include <time.h>
 
 # define SCREEN_X 1920
 # define SCREEN_Y 1080
@@ -223,9 +224,11 @@ typedef struct s_gen
 	t_tex			*zombie_tex_attacking[17];
 	t_tex			*zombie_tex_dead[21];
 	t_tex			*zombie_tex_hit[13];
+	t_tex			door_tex;
 	int				max_health;
 	int				health;
 	int				ammo;
+	int				counter_spawn;
 }				t_gen;
 
 typedef struct s_ray
@@ -246,6 +249,8 @@ typedef struct s_ray
 	int		line_height;
 	int		draw_start;
 	int		draw_end;
+	char	hit_tile;
+	double	wall_x;
 }				t_ray;
 
 int		close_window(t_gen *gen);
@@ -272,7 +277,6 @@ int		map_check(t_gen *gen);
 int		check_closed(t_gen *gen);
 void	clean_path(char *path);
 void	free_gen(t_gen *gen, int flag);
-void	draw_map_col(t_ray *ray, t_gen *gen);
 void	calculate_distance(t_ray *ray, t_gen *gen);
 void	check_hit(t_ray *ray, t_gen *gen);
 void	init_ray(t_ray *ray, t_gen *gen);
@@ -331,5 +335,9 @@ void	update_dead(t_zombie *z);
 void	update_hit(t_zombie *z);
 void	draw_zombie_dots(t_gen *gen);
 void	load_zombie(t_gen *gen, int i, int j);
+int		unclosed_door(t_map *map);
+void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x);
+void	draw_ceiling_and_floor(t_ray *ray, t_gen *gen);
+void	draw_doors(t_gen *gen, t_ray *ray);
 
 #endif
