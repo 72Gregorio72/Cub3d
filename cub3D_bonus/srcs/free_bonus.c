@@ -54,6 +54,56 @@ void	free_gen(t_gen *gen, int flag)
 	free_zombies(gen->zombies);
 }
 
+void	destroy_zombie_tex(t_gen *gen)
+{
+	int	i;
+
+	i = 0;
+	while (i < 26)
+	{
+		if (gen->zombie_tex_walking[i])
+		{
+			if (gen->zombie_tex_walking[i]->img_ptr)
+				mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_walking[i]->img_ptr);
+			free(gen->zombie_tex_walking[i]);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < 17)
+	{
+		if (gen->zombie_tex_attacking[i])
+		{
+			if (gen->zombie_tex_attacking[i]->img_ptr)
+				mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_attacking[i]->img_ptr);
+			free(gen->zombie_tex_attacking[i]);
+		}
+		i++;
+	}
+	// i = 0;
+	// while (i < 21)
+	// {
+	// 	if (gen->zombie_tex_dead[i])
+	// 	{
+	// 		if (gen->zombie_tex_dead[i]->img_ptr)
+	// 			mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_dead[i]->img_ptr);
+	// 		free(gen->zombie_tex_dead[i]);
+	// 	}
+	// 	i++;
+	// }
+	// i = 0;
+	// while (i < 13)
+	// {
+	// 	if (gen->zombie_tex_hit[i])
+	// 	{
+	// 		if (gen->zombie_tex_hit[i]->img_ptr)
+	// 			mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_hit[i]->img_ptr);
+	// 		free(gen->zombie_tex_hit[i]);
+	// 	}
+	// 	i++;
+	// }
+}
+
 int	close_window(t_gen *gen)
 {
 	if (gen->img.img_ptr)
@@ -66,15 +116,19 @@ int	close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.east.img_ptr);
 	if (gen->map.west.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.west.img_ptr);
+	destroy_zombie_tex(gen);
 	if (gen->win_ptr)
 		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
 	if (gen->mlx_ptr)
+	{
 		mlx_destroy_display(gen->mlx_ptr);
-	free_gen(gen, 1);
-	free(gen->mlx_ptr);
+		free(gen->mlx_ptr);
+	}
 	ft_lstclear_proj(&gen->projectiles);
+	free_gen(gen, 1);
 	exit(EXIT_SUCCESS);
 }
+
 
 void	fill_map_row(t_gen *gen, char *line, int y)
 {

@@ -25,6 +25,16 @@ int	game_loop(t_gen *gen)
 	check_zombie_hits(gen);
 	cleanup_projectiles(gen);
 	update_zombies_position(gen);
+	draw_healthbar(gen);
+	static unsigned long	last_time = 0;
+	unsigned long		current_time;
+
+	current_time = get_current_time();
+	if (current_time - last_time >= 50)
+	{
+		animate_zombies(gen);
+		last_time = current_time;
+	}
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 	return (0);
 }

@@ -6,9 +6,10 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 15:51:21 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/30 10:51:19 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "cub3d_bonus.h"
 
@@ -29,6 +30,13 @@ void	add_zombie(t_gen *gen, double x, double y)
 	new_zombie->next = NULL;
 	new_zombie->next = gen->zombies;
 	gen->zombies = new_zombie;
+	new_zombie->sprite_index = 0;
+	new_zombie->is_dead = 0;
+	new_zombie->is_walking = 1;
+	new_zombie->is_attacking = 0;
+	new_zombie->is_hit = 0;
+	new_zombie->animation_frame = 0;
+	new_zombie->texture = gen->zombie_tex_walking[0];
 	gen->num_zombies++;
 }
 
@@ -75,7 +83,7 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 
 	old_x = (int)z->x;
 	old_y = (int)z->y;
-	if (d.dist > 0.1)
+	if (d.dist > 0.4)
 	{
 		d.step_x = d.dx / d.dist * ZOMBIE_SPEED;
 		d.step_y = d.dy / d.dist * ZOMBIE_SPEED;
@@ -85,6 +93,10 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 			z->x = d.next_x;
 		if (gen->map.map_matrix[(int)d.next_y][(int)z->x] != '1')
 			z->y = d.next_y;
+	}
+	else
+	{
+		z->is_walking = 0;
 	}
 	if (old_x != (int)z->x || old_y != (int)z->y)
 		update_matrix_zombie(old_x, old_y, z, gen);
@@ -100,20 +112,16 @@ void	update_zombies_position(t_gen *gen)
 	now = get_current_time();
 	while (z)
 	{
-		printf("Zombie at (%.2f, %.2f)\n", z->x, z->y);
-		if (z == z->next)
-		{
-			printf("ERROR: Zombie next points to itself!\n");
-			break ;
-		}
 		if (now - z->last_attack_time > 1000)
 			z->attacked = 0;
 		d.dx = gen->player.x - z->x;
 		d.dy = gen->player.y - z->y;
 		d.dist = sqrt(d.dx * d.dx + d.dy * d.dy);
 		move_zombie(gen, z, d);
-		if (d.dist < 0.2 && !z->attacked)
-			damage_player(z);
+		if (d.dist <= 0.5 && !z->attacked)
+			update_attacking(z);
+		else if (!z->is_walking && d.dist > 0.5)
+			update_walking(z);
 		z = z->next;
 	}
 }

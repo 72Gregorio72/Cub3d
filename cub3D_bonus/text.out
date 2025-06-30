@@ -1,0 +1,86 @@
+make[1]: Entering directory '/home/gpicchio/Desktop/milestone4/cub3D/cub3D_bonus/libft'
+make[1]: Leaving directory '/home/gpicchio/Desktop/milestone4/cub3D/cub3D_bonus/libft'
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+if [ ! -d "minilibx-linux" ]; then \
+	git clone https://github.com/42Paris/minilibx-linux.git; \
+fi
+[96m[1mconfigure[0m [[92minfo[0m] : Found X11 include path directory: /usr/include
+[96m[1mconfigure[0m [[92minfo[0m] : Generate "makefile.gen" from template "makefile.mk"
+[96m[1mconfigure[0m [[92minfo[0m] : Generate "test/makefile.gen" from template "test/makefile.mk"
+[96m[1mconfigure[0m [[92minfo[0m] : Execute "make all" from file "makefile.gen"
+[96m[1mconfigure[0m [[92minfo[0m] : Execute "make all" from file "test/makefile.gen"
+cc -Wall -Werror -Wextra -g main_bonus.o srcs/free_bonus.o srcs/free_utils_bonus.o srcs/player_loader_bonus.o srcs/init_bonus.o srcs/key_listener_bonus.o map_loader/utils_map_loader_bonus.o map_loader/check_map_bonus.o map_loader/check_map1_bonus.o map_loader/utils_map_check_bonus.o map_loader/minimap_bonus.o map_loader/map_loader_bonus.o map_loader/minimap_arrow_bonus.o map_loader/minimap_grid_bonus.o raycasting/raycasting_bonus.o raycasting/utils_ray_bonus.o raycasting/utils_ray2_bonus.o raycasting/utils_ray3_bonus.o raycasting/utils_ray4_bonus.o raycasting/draw_minigame_bonus.o minigame/zombie_cpu_bonus.o minigame/fps_bonus.o minigame/zombie_utils_bonus.o ui/draw_healthbar_bonus.o -Iincludes -Lminilibx-linux minilibx-linux/libmlx_Linux.a -L/usr/lib -Iminilibx-linux -lXext -lX11 -lm -lz ./libft/libft.a -o cub3D_bonus
+make clean
+make[1]: Entering directory '/home/gpicchio/Desktop/milestone4/cub3D/cub3D_bonus'
+make[2]: Entering directory '/home/gpicchio/Desktop/milestone4/cub3D/cub3D_bonus/libft'
+make[2]: Leaving directory '/home/gpicchio/Desktop/milestone4/cub3D/cub3D_bonus/libft'
+make[1]: Leaving directory '/home/gpicchio/Desktop/milestone4/cub3D/cub3D_bonus'
+[H[2J[3Jvalgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./cub3D_bonus maps/ciao.cub

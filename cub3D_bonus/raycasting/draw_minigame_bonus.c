@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minigame_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 12:41:51 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/27 11:02:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	calculate_zombie(t_gen *gen, t_draw_data draw_data)
+void	calculate_zombie(t_gen *gen, t_draw_data draw_data, t_zombie *z)
 {
 	if (draw_data.transform_y > 0)
 	{
@@ -24,16 +24,63 @@ void	calculate_zombie(t_gen *gen, t_draw_data draw_data)
 		draw_data.draw_end = draw_data.line_height / 2 + SCREEN_Y / 2;
 		if (draw_data.sprite_screen_x >= 0
 			&& draw_data.sprite_screen_x < SCREEN_X)
-			draw_zombie_column(gen, draw_data.sprite_screen_x,
-				draw_data.draw_start, draw_data.draw_end);
+			draw_zombie_sprite(gen, &draw_data, z);
 	}
+}
+
+void draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z)
+{
+    t_tex *tex = z->texture;
+    if (!tex || !tex->data)
+		return;
+    int y, x;
+    int tex_x, tex_y;
+    double tex_pos;
+
+    int sprite_screen_x = d->sprite_screen_x;
+    int sprite_height = d->line_height;
+    int sprite_width = sprite_height;
+
+    if (sprite_height > MAX_SPRITE_HEIGHT)
+        sprite_height = MAX_SPRITE_HEIGHT;
+    else if (sprite_height < MIN_SPRITE_HEIGHT)
+        sprite_height = MIN_SPRITE_HEIGHT;
+
+    if (sprite_width > MAX_SPRITE_WIDTH)
+        sprite_width = MAX_SPRITE_WIDTH;
+    else if (sprite_width < MIN_SPRITE_WIDTH)
+        sprite_width = MIN_SPRITE_WIDTH;
+
+    int draw_start_y = fmax(0, d->draw_start);
+    int draw_end_y = fmin(SCREEN_Y - 1, d->draw_end);
+    int draw_start_x = fmax(0, sprite_screen_x - sprite_width / 2);
+    int draw_end_x = fmin(SCREEN_X - 1, sprite_screen_x + sprite_width / 2);
+
+    for (x = draw_start_x; x < draw_end_x; x++)
+    {
+        tex_x = (int)((double)(x - (sprite_screen_x - sprite_width / 2)) / sprite_width * tex->width);
+        if (tex_x < 0) tex_x = 0;
+        if (tex_x >= tex->width) tex_x = tex->width - 1;
+
+        tex_pos = (draw_start_y - SCREEN_Y / 2 + sprite_height / 2) * ((double)tex->height / sprite_height);
+        for (y = draw_start_y; y < draw_end_y; y++)
+        {
+            tex_y = (int)tex_pos;
+            tex_pos += (double)tex->height / sprite_height;
+            if (tex_y < 0) tex_y = 0;
+            if (tex_y >= tex->height) tex_y = tex->height - 1;
+
+            unsigned int color = *(unsigned int *)(tex->data + tex_y * tex->line_length + tex_x * (tex->bpp / 8));
+            if ((color & 0x00FFFFFF) != 0x000000)
+                put_pixel(&gen->img, x, y, color);
+        }
+    }
 }
 
 void	draw_zombies(t_gen *gen)
 {
-	t_zombie		*z;
-	t_draw_data		draw_data;
-
+	t_zombie			*z;
+	t_draw_data			draw_data;
 	z = gen->zombies;
 	while (z)
 	{
@@ -47,7 +94,7 @@ void	draw_zombies(t_gen *gen)
 		draw_data.transform_y = draw_data.inv_det
 			* (-gen->player.plane_y * draw_data.dx
 				+ gen->player.plane_x * draw_data.dy);
-		calculate_zombie(gen, draw_data);
+		calculate_zombie(gen, draw_data, z);
 		z = z->next;
 	}
 }
@@ -59,7 +106,15 @@ void	calculate_proj(t_gen *gen, t_draw_data d, int x, int y)
 		d.screen_x = (int)((SCREEN_X / 2)
 				* (1 + d.transform_x / d.transform_y));
 		d.screen_y = (int)(SCREEN_Y / 2 + (d.transform_y * 0));
-		d.radius = 10;
+		double base_radius = 50.0;
+		double min_radius = 1.0;
+		double max_radius = 55.0;
+		double dynamic_radius = base_radius * exp(-d.transform_y / 1.0);
+		if (dynamic_radius < min_radius)
+			dynamic_radius = min_radius;
+		else if (dynamic_radius > max_radius)
+			dynamic_radius = max_radius;
+		d.radius = (int)dynamic_radius;
 		y = -d.radius;
 		while (y <= d.radius)
 		{

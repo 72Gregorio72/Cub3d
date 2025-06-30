@@ -28,6 +28,10 @@ SRCS		=	main_bonus.c \
 				minigame/zombie_cpu_bonus.c \
 				minigame/fps_bonus.c \
 				minigame/zombie_utils_bonus.c \
+				\
+				ui/draw_healthbar_bonus.c \
+				\
+				animator/zombie_animator_bonus.c \
 				
 
 OBJS		= $(SRCS:.c=.o)

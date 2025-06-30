@@ -87,4 +87,6 @@ void	update_projectile_position(t_gen *gen)
 		prev = curr;
 		curr = curr->next;
 	}
+	if (!prev)
+		return ;
 }
