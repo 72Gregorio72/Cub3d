@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:27:58 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/30 12:14:32 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_tex *get_texture(char *path, t_gen *gen)
 		return (NULL);
 	}
 	tex->data = mlx_get_data_addr(tex->img_ptr, &tex->bpp, &tex->line_length, &tex->endian);
-	ft_printf(GREEN "Loaded texture: %s\n" RESET, tex->data);
 	return (tex);
 }
 
@@ -73,9 +72,13 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
-	load_animation(gen, "zombie_anim/walking_xpm/Zwalking", gen->zombie_tex_walking, 26);
-	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking", gen->zombie_tex_attacking, 17);
-	// load_animation(gen, "textures/zombie/dead/Zdying", gen->zombie_tex_dead, 21);
-	// load_animation(gen, "textures/zombie/hit/Zhitted", gen->zombie_tex_hit, 13);
+	load_animation(gen, "zombie_anim/walking_xpm/Zwalking",
+			gen->zombie_tex_walking, 26);
+	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking",
+			gen->zombie_tex_attacking, 17);
+	load_animation(gen, "zombie_anim/dying_xpm/Zdying",
+			gen->zombie_tex_dead, 21);
+	load_animation(gen, "zombie_anim/hitted_xpm/Zhitted",
+			gen->zombie_tex_hit, 13);
 }
 

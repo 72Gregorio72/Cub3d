@@ -66,6 +66,26 @@ void	damage_player(t_zombie *z, t_gen *gen)
 		update_walking(z);
 }
 
+void	damage_zombie(t_zombie *z, t_gen *gen)
+{
+	
+	z->health -= 10;
+	if (z->health <= 0)
+	{
+		z->is_dead = 1;
+		z->texture = gen->zombie_tex_dead[0];
+		update_dead(z);
+	}
+	else
+	{
+		z->is_hit = 1;
+		z->texture = gen->zombie_tex_hit[0];
+	}
+	if (z->is_dead || z->is_hit)
+		return ;
+	update_hit(z);
+}
+
 int	check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d)
 {
 	if (p->active)
@@ -75,7 +95,7 @@ int	check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d)
 		d.dist = sqrt(d.dx * d.dx + d.dy * d.dy);
 		if (d.dist < 0.2)
 		{
-			remove_zombie(gen, z);
+			damage_zombie(z, gen);
 			p->active = 0;
 			return (1);
 		}
@@ -100,7 +120,7 @@ void	check_zombie_hits(t_gen *gen)
 		p = proj;
 		while (p)
 		{
-			if (check_proj_hit(gen, p, z, d))
+			if (!z->is_dead && check_proj_hit(gen, p, z, d))
 				break ;
 			p = p->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:37:02 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/06/30 12:24:35 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	add_zombie(t_gen *gen, double x, double y)
 	new_zombie->is_attacking = 0;
 	new_zombie->is_hit = 0;
 	new_zombie->animation_frame = 0;
-	ft_printf("zombie texture: %p\n", gen->zombie_tex_walking[0]);
 	new_zombie->texture = gen->zombie_tex_walking[0];
 	gen->num_zombies++;
 }
@@ -61,6 +60,8 @@ void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove)
 
 void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 {
+	if (z->is_dead && z->is_hit)
+		return ;
 	if (d.dist > 0.4)
 	{
 		d.step_x = d.dx / d.dist * ZOMBIE_SPEED;

@@ -80,28 +80,28 @@ void	destroy_zombie_tex(t_gen *gen)
 		}
 		i++;
 	}
-	// i = 0;
-	// while (i < 21)
-	// {
-	// 	if (gen->zombie_tex_dead[i])
-	// 	{
-	// 		if (gen->zombie_tex_dead[i]->img_ptr)
-	// 			mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_dead[i]->img_ptr);
-	// 		free(gen->zombie_tex_dead[i]);
-	// 	}
-	// 	i++;
-	// }
-	// i = 0;
-	// while (i < 13)
-	// {
-	// 	if (gen->zombie_tex_hit[i])
-	// 	{
-	// 		if (gen->zombie_tex_hit[i]->img_ptr)
-	// 			mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_hit[i]->img_ptr);
-	// 		free(gen->zombie_tex_hit[i]);
-	// 	}
-	// 	i++;
-	// }
+	i = 0;
+	while (i < 21)
+	{
+		if (gen->zombie_tex_dead[i])
+		{
+			if (gen->zombie_tex_dead[i]->img_ptr)
+				mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_dead[i]->img_ptr);
+			free(gen->zombie_tex_dead[i]);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < 13)
+	{
+		if (gen->zombie_tex_hit[i])
+		{
+			if (gen->zombie_tex_hit[i]->img_ptr)
+				mlx_destroy_image(gen->mlx_ptr, gen->zombie_tex_hit[i]->img_ptr);
+			free(gen->zombie_tex_hit[i]);
+		}
+		i++;
+	}
 }
 
 int	close_window(t_gen *gen)
