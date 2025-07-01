@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:10:48 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/30 10:50:46 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:57:08 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	assign_color_tiles(int *color, t_gen *gen, int i, int j)
 		else if (gen->map.map_matrix[map_y][map_x] == '0'
 				|| gen->map.map_matrix[map_y][map_x] == '2')
 			*color = 0x005F00;
+		else if (gen->map.map_matrix[map_y][map_x] == 'D')
+			*color = 0xCC7722;
 		else
 			*color = 0x005F00;
 	}

@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:02 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/30 15:12:54 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:35:43 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,28 @@ void	init_ray(t_ray *ray, t_gen *gen)
 
 void	util_check_hit(t_ray *ray, t_gen *gen)
 {
-	double	dist;
+	double		dist_player;
+	double		dist_zombie;
+	t_zombie	*z;
 
+	z = gen->zombies;
 	if (gen->map.map_matrix[ray->map_y][ray->map_x] == 'D')
 	{
-		dist = sqrt(pow(gen->player.x - (ray->map_x + 0.5), 2)
+		dist_player = sqrt(pow(gen->player.x - (ray->map_x + 0.5), 2)
 				+ pow(gen->player.y - (ray->map_y + 0.5), 2));
-		if (dist >= 1.0)
+		while (z)
 		{
-			ray->hit = 1;
-			ray->hit_tile = 'D';
+			dist_zombie = sqrt(pow(z->x - (ray->map_x + 0.5), 2)
+					+ pow(z->y - (ray->map_y + 0.5), 2));
+			if (dist_player < 1.0 || dist_zombie < 1.0)
+				return ;
+			else
+			{
+				ray->hit = 1;
+				ray->hit_tile = 'D';
+				break ;
+			}
+			z = z->next;
 		}
 	}
 }

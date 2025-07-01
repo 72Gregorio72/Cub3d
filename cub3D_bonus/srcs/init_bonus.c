@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/30 16:12:45 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:32:21 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_main(t_gen *gen)
 	gen->max_health = 100;
 	gen->health = gen->max_health;
 	gen->ammo = 10;
+	gen->counter_spawn = 0;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)
@@ -78,7 +79,7 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
-	load_texture(gen->mlx_ptr, "textures/nord.xpm", &gen->door_tex);
+	load_texture(gen->mlx_ptr, "textures/door/door.xpm", &gen->door_tex);
 	load_animation(gen, "zombie_anim/walking_xpm/Zwalking",
 		gen->zombie_tex_walking, 26);
 	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking",
@@ -86,4 +87,3 @@ void	load_textures(t_gen *gen)
 	// load_animation(gen, "textures/zombie/dead/Zdying", gen->zombie_tex_dead, 21);
 	// load_animation(gen, "textures/zombie/hit/Zhitted", gen->zombie_tex_hit, 13);
 }
-

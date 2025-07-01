@@ -35,24 +35,34 @@ void	load_zombies(t_gen *gen)
 
 void	spawn_zombies(t_gen *gen)
 {
-	int			random_h;
-	int			random_w;
-	static int	n = 1;
-	int			count;
+	static unsigned long	last_spawn_time = 0;
+	unsigned long			current_time;
+	int						random_h;
+	int						random_w;
+	int						attempts;
 
-
-	if (gen->counter_spawn % 5 == 0)
-		n++;
-	count = 0;
-	while (count < n)
+	current_time = get_current_time();
+	if (last_spawn_time == 0)
+		last_spawn_time = current_time;
+	if (current_time - last_spawn_time >= 60000)
 	{
-		random_h = rand() % ((gen->map.height - 1) - 0 + 1) + 0;
-		random_w = rand() % ((gen->map.width - 1) - 0 + 1) + 0;
-		gen->map.map_matrix[random_h][random_w] = 'Z';
-		add_zombie(gen, random_h + 0.5, random_w + 0.5);
-		count++;
+		gen->counter_spawn++;
+		last_spawn_time = current_time;
 	}
-	gen->counter_spawn++;
+	while (gen->counter_spawn > 0)
+	{
+		attempts = 0;
+		do {
+			random_h = rand() % gen->map.height;
+			random_w = rand() % gen->map.width;
+			attempts++;
+		} while (gen->map.map_matrix[random_h][random_w] != '0' && attempts < 100);
+		if (attempts >= 100)
+			return ;
+		gen->map.map_matrix[random_h][random_w] = 'Z';
+		add_zombie(gen, random_w + 0.5, random_h + 0.5);
+		gen->counter_spawn--;
+	}
 }
 
 int	game_loop(t_gen *gen)
@@ -97,7 +107,6 @@ int	main(int ac, char **av)
 		return (free_gen(&gen, 1), 0);
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
-	gen.counter_spawn = 0;
 	load_textures(&gen);
 	load_zombies(&gen);
 	rotate_view(&gen);

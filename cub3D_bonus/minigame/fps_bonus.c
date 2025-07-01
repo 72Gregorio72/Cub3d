@@ -52,7 +52,8 @@ void	check_draw(t_gen *gen, double next_x, double next_y, t_projectile *curr)
 {
 	int	screen_xy[2];
 
-	if (gen->map.map_matrix[(int)next_y][(int)next_x] == '1')
+	if (gen->map.map_matrix[(int)next_y][(int)next_x] == '1'
+		|| gen->map.map_matrix[(int)next_y][(int)next_x] == 'D')
 		curr->active = 0;
 	else
 	{
