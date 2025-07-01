@@ -79,6 +79,9 @@
 # define MIN_SPRITE_WIDTH 100
 # define MOUSE_SENSITIVITY 0.001
 # define MAX_MAPS 100
+# define PREVIEW_WIDTH  200
+# define PREVIEW_HEIGHT 200
+# define PREVIEW_MARGIN_Y 80
 
 typedef struct s_gen t_gen;
 

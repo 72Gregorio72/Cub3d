@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/01 22:58:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/01 23:19:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,20 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 	if (gen->in_menu)
 	{
 		if (button == MOUSE_SCROLL_UP)
+		{
 			gen->scroll_offset_y += 100;
+			draw_map_selector(gen);
+		}
 		else if (button == MOUSE_SCROLL_DOWN)
+		{
 			gen->scroll_offset_y -= 100;
+			draw_map_selector(gen);
+		}
 		if (gen->scroll_offset_y > 0)
+		{
 			gen->scroll_offset_y = 0;
+			draw_map_selector(gen);
+		}
 	}
 	return (0);
 }

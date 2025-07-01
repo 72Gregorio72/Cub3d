@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/01 23:09:13 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/01 23:27:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,31 +147,70 @@ void	start_game_from_map(t_gen *gen, const char *filepath)
 	draw_menu(gen);
 }
 
-void	draw_map_preview(t_gen *gen, int base_x, int base_y, int width, int height)
+void	draw_rounded_background(t_gen *gen, int x, int y, int width, int height, int radius, int color)
 {
-	int i, j;
-	int cube_size = 10;
-	int top_offset = 5;
-
-	for (i = 0; i < height && i < gen->map.height; i++)
+	int	text_area_color = 0xFFFFFF;
+	for (int i = 0; i < height; i++)
 	{
-		for (j = 0; j < width && j < gen->map.width; j++)
+		for (int j = 0; j < width; j++)
+		{
+			int cx, cy;
+			if (j < radius)
+				cx = radius;
+			else if (j >= width - radius)
+				cx = width - radius - 1;
+			else
+				cx = j;
+			if (i < radius)
+				cy = radius;
+			else if (i >= height - radius)
+				cy = height - radius - 1;
+			else
+				cy = i;
+			int dx = j - cx;
+			int dy = i - cy;
+			if (dx * dx + dy * dy <= radius * radius)
+			{
+				if (i < height / 5)
+					put_pixel(&gen->img, x + j, y + i, text_area_color);
+				else
+					put_pixel(&gen->img, x + j, y + i, color);
+			}
+		}
+	}
+}
+
+void	draw_map_preview(t_gen *gen, int preview_origin_x, int preview_origin_y)
+{
+	int map_w = gen->map.width;
+	int map_h = gen->map.height;
+	int preview_cx = preview_origin_x + PREVIEW_WIDTH / 2;
+	int preview_cy = preview_origin_y + PREVIEW_HEIGHT / 2;
+	int max_dim = map_w + map_h;
+	int cube_size = PREVIEW_WIDTH / max_dim;
+	int center_offset_x = (map_w - map_h) * cube_size / 2;
+	int center_offset_y = (map_w + map_h) * cube_size / 4;
+	int base_x = preview_cx - center_offset_x;
+	int base_y = preview_cy - center_offset_y;
+	draw_rounded_background(gen, preview_origin_x, preview_origin_y, PREVIEW_WIDTH, PREVIEW_HEIGHT, 12, 0x888888);
+	for (int i = 0; i < map_h; i++)
+	{
+		for (int j = 0; j < map_w; j++)
 		{
 			if (gen->map.map_matrix[i][j] == '1')
 			{
 				int iso_x = base_x + (j - i) * cube_size;
 				int iso_y = base_y + (j + i) * cube_size / 2;
+
 				for (int y = 0; y < cube_size; y++)
 				{
 					for (int x = 0; x < cube_size; x++)
 					{
-						int color = 0xCCCCCC;
-						if (x == 0 || y == 0 || x == cube_size - 1 || y == cube_size - 1)
-							color = 0x000000;
+						int color = (x == 0 || y == 0 || x == cube_size - 1 || y == cube_size - 1) ? 0x000000 : 0xCCCCCC;
 						put_pixel(&gen->img, iso_x + x, iso_y + y, color);
 					}
 				}
-				for (int y = 0; y < top_offset; y++)
+				for (int y = 0; y < 5; y++)
 				{
 					for (int x = 0; x < cube_size; x++)
 						put_pixel(&gen->img, iso_x + x, iso_y - y, 0xEEEEEE);
@@ -191,6 +230,7 @@ void	draw_map_selector(t_gen *gen)
 	int		x, y;
 	int		offset_y = gen->scroll_offset_y;
 
+	clear_image(&gen->img);
 	map_files = get_map_files(&count);
 	if (!map_files || count == 0)
 	{
@@ -199,8 +239,6 @@ void	draw_map_selector(t_gen *gen)
 		return ;
 	}
 	gen->map_button_count = 0;
-	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 80, 100,
-		0xFFFFFF, "Select a map:");
 	i = 0;
 	while (i < count && i < MAX_MAPS)
 	{
@@ -208,17 +246,16 @@ void	draw_map_selector(t_gen *gen)
 		row = i / 3;
 
 		x = base_x[col];
-		y = 150 + row * 300 + offset_y;
-
+		y = 150 + row * (PREVIEW_HEIGHT + PREVIEW_MARGIN_Y) + offset_y;
 		if (get_map(map_files[i], gen))
-			draw_map_preview(gen, x, y, gen->map.width, gen->map.height);
+			draw_map_preview(gen, x, y);
 		free(gen->map_file_path);
 		gen->map_file_path = ft_strdup(map_files[i]);
 		gen->map_buttons[gen->map_button_count++] = (t_map_button){
 			.x0 = x,
 			.y0 = y,
-			.x1 = x + gen->map.width * 5,
-			.y1 = y + gen->map.height * 5,
+			.x1 = x + PREVIEW_WIDTH,
+			.y1 = y + PREVIEW_HEIGHT,
 			.text = map_files[i] + 5,
 			.action = NULL,
 			.filepath = ft_strdup(map_files[i])
@@ -227,11 +264,13 @@ void	draw_map_selector(t_gen *gen)
 		i++;
 	}
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 80, 100,
+		0xFFFFFF, "Select a map:");
 	for (i = 0; i < gen->map_button_count; i++)
 	{
-		int text_x = gen->map_buttons[i].x0;
-		int text_y = gen->map_buttons[i].y1 + 10;
-		mlx_string_put(gen->mlx_ptr, gen->win_ptr, text_x, text_y, 0x00FFCC, gen->map_buttons[i].text);
+		int text_x = gen->map_buttons[i].x0 + 100 - ft_strlen(gen->map_buttons[i].text) * 4;
+		int text_y = gen->map_buttons[i].y0 + 20;
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr, text_x, text_y, 0x000000, gen->map_buttons[i].text);
 		free(map_files[i]);
 	}
 
