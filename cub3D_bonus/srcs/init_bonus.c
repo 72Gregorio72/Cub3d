@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/01 12:32:21 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:47:11 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	load_textures(t_gen *gen)
 		gen->zombie_tex_walking, 26);
 	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking",
 		gen->zombie_tex_attacking, 17);
-	// load_animation(gen, "textures/zombie/dead/Zdying", gen->zombie_tex_dead, 21);
-	// load_animation(gen, "textures/zombie/hit/Zhitted", gen->zombie_tex_hit, 13);
 }
+
+// load_animation(gen, "textures/zombie/dead/Zdying", gen->zombie_tex_dead, 21);
+// load_animation(gen, "textures/zombie/hit/Zhitted", gen->zombie_tex_hit, 13);

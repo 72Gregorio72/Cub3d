@@ -253,91 +253,112 @@ typedef struct s_ray
 	double	wall_x;
 }				t_ray;
 
-int		close_window(t_gen *gen);
-int		read_map(char **av, t_gen *gen);
-void	set_player_position(t_gen *gen);
-void	raycasting(t_gen *gen);
-void	put_pixel(t_img *img, int x, int y, int color);
-void	load_texture(void *mlx, char *path, t_tex *tex);
-void	move_forward(t_gen *gen);
-void	move_backward(t_gen *gen);
-void	strafe_left(t_gen *gen);
-void	strafe_right(t_gen *gen);
-int		on_key_press(int keycode, t_gen *gen);
-int		on_key_release(int keycode, t_gen *gen);
-void	clear_image(t_img *img);
-void	free_matrix(char **matrix, int height);
-void	update_zombies_position(t_gen *gen);
-void	shoot_projectile(t_gen *gen, int x, int y);
-void	update_projectile_position(t_gen *gen);
-int		parsing_map(t_gen *gen);
-int		get_texture_paths(char *file, t_gen *gen);
-int		get_char_pos(char *src, int c);
-int		map_check(t_gen *gen);
-int		check_closed(t_gen *gen);
+//init
+void	init_image(t_gen *gen);
+void	init_main(t_gen *gen);
+
+//free and clear
 void	clean_path(char *path);
 void	free_gen(t_gen *gen, int flag);
-void	calculate_distance(t_ray *ray, t_gen *gen);
-void	check_hit(t_ray *ray, t_gen *gen);
-void	init_ray(t_ray *ray, t_gen *gen);
-void	get_step(t_ray *ray, t_gen *gen);
-t_tex	*select_texture(t_ray *ray, t_gen *gen);
 void	clear_image(t_img *img);
-int		pre_checks(int ac, char **av, t_gen *gen);
-void	clean_path(char *path);
-void	load_texture(void *mlx, char *path, t_tex *tex);
-void	put_pixel(t_img *img, int x, int y, int color);
-void	init_image(t_gen *gen);
-void	rotate_player(t_gen *gen, double angle);
-int		is_walkable(t_gen *gen, double x, double y);
-void	check_movements_util(t_gen *gen);
-void	check_movements(t_gen *gen);
-void	update_player_position(int keysym, t_gen *gen);
-void	rotate_view(t_gen *gen);
-void	read_file(int fd, int i, t_gen *gen, int y);
-void	get_map_dimensions(char *file, t_map *map);
-void	fill_map_row(t_gen *gen, char *line, int y);
-void	draw_minimap(t_map *map, t_gen *gen);
-int		get_x(t_map *map, char c);
-int		get_y(t_map *map, char c, int col);
-void	draw_minimap_arrow(t_gen *gen);
-void	draw_minimap_grid(t_img *img, t_gen *gen);
-void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start,
-			int draw_end);
-void	add_zombie(t_gen *gen, double x, double y);
-void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
-void	cleanup_projectiles(t_gen *gen);
-void	add_projectile(t_gen *gen);
-void	check_zombie_hits(t_gen *gen);
-void	init_main(t_gen *gen);
-void	load_textures(t_gen *gen);
+int		close_window(t_gen *gen);
+void	clear_image(t_img *img);
+void	free_matrix(char **matrix, int height);
+
+//key listener
 int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 int		on_mouse_move(int x, int y, t_gen *gen);
 int		on_mouse_click(int button, int x, int y, t_gen *gen);
-void	init_main(t_gen *gen);
-void	draw_zombies(t_gen *gen);
+int		on_key_press(int keycode, t_gen *gen);
+int		on_key_release(int keycode, t_gen *gen);
+
+//load map
+void	read_file(int fd, int i, t_gen *gen, int y);
+int		read_map(char **av, t_gen *gen);
+void	get_map_dimensions(char *file, t_map *map);
+void	fill_map_row(t_gen *gen, char *line, int y);
+
+//parsing
+int		unclosed_zero(t_map *map);
+int		unclosed_door(t_map *map);
+int		check_closed(t_gen *gen);
+int		pre_checks(int ac, char **av, t_gen *gen);
+int		parsing_map(t_gen *gen);
+int		map_check(t_gen *gen);
+
+//raycasting
+void	raycasting(t_gen *gen);
+void	calculate_distance(t_ray *ray, t_gen *gen);
+void	check_hit(t_ray *ray, t_gen *gen);
+void	init_ray(t_ray *ray, t_gen *gen);
+void	get_step(t_ray *ray, t_gen *gen);
+void	check_movements_util(t_gen *gen);
+void	check_movements(t_gen *gen);
+int		is_walkable(t_gen *gen, double x, double y);
+void	put_pixel(t_img *img, int x, int y, int color);
+
+//textures
+void	load_textures(t_gen *gen);
+void	load_texture(void *mlx, char *path, t_tex *tex);
+t_tex	*select_texture(t_ray *ray, t_gen *gen);
+int		get_texture_paths(char *file, t_gen *gen);
+void	load_texture(void *mlx, char *path, t_tex *tex);
+
+//player
+void	damage_player(t_zombie *z, t_gen *gen);
+void	update_player_position(int keysym, t_gen *gen);
+void	rotate_player(t_gen *gen, double angle);
+void	set_player_position(t_gen *gen);
+
+//drawing
+void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x);
+void	draw_ceiling_and_floor(t_ray *ray, t_gen *gen);
+void	draw_doors(t_gen *gen, t_ray *ray);
+void	draw_healthbar(t_gen *gen);
+void	draw_minimap_arrow(t_gen *gen);
+void	draw_minimap_grid(t_img *img, t_gen *gen);
+void	draw_minimap(t_map *map, t_gen *gen);
+
+// projectile
+void	shoot_projectile(t_gen *gen, int x, int y);
+void	update_projectile_position(t_gen *gen);
+void	ft_lstclear_proj(t_projectile **stackA);
 void	draw_projectiles(t_gen *gen);
+void	cleanup_projectiles(t_gen *gen);
+void	add_projectile(t_gen *gen);
+void	util_calculate_prog(t_draw_data d, t_gen *gen, int x, int y);
+
+// zombie
+void	update_walking(t_zombie *z);
+void	update_hit(t_zombie *z);
+void	update_dead(t_zombie *z);
+void	update_attacking(t_zombie *z);
+void	update_zombies_position(t_gen *gen);
+void	draw_zombie_column(t_gen *gen, int screen_x, int draw_start,
+			int draw_end);
+void	add_zombie(t_gen *gen, double x, double y);
+void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
+void	check_zombie_hits(t_gen *gen);
+void	draw_zombies(t_gen *gen);
 void	add_zombie(t_gen *gen, double x, double y);
 void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove);
 void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d);
 void	update_zombies_position(t_gen *gen);
-size_t	get_current_time(void);
-void	damage_player(t_zombie *z, t_gen *gen);
-int		unclosed_zero(t_map *map);
-void	ft_lstclear_proj(t_projectile **stackA);
-void	draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z);
-void	draw_healthbar(t_gen *gen);
 void	animate_zombies(t_gen *gen);
+void	draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z);
+void	draw_zombie_dots(t_gen *gen);
+void	load_zombie(t_gen *gen, int i, int j);
 void	update_walking(t_zombie *z);
 void	update_attacking(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_hit(t_zombie *z);
-void	draw_zombie_dots(t_gen *gen);
-void	load_zombie(t_gen *gen, int i, int j);
-int		unclosed_door(t_map *map);
-void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x);
-void	draw_ceiling_and_floor(t_ray *ray, t_gen *gen);
-void	draw_doors(t_gen *gen, t_ray *ray);
+
+//utils
+int		get_char_pos(char *src, int c);
+void	rotate_view(t_gen *gen);
+int		get_x(t_map *map, char c);
+int		get_y(t_map *map, char c, int col);
+size_t	get_current_time(void);
 
 #endif

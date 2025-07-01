@@ -92,7 +92,7 @@ void	raycasting(t_gen *gen)
 	t_ray	ray;
 
 	ray.x = 0;
-	ray.hit_tile = 'A';
+		ray.hit_tile = 'A';
 	while (ray.x < SCREEN_X)
 	{
 		init_ray(&ray, gen);

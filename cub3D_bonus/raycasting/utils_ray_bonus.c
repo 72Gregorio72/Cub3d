@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:02 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/01 10:35:43 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:45:30 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,14 @@ void	util_check_hit(t_ray *ray, t_gen *gen)
 					+ pow(z->y - (ray->map_y + 0.5), 2));
 			if (dist_player < 1.0 || dist_zombie < 1.0)
 				return ;
-			else
-			{
-				ray->hit = 1;
-				ray->hit_tile = 'D';
-				break ;
-			}
+			ray->hit = 1;
+			ray->hit_tile = 'D';
 			z = z->next;
+		}
+		if (dist_player >= 1.0)
+		{
+			ray->hit = 1;
+			ray->hit_tile = 'D';
 		}
 	}
 }

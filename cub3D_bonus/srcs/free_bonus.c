@@ -80,6 +80,9 @@ void	destroy_zombie_tex(t_gen *gen)
 		}
 		i++;
 	}
+}
+
+
 	// i = 0;
 	// while (i < 21)
 	// {
@@ -102,7 +105,6 @@ void	destroy_zombie_tex(t_gen *gen)
 	// 	}
 	// 	i++;
 	// }
-}
 
 int	close_window(t_gen *gen)
 {

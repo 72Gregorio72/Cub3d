@@ -25,6 +25,7 @@ SRCS		=	main_bonus.c \
 				raycasting/utils_ray4_bonus.c \
 				raycasting/utils_ray5_bonus.c \
 				raycasting/draw_minigame_bonus.c \
+				raycasting/utils_draw_minigame_bonus.c \
 				\
 				minigame/zombie_cpu_bonus.c \
 				minigame/fps_bonus.c \
@@ -33,6 +34,7 @@ SRCS		=	main_bonus.c \
 				ui/draw_healthbar_bonus.c \
 				\
 				animator/zombie_animator_bonus.c \
+				animator/update_zombie_stats_bonus.c \
 				
 
 OBJS		= $(SRCS:.c=.o)
