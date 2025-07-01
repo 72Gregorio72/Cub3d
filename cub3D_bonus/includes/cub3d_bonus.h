@@ -41,6 +41,7 @@
 # define KB_S 115
 # define KB_A 97
 # define KB_D 100
+# define KB_E 101
 # define KB_ESC 65307
 # define KB_UP 65362
 # define KB_DOWN 65364
@@ -248,6 +249,7 @@ typedef struct s_gen
 	t_tex			btn_start_game;
 	t_tex			btn_map_selection;
 	t_tex			btn_exit_game;
+	char			*map_file_path;
 }				t_gen;
 
 typedef struct s_ray
@@ -356,5 +358,7 @@ void	start_game_from_map(t_gen *gen, const char *filepath);
 void	draw_map_selector(t_gen *gen);
 t_tex	*get_texture(char *path, t_gen *gen);
 void	load_button_images(t_gen *gen);
+void	reset_player(t_gen *gen);
+int		get_map(char *path, t_gen *gen);
 
 #endif

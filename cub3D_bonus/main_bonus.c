@@ -70,6 +70,7 @@ int	main(int ac, char **av)
 	if (!pre_checks(ac, av, &gen))
 		return (0);
 	init_main(&gen);
+	gen.map_file_path = ft_strdup(av[1]);
 	if (!read_map(av, &gen))
 		return (0);
 	if (!parsing_map(&gen))

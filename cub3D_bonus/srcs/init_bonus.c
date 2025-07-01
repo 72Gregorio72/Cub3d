@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/01 13:24:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/01 23:06:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 
 void	load_button_images(t_gen *gen)
 {
-	// gen->btn_start_game.img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr,
-	// 	"textures/start_btn.xpm", &gen->btn_start_game.width, &gen->btn_start_game.height);
-	// gen->btn_map_selection.img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr,
-	// 	"textures/start_btn.xpm", &gen->btn_map_selection.width, &gen->btn_map_selection.height);
-	// gen->btn_exit_game.img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr,
-	// 	"textures/start_btn.xpm", &gen->btn_exit_game.width, &gen->btn_exit_game.height);
 	gen->btn_start_game = *get_texture("textures/start_btn.xpm", gen);
-	gen->btn_map_selection = *get_texture("textures/start_btn.xpm", gen);
-	gen->btn_exit_game = *get_texture("textures/start_btn.xpm", gen);
+	gen->btn_map_selection = *get_texture("textures/select_map.xpm", gen);
+	gen->btn_exit_game = *get_texture("textures/quit.xpm", gen);
 }
 
 void	init_main(t_gen *gen)
@@ -98,3 +92,7 @@ void	load_textures(t_gen *gen)
 			gen->zombie_tex_hit, 13);
 }
 
+void	reset_player(t_gen *gen)
+{
+	get_map(gen->map_file_path, gen);
+}

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/01 12:40:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/01 22:58:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	on_key_press(int keycode, t_gen *gen)
 		if (keycode == 'w' || keycode == 'W')
 		{
 			gen->in_menu = 0;
+			reset_player(gen);
 			mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
 		}
 		if (keycode == 'q' || keycode == 'Q')
@@ -62,6 +63,8 @@ int	on_key_release(int keycode, t_gen *gen)
 		gen->keys.left = 0;
 	if (keycode == KB_RIGHT)
 		gen->keys.right = 0;
+	if (keycode == KB_E)
+		draw_menu(gen);
 	return (0);
 }
 
@@ -118,7 +121,6 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 			}
 		}
 	}
-
 	if (gen->in_menu)
 	{
 		if (button == MOUSE_SCROLL_UP)
@@ -127,8 +129,6 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 			gen->scroll_offset_y -= 100;
 		if (gen->scroll_offset_y > 0)
 			gen->scroll_offset_y = 0;
-		clear_image(&gen->img);
-		draw_map_selector(gen);
 	}
 	return (0);
 }
