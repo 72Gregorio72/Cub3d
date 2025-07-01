@@ -63,14 +63,14 @@
 # define MOUSE_RIGHT_CLICK 3
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
-# define MINIMAP_RADIUS 5                 // Visualizza 11x11 tile
+# define MINIMAP_RADIUS 5
 # define MINIMAP_TILE_AREA 11
-# define TILE_SIZE 18                     // Dimensione visiva di ogni tile
-# define RADAR_RADIUS_PIXELS 92           // Raggio visibile più ampio
-# define MINIMAP_CENTER_X 100             // Centro fisso orizzontale
-# define MINIMAP_CENTER_Y 100             // Centro fisso verticale (idem)
-# define RADAR_COLOR 0x555555             // Colore sfondo radar
-# define GRID_COLOR 0x003F00              // Colore della griglia dei tile
+# define TILE_SIZE 18
+# define RADAR_RADIUS_PIXELS 92
+# define MINIMAP_CENTER_X 100
+# define MINIMAP_CENTER_Y 100
+# define RADAR_COLOR 0x555555
+# define GRID_COLOR 0x003F00
 # define ZOMBIE_SPEED 0.01
 # define MAX_SPRITE_HEIGHT 1000
 # define MIN_SPRITE_HEIGHT 100
@@ -78,6 +78,8 @@
 # define MIN_SPRITE_WIDTH 100
 # define MOUSE_SENSITIVITY 0.001
 # define MAX_MAPS 100
+
+typedef struct s_gen t_gen;
 
 typedef struct s_point
 {
@@ -202,9 +204,15 @@ typedef struct s_zombie
 	t_tex			*texture;
 }	t_zombie;
 
-typedef struct s_map_button {
-	int x0, y0, x1, y1;
-	char *filepath;
+typedef struct s_map_button
+{
+	int	x0;
+	int	y0;
+	int	x1;
+	int	y1;
+	char *text;
+	void (*action)(t_gen *gen);
+	char	*filepath;
 }	t_map_button;
 
 typedef struct s_gen
@@ -236,6 +244,10 @@ typedef struct s_gen
 	int				in_menu;
 	t_map_button	map_buttons[MAX_MAPS];
 	int				map_button_count;
+	int				scroll_offset_y;
+	t_tex			btn_start_game;
+	t_tex			btn_map_selection;
+	t_tex			btn_exit_game;
 }				t_gen;
 
 typedef struct s_ray
@@ -340,5 +352,9 @@ void	update_attacking(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_hit(t_zombie *z);
 void	draw_menu(t_gen *gen);
+void	start_game_from_map(t_gen *gen, const char *filepath);
+void	draw_map_selector(t_gen *gen);
+t_tex	*get_texture(char *path, t_gen *gen);
+void	load_button_images(t_gen *gen);
 
 #endif

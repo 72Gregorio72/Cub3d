@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 15:25:48 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:40:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,22 +100,35 @@ int	on_mouse_move(int x, int y, t_gen *gen)
 
 int	on_mouse_click(int button, int x, int y, t_gen *gen)
 {
-	if (button == MOUSE_LEFT_CLICK)
+	if (button == MOUSE_LEFT_CLICK && !gen->in_menu && gen->ignore_next_mouse)
 		add_projectile(gen);
-	if (button != 1)
-		return (0);
-	for (int i = 0; i < gen->map_button_count; i++)
+	if (button == MOUSE_LEFT_CLICK && gen->in_menu)
 	{
-		t_map_button *b = &gen->map_buttons[i];
-		if (x >= b->x0 && x <= b->x1 && y >= b->y0 && y <= b->y1)
+		for (int i = 0; i < gen->map_button_count; i++)
 		{
-			printf("Hai selezionato: %s\n", b->filepath);
-			char *args[2] = {"./cub3D", b->filepath};
-			read_map(args, gen);
-			parsing_map(gen);
-			gen->in_menu = 0;
-			return (1);
+			t_map_button btn = gen->map_buttons[i];
+			if (x >= btn.x0 && x <= btn.x1 && y >= btn.y0 && y <= btn.y1)
+			{
+				if (btn.filepath)
+					start_game_from_map(gen, btn.filepath);
+				else if (btn.action)
+					btn.action(gen);
+				gen->ignore_next_mouse = 1;
+				break;
+			}
 		}
+	}
+
+	if (gen->in_menu)
+	{
+		if (button == MOUSE_SCROLL_UP)
+			gen->scroll_offset_y += 100;
+		else if (button == MOUSE_SCROLL_DOWN)
+			gen->scroll_offset_y -= 100;
+		if (gen->scroll_offset_y > 0)
+			gen->scroll_offset_y = 0;
+		clear_image(&gen->img);
+		draw_map_selector(gen);
 	}
 	return (0);
 }

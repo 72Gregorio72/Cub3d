@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 15:22:09 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:24:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+void	load_button_images(t_gen *gen)
+{
+	// gen->btn_start_game.img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr,
+	// 	"textures/start_btn.xpm", &gen->btn_start_game.width, &gen->btn_start_game.height);
+	// gen->btn_map_selection.img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr,
+	// 	"textures/start_btn.xpm", &gen->btn_map_selection.width, &gen->btn_map_selection.height);
+	// gen->btn_exit_game.img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr,
+	// 	"textures/start_btn.xpm", &gen->btn_exit_game.width, &gen->btn_exit_game.height);
+	gen->btn_start_game = *get_texture("textures/start_btn.xpm", gen);
+	gen->btn_map_selection = *get_texture("textures/start_btn.xpm", gen);
+	gen->btn_exit_game = *get_texture("textures/start_btn.xpm", gen);
+}
 
 void	init_main(t_gen *gen)
 {

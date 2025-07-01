@@ -78,6 +78,7 @@ int	main(int ac, char **av)
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	load_textures(&gen);
 	load_zombies(&gen);
+	load_button_images(&gen);
 	rotate_view(&gen);
 	draw_menu(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
