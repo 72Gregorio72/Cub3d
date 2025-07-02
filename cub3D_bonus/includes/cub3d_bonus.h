@@ -203,6 +203,15 @@ typedef struct s_zombie
 	t_tex			*texture;
 }	t_zombie;
 
+typedef struct s_door
+{
+	t_tex		door_closed;
+	t_tex		door_half_open;
+	t_tex		door_open;
+	double		dist_zombie;
+	double		dist_player;
+}				t_door;
+
 typedef struct s_gen
 {
 	void			*mlx_ptr;
@@ -224,7 +233,7 @@ typedef struct s_gen
 	t_tex			*zombie_tex_attacking[17];
 	t_tex			*zombie_tex_dead[21];
 	t_tex			*zombie_tex_hit[13];
-	t_tex			door_tex;
+	t_door			door;
 	int				max_health;
 	int				health;
 	int				ammo;
@@ -360,5 +369,6 @@ void	rotate_view(t_gen *gen);
 int		get_x(t_map *map, char c);
 int		get_y(t_map *map, char c, int col);
 size_t	get_current_time(void);
+int		zombie_in_door(t_gen *gen);
 
 #endif

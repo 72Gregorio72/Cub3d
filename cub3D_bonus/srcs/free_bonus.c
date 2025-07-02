@@ -106,6 +106,7 @@ void	destroy_zombie_tex(t_gen *gen)
 	// 	i++;
 	// }
 
+	// TODO: free porte
 int	close_window(t_gen *gen)
 {
 	if (gen->img.img_ptr)
@@ -118,8 +119,12 @@ int	close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.east.img_ptr);
 	if (gen->map.west.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.west.img_ptr);
-	if (gen->door_tex.img_ptr)
-		mlx_destroy_image(gen->mlx_ptr, gen->door_tex.img_ptr);
+	if (gen->door.door_closed.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->door.door_closed.img_ptr);
+	if (gen->door.door_half_open.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->door.door_half_open.img_ptr);
+	if (gen->door.door_open.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->door.door_open.img_ptr);
 	destroy_zombie_tex(gen);
 	if (gen->win_ptr)
 		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);
@@ -132,7 +137,6 @@ int	close_window(t_gen *gen)
 	free_gen(gen, 1);
 	exit(EXIT_SUCCESS);
 }
-
 
 void	fill_map_row(t_gen *gen, char *line, int y)
 {

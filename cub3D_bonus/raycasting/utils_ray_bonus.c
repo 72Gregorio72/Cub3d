@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:02 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/01 15:45:30 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:08:05 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,32 +49,31 @@ void	init_ray(t_ray *ray, t_gen *gen)
 	ray->delta_disty = fabs(1 / gen->player.ray_dir_y);
 }
 
-void	util_check_hit(t_ray *ray, t_gen *gen)
+void	check_hit_doors(t_ray *ray, t_gen *gen)
 {
-	double		dist_player;
-	double		dist_zombie;
 	t_zombie	*z;
+	double		door_x;
+	double		door_y;
+	double 		dist;
 
+	door_x = ray->map_x + 0.5;
+	door_y = ray->map_y + 0.5;
 	z = gen->zombies;
-	if (gen->map.map_matrix[ray->map_y][ray->map_x] == 'D')
+	gen->door.dist_player = sqrt(pow(gen->player.x - door_x, 2)
+			+ pow(gen->player.y - door_y, 2));
+	gen->door.dist_zombie = 1000.0;
+	while (z)
 	{
-		dist_player = sqrt(pow(gen->player.x - (ray->map_x + 0.5), 2)
-				+ pow(gen->player.y - (ray->map_y + 0.5), 2));
-		while (z)
-		{
-			dist_zombie = sqrt(pow(z->x - (ray->map_x + 0.5), 2)
-					+ pow(z->y - (ray->map_y + 0.5), 2));
-			if (dist_player < 1.0 || dist_zombie < 1.0)
-				return ;
-			ray->hit = 1;
-			ray->hit_tile = 'D';
-			z = z->next;
-		}
-		if (dist_player >= 1.0)
-		{
-			ray->hit = 1;
-			ray->hit_tile = 'D';
-		}
+		dist = sqrt(pow(z->x - door_x, 2) + pow(z->y - door_y, 2));
+		if (dist < gen->door.dist_zombie)
+			gen->door.dist_zombie = dist;
+		z = z->next;
+	}
+	if ((gen->door.dist_player >= 1.0 || gen->door.dist_zombie < 2.0)
+		&& !zombie_in_door(gen))
+	{
+		ray->hit = 1;
+		ray->hit_tile = 'D';
 	}
 }
 
@@ -98,7 +97,7 @@ void	check_hit(t_ray *ray, t_gen *gen)
 		if (gen->map.map_matrix[ray->map_y][ray->map_x] == '1')
 			ray->hit = 1;
 		if (gen->map.map_matrix[ray->map_y][ray->map_x] == 'D')
-			util_check_hit(ray, gen);
+			check_hit_doors(ray, gen);
 	}
 }
 

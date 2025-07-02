@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/01 15:47:11 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:05:25 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
-	load_texture(gen->mlx_ptr, "textures/door/door.xpm", &gen->door_tex);
+	load_texture(gen->mlx_ptr, "textures/door/door.xpm", &gen->door.door_closed);
+	load_texture(gen->mlx_ptr, "textures/door/door1.xpm", &gen->door.door_half_open);
+	load_texture(gen->mlx_ptr, "textures/door/door2.xpm", &gen->door.door_open);
 	load_animation(gen, "zombie_anim/walking_xpm/Zwalking",
 		gen->zombie_tex_walking, 26);
 	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking",
