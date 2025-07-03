@@ -118,6 +118,21 @@ typedef struct s_draw_data
 	double	next_y;
 }	t_draw_data;
 
+typedef struct s_menu_data
+{
+	int	i;
+	int	j;
+	int	radius;
+	int	cx;
+	int	cy;
+	int	dx;
+	int	dy;
+	int	color;
+	int	text_area_color;
+	int	x;
+	int	y;
+}	t_menu_data;
+
 typedef struct s_projectile
 {
 	double				x;
@@ -441,5 +456,6 @@ void	open_options_menu(t_gen *gen);
 char	*mlx_get_key_name(int keycode);
 int		mouse_release(int button, int x, int y, t_gen *gen);
 void	draw_slider(t_gen *gen);
+int		update_buttons(t_gen *gen, int x, int y);
 
 #endif
