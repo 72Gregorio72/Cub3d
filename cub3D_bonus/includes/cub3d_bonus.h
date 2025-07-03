@@ -259,12 +259,12 @@ typedef struct player_options
 
 typedef struct s_key_button
 {
-	int x1;
-	int y1;
-	int x2;
-	int y2;
-	int *key;
-	const char *label;
+	int			x1;
+	int			y1;
+	int			x2;
+	int			y2;
+	int			*key;
+	const char	*label;
 }	t_key_button;
 
 typedef struct s_gen
@@ -421,6 +421,7 @@ void	draw_projectiles(t_gen *gen);
 void	cleanup_projectiles(t_gen *gen);
 void	add_projectile(t_gen *gen);
 void	util_calculate_prog(t_draw_data d, t_gen *gen, int x, int y);
+int		check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d);
 
 // zombie
 void	update_hit(t_zombie *z);
@@ -456,6 +457,11 @@ size_t	get_current_time(void);
 void	rotate_view(t_gen *gen);
 int		zombie_near_door(t_gen *gen, t_ray *ray);
 void	load_zombies(t_gen *gen);
+void	reset_zombies(t_gen *gen);
+void	update_walking(t_zombie *z);
+void	update_attacking(t_zombie *z);
+void	update_dead(t_zombie *z);
+void	update_hit(t_zombie *z);
 
 //utils
 void	util_rotate_player(t_gen *gen);

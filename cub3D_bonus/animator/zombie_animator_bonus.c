@@ -12,40 +12,27 @@
 
 #include "cub3d_bonus.h"
 
-void	update_walking(t_zombie *z)
+void	util_animate_zombie(t_zombie *z, t_gen *gen)
 {
-	z->is_walking = 1;
-	z->is_attacking = 0;
-	z->is_dead = 0;
-	z->is_hit = 0;
-	z->animation_frame = 0;
-}
-
-void	update_attacking(t_zombie *z)
-{
-	if (z->is_dead && z->is_hit)
-		return ;
-	z->is_walking = 0;
-	z->is_attacking = 1;
-}
-
-void	update_dead(t_zombie *z)
-{
-	z->is_walking = 0;
-	z->is_attacking = 0;
-	z->is_dead = 1;
-	z->is_hit = 0;
-	z->animation_frame = 0;
-}
-
-void	update_hit(t_zombie *z)
-{
-	if (z->is_dead && z->is_hit)
-		return ;
-	z->is_walking = 0;
-	z->is_attacking = 0;
-	z->is_hit = 1;
-	z->animation_frame = 0;
+	if (z->is_hit)
+	{
+		z->animation_frame++;
+		if (z->animation_frame >= 13)
+		{
+			printf(GREEN"Zombie hit animation finished\n"RESET);
+			z->is_hit = 0;
+			z->animation_frame = 0;
+			z->is_walking = 1;
+		}
+		z->texture = gen->zombie_tex_hit[z->animation_frame];
+	}
+	else if (z->is_attacking)
+	{
+		z->animation_frame++;
+		if (z->animation_frame >= 17)
+			damage_player(z, gen);
+		z->texture = gen->zombie_tex_attacking[z->animation_frame];
+	}
 }
 
 void	animate_zombies(t_gen *gen)
@@ -62,25 +49,6 @@ void	animate_zombies(t_gen *gen)
 				remove_zombie(gen, z);
 			z->texture = gen->zombie_tex_dead[z->animation_frame];
 		}
-		else if (z->is_hit)
-		{
-			z->animation_frame++;
-			if (z->animation_frame >= 13)
-			{
-				printf(GREEN"Zombie hit animation finished\n"RESET);
-				z->is_hit = 0;
-				z->animation_frame = 0;
-				z->is_walking = 1;
-			}
-			z->texture = gen->zombie_tex_hit[z->animation_frame];
-		}
-		else if (z->is_attacking)
-		{
-			z->animation_frame++;
-			if (z->animation_frame >= 17)
-				damage_player(z, gen);
-			z->texture = gen->zombie_tex_attacking[z->animation_frame];
-		}
 		else if (z->is_walking)
 		{
 			z->animation_frame++;
@@ -88,6 +56,7 @@ void	animate_zombies(t_gen *gen)
 				z->animation_frame = 0;
 			z->texture = gen->zombie_tex_walking[z->animation_frame];
 		}
+		util_animate_zombie(z, gen);
 		z = z->next;
 	}
 }
