@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 11:52:31 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:58:18 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	load_button_images(t_gen *gen)
 	load_texture(gen->mlx_ptr, "textures/start_btn.xpm", &gen->btn_start_game);
 	load_texture(gen->mlx_ptr, "textures/select_map.xpm", &gen->btn_map_selection);
 	load_texture(gen->mlx_ptr, "textures/quit.xpm", &gen->btn_exit_game);
+	load_texture(gen->mlx_ptr, "textures/quit.xpm", &gen->btn_options);
 }
 
 void	init_main(t_gen *gen)
@@ -37,6 +38,15 @@ void	init_main(t_gen *gen)
 	gen->map_button_count = 0;
 	gen->counter_spawn = 0;
 	gen->scroll_offset_y = 0;
+	gen->player_options.mouse_sensitivity = MOUSE_SENSITIVITY;
+	gen->player_options.key_up = KB_W;
+	gen->player_options.key_down = KB_S;
+	gen->player_options.key_left = KB_A;
+	gen->player_options.key_right = KB_D;
+	gen->in_options = 0;
+	gen->waiting_key_for = 0;
+	gen->selected_key_index = -1;
+	gen->dragging_slider = 0;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)

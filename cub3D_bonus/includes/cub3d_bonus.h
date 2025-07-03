@@ -64,6 +64,7 @@
 # define MAX_ZOMBIES 32
 # define ZOMBIE_SPEED 0.01
 # define MOUSE_LEFT_CLICK 1
+# define MOUSE_LEFT_RELEASE 2
 # define MOUSE_RIGHT_CLICK 3
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
@@ -80,7 +81,7 @@
 # define MIN_SPRITE_HEIGHT 100
 # define MAX_SPRITE_WIDTH 1000
 # define MIN_SPRITE_WIDTH 100
-# define MOUSE_SENSITIVITY 0.001
+# define MOUSE_SENSITIVITY 0.5
 # define MAX_MAPS 100
 # define PREVIEW_WIDTH  200
 # define PREVIEW_HEIGHT 200
@@ -231,42 +232,69 @@ typedef struct s_door
 	double		dist_player;
 }				t_door;
 
+typedef struct player_options
+{
+	float	mouse_sensitivity;
+	int		key_up;
+	int		key_down;
+	int		key_left;
+	int		key_right;
+}	t_player_options;
+
+typedef struct s_key_button
+{
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+	int *key;
+	const char *label;
+}	t_key_button;
+
 typedef struct s_gen
 {
-	void			*mlx_ptr;
-	void			*win_ptr;
-	int				ignore_next_mouse;
-	int				last_mouse_x;
-	int				mouse_initialized;
-	int				last_mouse_y;
-	t_img			img;
-	t_player		player;
-	t_keys			keys;
-	t_map			map;
-	t_zombie		*zombies;
-	int				num_zombies;
-	t_projectile	*projectiles;
-	char			player_orientation;
-	char			arrow_orientation;
-	t_tex			*zombie_tex_walking[26];
-	t_tex			*zombie_tex_attacking[17];
-	t_tex			*zombie_tex_dead[21];
-	t_tex			*zombie_tex_hit[13];
-	t_door			door;
-	int				max_health;
-	int				health;
-	int				ammo;
-	int				mouse_vertical_offset;
-	double			zbuffer[SCREEN_X];
-	int				in_menu;
-	t_map_button	map_buttons[MAX_MAPS];
-	int				map_button_count;
-	int				scroll_offset_y;
-	t_tex			btn_start_game;
-	t_tex			btn_map_selection;
-	t_tex			btn_exit_game;
-	char			*map_file_path;
-	int				counter_spawn;
+	void				*mlx_ptr;
+	void				*win_ptr;
+	int					ignore_next_mouse;
+	int					last_mouse_x;
+	int					mouse_initialized;
+	int					last_mouse_y;
+	t_img				img;
+	t_player			player;
+	t_keys				keys;
+	t_map				map;
+	t_zombie			*zombies;
+	int					num_zombies;
+	t_projectile		*projectiles;
+	char				player_orientation;
+	char				arrow_orientation;
+	t_tex				*zombie_tex_walking[26];
+	t_tex				*zombie_tex_attacking[17];
+	t_tex				*zombie_tex_dead[21];
+	t_tex				*zombie_tex_hit[13];
+	t_door				door;
+	int					max_health;
+	int					health;
+	int					ammo;
+	int					mouse_vertical_offset;
+	double				zbuffer[SCREEN_X];
+	int					in_menu;
+	t_map_button		map_buttons[MAX_MAPS];
+	int					map_button_count;
+	int					scroll_offset_y;
+	t_tex				btn_start_game;
+	t_tex				btn_map_selection;
+	t_tex				btn_exit_game;
+	t_tex				btn_options;
+	char				*map_file_path;
+	int					counter_spawn;
+	t_player_options	player_options;
+	int					in_options;
+	int					waiting_key_for;
+	t_key_button		key_buttons[4];
+	int					selected_key_index;
+	int					dragging_slider;
+	t_key_button		dragging_slider_button;
 }				t_gen;
 
 typedef struct s_ray
@@ -409,5 +437,7 @@ int		get_map(char *path, t_gen *gen);
 size_t	get_current_time(void);
 void	rotate_view(t_gen *gen);
 int		zombie_in_door(t_gen *gen);
+void	open_options_menu(t_gen *gen);
+char	*mlx_get_key_name(int keycode);
 
 #endif

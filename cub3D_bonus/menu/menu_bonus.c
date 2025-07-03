@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 11:24:31 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:09:39 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,6 +340,8 @@ void	draw_button_with_action(t_gen *gen, t_map_button *button)
 		tex = &gen->btn_map_selection;
 	else if (button->action == exit_game)
 		tex = &gen->btn_exit_game;
+	else if (button->action == open_options_menu)
+		tex = &gen->btn_options;
 	if (tex && tex->img_ptr)
 	{
 		int offset_x = (button->x1 - button->x0 - tex->width) / 2;
@@ -395,6 +397,65 @@ void draw_map_preview_scaled(t_gen *gen, int base_x, int base_y, int width, int 
 	}
 }
 
+void	open_options_menu(t_gen *gen)
+{
+	clear_image(&gen->img);
+	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 100, 80, 0xFFFFFF, "OPTIONS");
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, 200, 0xFFFFFF, "Mouse Sensitivity:");
+	int slider_x = 100 + (int)(gen->player_options.mouse_sensitivity * 200.0);
+	for (int x = 100; x <= 300; x++)
+		put_pixel(&gen->img, x, 220, 0xAAAAAA);
+	for (int dx = -5; dx <= 5; dx++)
+		for (int dy = -5; dy <= 5; dy++)
+			put_pixel(&gen->img, slider_x + dx, 220 + dy, 0xFF0000);
+	gen->dragging_slider_button.x1 = slider_x - 5;
+	gen->dragging_slider_button.y1 = 215;
+	gen->dragging_slider_button.x2 = slider_x + 5;
+	gen->dragging_slider_button.y2 = 225;
+	gen->player_options.mouse_sensitivity = (slider_x - 100) / 200.0;
+	printf("Mouse Sensitivity: %.2f\n", gen->player_options.mouse_sensitivity);
+	const char *keys[] = {"UP", "DOWN", "LEFT", "RIGHT"};
+	int *bindings[] = {
+		&gen->player_options.key_up,
+		&gen->player_options.key_down,
+		&gen->player_options.key_left,
+		&gen->player_options.key_right
+	};
+
+	for (int i = 0; i < 4; i++)
+	{
+		int y = 300 + i * 50;
+		int bx1 = 300, by1 = y - 10;
+		int bx2 = 360, by2 = y + 20;
+		char *key_name = mlx_get_key_name(*bindings[i]);
+		char *tmp = ft_strjoin(keys[i], ": ");
+		char *buf = ft_strjoin(tmp, key_name);
+		free(tmp);
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, y, 0xFFFFFF, buf);
+		int color = 0xAAAAAA;
+		if (gen->selected_key_index == i)
+			color = 0xFFFFFF;
+		for (int x = bx1; x <= bx2; x++)
+			for (int y2 = by1; y2 <= by2; y2++)
+				put_pixel(&gen->img, x, y2, color);
+		gen->key_buttons[i].x1 = bx1;
+		gen->key_buttons[i].y1 = by1;
+		gen->key_buttons[i].x2 = bx2;
+		gen->key_buttons[i].y2 = by2;
+		gen->key_buttons[i].key = bindings[i];
+		gen->key_buttons[i].label = keys[i];
+	}
+	set_button(&gen->map_buttons[0],
+		SCREEN_X - 250, SCREEN_Y - 100,
+		SCREEN_X - 50, SCREEN_Y - 50,
+		"BACK", draw_menu);
+	gen->map_button_count = 1;
+	draw_button_with_action(gen, &gen->map_buttons[0]);
+	gen->selected_key_index = -1;
+}
+
 void	draw_menu(t_gen *gen)
 {
 	int	map_area_x = 500;
@@ -428,11 +489,15 @@ void	draw_menu(t_gen *gen)
 	set_button(&gen->map_buttons[gen->map_button_count++],
 		right_column_x, button_start_y + button_h + button_spacing + extra_spacing,
 		right_column_x + button_w, button_start_y + 2 * button_h + button_spacing + extra_spacing,
-		"SELECT", open_map_selection);
+		"SELECT", open_options_menu);
 	set_button(&gen->map_buttons[gen->map_button_count++],
 		right_column_x, button_start_y + 2 * (button_h + button_spacing + extra_spacing),
 		right_column_x + button_w, button_start_y + 3 * button_h + 2 * (button_spacing + extra_spacing),
 		"QUIT", exit_game);
+	set_button(&gen->map_buttons[gen->map_button_count++],
+		right_column_x, button_start_y + 3 * (button_h + button_spacing + extra_spacing),
+		right_column_x + button_w, button_start_y + 4 * button_h + 3 * (button_spacing + extra_spacing),
+		"OPTIONS", open_options_menu);
 	while (i < gen->map_button_count)
 		draw_button_with_action(gen, &gen->map_buttons[i++]);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
