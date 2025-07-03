@@ -44,6 +44,7 @@
 # define KB_S 115
 # define KB_A 97
 # define KB_D 100
+# define KB_E 101
 # define KB_ESC 65307
 # define KB_UP 65362
 # define KB_DOWN 65364
@@ -66,19 +67,26 @@
 # define MOUSE_RIGHT_CLICK 3
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
-# define MINIMAP_RADIUS 5                 // Visualizza 11x11 tile
+# define MINIMAP_RADIUS 5
 # define MINIMAP_TILE_AREA 11
-# define TILE_SIZE 18                     // Dimensione visiva di ogni tile
-# define RADAR_RADIUS_PIXELS 92           // Raggio visibile più ampio
-# define MINIMAP_CENTER_X 100             // Centro fisso orizzontale
-# define MINIMAP_CENTER_Y 100             // Centro fisso verticale (idem)
-# define RADAR_COLOR 0x555555             // Colore sfondo radar
-# define GRID_COLOR 0x003F00              // Colore della griglia dei tile
+# define TILE_SIZE 18
+# define RADAR_RADIUS_PIXELS 92
+# define MINIMAP_CENTER_X 100
+# define MINIMAP_CENTER_Y 100
+# define RADAR_COLOR 0x555555
+# define GRID_COLOR 0x003F00
 # define ZOMBIE_SPEED 0.01
 # define MAX_SPRITE_HEIGHT 1000
 # define MIN_SPRITE_HEIGHT 100
 # define MAX_SPRITE_WIDTH 1000
 # define MIN_SPRITE_WIDTH 100
+# define MOUSE_SENSITIVITY 0.001
+# define MAX_MAPS 100
+# define PREVIEW_WIDTH  200
+# define PREVIEW_HEIGHT 200
+# define PREVIEW_MARGIN_Y 80
+
+typedef struct s_gen t_gen;
 
 typedef struct s_point
 {
@@ -203,6 +211,17 @@ typedef struct s_zombie
 	t_tex			*texture;
 }	t_zombie;
 
+typedef struct s_map_button
+{
+	int		x0;
+	int		y0;
+	int		x1;
+	int		y1;
+	char	*text;
+	void	(*action)(t_gen *gen);
+	char	*filepath;
+}	t_map_button;
+
 typedef struct s_door
 {
 	t_tex		door_closed;
@@ -237,6 +256,16 @@ typedef struct s_gen
 	int				max_health;
 	int				health;
 	int				ammo;
+	int				mouse_vertical_offset;
+	double			zbuffer[SCREEN_X];
+	int				in_menu;
+	t_map_button	map_buttons[MAX_MAPS];
+	int				map_button_count;
+	int				scroll_offset_y;
+	t_tex			btn_start_game;
+	t_tex			btn_map_selection;
+	t_tex			btn_exit_game;
+	char			*map_file_path;
 	int				counter_spawn;
 }				t_gen;
 
@@ -303,6 +332,14 @@ void	calculate_distance(t_ray *ray, t_gen *gen);
 void	check_hit(t_ray *ray, t_gen *gen);
 void	init_ray(t_ray *ray, t_gen *gen);
 void	get_step(t_ray *ray, t_gen *gen);
+t_tex	*select_texture(t_ray *ray, t_gen *gen);
+void	clear_image(t_img *img);
+int		pre_checks(int ac, char **av, t_gen *gen);
+void	clean_path(char *path);
+void	load_texture(void *mlx, char *path, t_tex *tex);
+void	init_image(t_gen *gen);
+void	rotate_player(t_gen *gen, double angle);
+int		is_walkable(t_gen *gen, double x, double y);
 void	check_movements_util(t_gen *gen);
 void	check_movements(t_gen *gen);
 int		is_walkable(t_gen *gen, double x, double y);
@@ -340,7 +377,6 @@ void	add_projectile(t_gen *gen);
 void	util_calculate_prog(t_draw_data d, t_gen *gen, int x, int y);
 
 // zombie
-void	update_walking(t_zombie *z);
 void	update_hit(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_attacking(t_zombie *z);
@@ -363,13 +399,15 @@ void	update_walking(t_zombie *z);
 void	update_attacking(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_hit(t_zombie *z);
-
-//utils
-int		get_char_pos(char *src, int c);
-void	rotate_view(t_gen *gen);
-int		get_x(t_map *map, char c);
-int		get_y(t_map *map, char c, int col);
+void	draw_menu(t_gen *gen);
+void	start_game_from_map(t_gen *gen, const char *filepath);
+void	draw_map_selector(t_gen *gen);
+t_tex	*get_texture(char *path, t_gen *gen);
+void	load_button_images(t_gen *gen);
+void	reset_player(t_gen *gen);
+int		get_map(char *path, t_gen *gen);
 size_t	get_current_time(void);
+void	rotate_view(t_gen *gen);
 int		zombie_in_door(t_gen *gen);
 
 #endif

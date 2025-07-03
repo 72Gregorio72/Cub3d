@@ -34,7 +34,8 @@ SRCS		=	main_bonus.c \
 				ui/draw_healthbar_bonus.c \
 				\
 				animator/zombie_animator_bonus.c \
-				animator/update_zombie_stats_bonus.c \
+				\
+				menu/menu_bonus.c \
 				
 
 OBJS		= $(SRCS:.c=.o)
@@ -81,12 +82,12 @@ miniclean: fclean
 vale: re
 	make clean
 	@clear
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARSG)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes > out ./$(NAME) $(ARSG)
 
 push: miniclean
 	bash -i -c "push"
 
-test: re
+testosterone: re
 	make clean
 	@clear
 	@./$(NAME) $(ARSG)

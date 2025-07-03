@@ -76,6 +76,8 @@ void	spawn_zombies(t_gen *gen)
 
 int	game_loop(t_gen *gen)
 {
+	if (gen->in_menu)
+		return (0);
 	static unsigned long	last_time;
 	unsigned long			current_time;
 
@@ -110,6 +112,7 @@ int	main(int ac, char **av)
 	if (!pre_checks(ac, av, &gen))
 		return (0);
 	init_main(&gen);
+	gen.map_file_path = ft_strdup(av[1]);
 	if (!read_map(av, &gen))
 		return (0);
 	if (!parsing_map(&gen))
@@ -118,7 +121,10 @@ int	main(int ac, char **av)
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	load_textures(&gen);
 	load_zombies(&gen);
+	load_button_images(&gen);
 	rotate_view(&gen);
+	//gen.in_menu = 0;
+	draw_menu(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);
 	mlx_hook(gen.win_ptr, KeyPress, KeyPressMask, &on_key_press, &gen);

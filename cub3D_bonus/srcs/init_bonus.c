@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 09:59:50 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/03 10:11:58 by vcastald         ###   ########.fr       */
+/*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
+/*   Updated: 2025/07/03 11:52:31 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+void	load_button_images(t_gen *gen)
+{
+	load_texture(gen->mlx_ptr, "textures/start_btn.xpm", &gen->btn_start_game);
+	load_texture(gen->mlx_ptr, "textures/select_map.xpm", &gen->btn_map_selection);
+	load_texture(gen->mlx_ptr, "textures/quit.xpm", &gen->btn_exit_game);
+}
 
 void	init_main(t_gen *gen)
 {
@@ -25,7 +32,11 @@ void	init_main(t_gen *gen)
 	gen->max_health = 100;
 	gen->health = gen->max_health;
 	gen->ammo = 10;
+	gen->mouse_vertical_offset = 0;
+	gen->in_menu = 1;
+	gen->map_button_count = 0;
 	gen->counter_spawn = 0;
+	gen->scroll_offset_y = 0;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)
@@ -103,7 +114,31 @@ void	load_textures(t_gen *gen)
 		gen->zombie_tex_walking, 26);
 	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking",
 		gen->zombie_tex_attacking, 17);
+	load_animation(gen, "zombie_anim/dying_xpm/Zdying",
+			gen->zombie_tex_dead, 21);
+	load_animation(gen, "zombie_anim/hitted_xpm/Zhitted",
+			gen->zombie_tex_hit, 13);
 }
 
-// load_animation(gen, "textures/zombie/dead/Zdying", gen->zombie_tex_dead, 21);
-// load_animation(gen, "textures/zombie/hit/Zhitted", gen->zombie_tex_hit, 13);
+void	reset_zombies(t_gen *gen)
+{
+	t_zombie	*current;
+	t_zombie	*next;
+
+	current = gen->zombies;
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	gen->zombies = NULL;
+	gen->num_zombies = 0;
+	gen->counter_spawn = 0;
+}
+
+void	reset_player(t_gen *gen)
+{
+	get_map(gen->map_file_path, gen);
+	reset_zombies(gen);
+}
