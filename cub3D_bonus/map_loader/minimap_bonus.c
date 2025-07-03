@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:10:48 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 21:03:16 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/01 10:57:08 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	assign_color_tiles(int *color, t_gen *gen, int i, int j)
 		else if (gen->map.map_matrix[map_y][map_x] == '0'
 				|| gen->map.map_matrix[map_y][map_x] == '2')
 			*color = 0x005F00;
+		else if (gen->map.map_matrix[map_y][map_x] == 'D')
+			*color = 0xCC7722;
 		else
 			*color = 0x005F00;
 	}
@@ -107,9 +109,10 @@ void	draw_minimap(t_map *map, t_gen *gen)
 {
 	map = &gen->map;
 	if (!map)
-		return;
+		return ;
 	draw_minimap_background(&gen->img);
 	draw_minimap_tiles(gen);
 	draw_minimap_grid(&gen->img, gen);
 	draw_minimap_arrow(gen);
+	draw_zombie_dots(gen);
 }

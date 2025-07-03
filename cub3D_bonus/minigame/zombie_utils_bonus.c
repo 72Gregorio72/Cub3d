@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/30 12:24:35 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 10:29:52 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove)
 	t_zombie	**ptr;
 	t_zombie	*tmp;
 
+	gen->map.map_matrix[(int)zombie_to_remove->y]
+	[(int)zombie_to_remove->x] = '0';
 	ptr = &gen->zombies;
 	tmp = *ptr;
 	while (*ptr && *ptr != zombie_to_remove)
@@ -58,8 +60,36 @@ void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove)
 	printf(GREEN"Zombie hit and removed\n"RESET);
 }
 
+void	update_matrix_zombie(int old_x, int old_y, t_zombie *zombie, t_gen *gen)
+{
+	int	new_x;
+	int	new_y;
+
+	if (old_y >= 0 && old_y < gen->map.height
+		&& old_x >= 0 && old_x < gen->map.width)
+	{
+		if (gen->map.map_matrix[old_y][old_x] == 'D')
+			return ;
+		gen->map.map_matrix[old_y][old_x] = '0';
+	}
+	new_x = (int)zombie->x;
+	new_y = (int)zombie->y;
+	if (new_y >= 0 && new_y < gen->map.height
+		&& new_x >= 0 && new_x < gen->map.width)
+	{
+		if (gen->map.map_matrix[new_y][new_x] == 'D')
+			return ;
+		gen->map.map_matrix[new_y][new_x] = 'Z';
+	}
+}
+
 void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 {
+	int		old_x;
+	int		old_y;
+
+	old_x = (int)z->x;
+	old_y = (int)z->y;
 	if (z->is_dead && z->is_hit)
 		return ;
 	if (d.dist > 0.4)
@@ -77,6 +107,8 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 	{
 		z->is_walking = 0;
 	}
+	if (old_x != (int)z->x || old_y != (int)z->y)
+		update_matrix_zombie(old_x, old_y, z, gen);
 }
 
 void	update_zombies_position(t_gen *gen)

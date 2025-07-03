@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/01 23:06:40 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/03 10:32:31 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	load_button_images(t_gen *gen)
 
 void	init_main(t_gen *gen)
 {
+	srand(time(NULL));
 	gen->num_zombies = 0;
 	gen->projectiles = NULL;
 	gen->mouse_initialized = 0;
@@ -34,40 +35,61 @@ void	init_main(t_gen *gen)
 	gen->mouse_vertical_offset = 0;
 	gen->in_menu = 1;
 	gen->map_button_count = 0;
+	gen->counter_spawn = 0;
 }
 
-t_tex *get_texture(char *path, t_gen *gen)
+t_tex	*get_texture(char *path, t_gen *gen)
 {
-	t_tex *tex = malloc(sizeof(t_tex));
+	t_tex	*tex;
+
+	tex = malloc(sizeof(t_tex));
 	if (!tex)
 		return (NULL);
-	tex->img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr, path, &tex->width, &tex->height);
+	tex->img_ptr = mlx_xpm_file_to_image(gen->mlx_ptr, path,
+			&tex->width, &tex->height);
 	if (!tex->img_ptr)
 	{
 		printf(RED "Error loading texture: %s\n" RESET, path);
 		free(tex);
 		return (NULL);
 	}
-	tex->data = mlx_get_data_addr(tex->img_ptr, &tex->bpp, &tex->line_length, &tex->endian);
+	tex->data = mlx_get_data_addr(tex->img_ptr, &tex->bpp,
+			&tex->line_length, &tex->endian);
 	return (tex);
 }
 
-void	load_animation(t_gen *gen, const char *base_path, t_tex **tex_array, int count)
+void	util_load_animation(char **ext,
+	char **path, const char *base_path, char *num)
 {
-	for (int i = 0; i < count; i++)
+	*ext = ft_strjoin(base_path, num);
+	*path = ft_strjoin(*ext, ".xpm");
+	free(num);
+	free(*ext);
+}
+
+void	load_animation(t_gen *gen, const char *base_path,
+	t_tex **tex_array, int count)
+{
+	int		i;
+	char	*num;
+	char	*ext;
+	char	*path;
+
+	i = -1;
+	while (++i < count)
 	{
-		char *num = ft_itoa(i);
-		char *ext = ft_strjoin(base_path, num);
-		char *path = ft_strjoin(ext, ".xpm");
-		free(num);
-		free(ext);
+		num = ft_itoa(i);
+		util_load_animation(&ext, &path, base_path, num);
 		if (!path)
+		{
+			i++;
 			continue ;
+		}
 		tex_array[i] = get_texture(path, gen);
 		if (!tex_array[i])
 		{
-			fprintf(stderr, RED "Failed to load texture: %s\n" RESET, path);
 			free(path);
+			i++;
 			continue ;
 		}
 		free(path);
@@ -82,10 +104,15 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
+	load_texture(gen->mlx_ptr, "textures/door/door.xpm",
+		&gen->door.door_closed);
+	load_texture(gen->mlx_ptr, "textures/door/door1.xpm",
+		&gen->door.door_half_open);
+	load_texture(gen->mlx_ptr, "textures/door/door2.xpm", &gen->door.door_open);
 	load_animation(gen, "zombie_anim/walking_xpm/Zwalking",
-			gen->zombie_tex_walking, 26);
+		gen->zombie_tex_walking, 26);
 	load_animation(gen, "zombie_anim/attacking_xpm/Zattacking",
-			gen->zombie_tex_attacking, 17);
+		gen->zombie_tex_attacking, 17);
 	load_animation(gen, "zombie_anim/dying_xpm/Zdying",
 			gen->zombie_tex_dead, 21);
 	load_animation(gen, "zombie_anim/hitted_xpm/Zhitted",

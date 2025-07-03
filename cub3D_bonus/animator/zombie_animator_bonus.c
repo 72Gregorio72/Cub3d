@@ -12,7 +12,7 @@
 
 #include "cub3d_bonus.h"
 
-void	update_walking(t_zombie *z)
+void	util_animate_zombies(t_zombie *z, t_gen *gen)
 {
 	if (z->is_dead && z->is_hit)
 		return ;

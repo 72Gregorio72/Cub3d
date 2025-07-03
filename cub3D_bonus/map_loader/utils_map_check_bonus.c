@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:55:08 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/30 16:04:41 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 10:28:46 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	util_map_check(t_gen *gen, int i, int j)
 	&& gen->map.map_matrix[i][j] != 'S'
 	&& gen->map.map_matrix[i][j] != 'W'
 	&& gen->map.map_matrix[i][j] != 'E'
-	&& gen->map.map_matrix[i][j] != 'Z')
+	&& gen->map.map_matrix[i][j] != 'Z'
+	&& gen->map.map_matrix[i][j] != 'D')
 		return (1);
 	return (0);
 }

@@ -41,7 +41,6 @@ void	set_player_position(t_gen *gen)
 				gen->player.plane_x = 0.66;
 				gen->player.plane_y = 0;
 			}
-			//load_zombie(gen, y, x);
 		}
 	}
 }

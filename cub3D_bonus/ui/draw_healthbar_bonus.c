@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_healthbar_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:29:53 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/06/26 15:29:54 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:52:28 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,29 @@
 
 void	draw_healthbar(t_gen *gen)
 {
-	int	health_bar_width = 200;
-	int	health_bar_height = 30;
-	int	x = SCREEN_X - health_bar_width - 20;
-	int	y = 20;
-	int	health_percentage = (gen->health * 100) / gen->max_health;
-	int	health_color = 0x00FF00;
-	
-	for (int i = 0; i < health_bar_height; i++)
+	int	health_bar_width;
+	int	health_bar_height;
+	int	health_percentage;
+	int	i;
+	int	j;
+
+	health_bar_width = 200;
+	health_bar_height = 30;
+	health_percentage = (gen->health * 100) / gen->max_health;
+	i = -1;
+	while (++i < health_bar_height)
 	{
-		for (int j = 0; j < health_bar_width; j++)
-			put_pixel(&gen->img, x + j, y + i, 0x000000);
+		j = -1;
+		while (++j < health_bar_width)
+			put_pixel(&gen->img,
+				SCREEN_X - health_bar_width - 20 + j, 20 + i, 0x000000);
 	}
-	for (int i = 0; i < health_bar_height; i++)
+	i = -1;
+	while (++i < health_bar_height)
 	{
-		for (int j = 0; j < (health_bar_width * health_percentage / 100); j++)
-			put_pixel(&gen->img, x + j, y + i, health_color);
+		j = -1;
+		while (++j < (health_bar_width * health_percentage / 100))
+			put_pixel(&gen->img,
+				SCREEN_X - health_bar_width - 20 + j, 20 + i, 0x00FF00);
 	}
 }

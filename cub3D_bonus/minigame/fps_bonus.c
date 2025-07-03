@@ -54,6 +54,8 @@ void	check_draw(t_gen *gen, double next_x, double next_y, t_projectile *curr)
 	int	map_y = (int)next_y;
 	int	screen_xy[2];
 
+	if (gen->map.map_matrix[(int)next_y][(int)next_x] == '1'
+		|| gen->map.map_matrix[(int)next_y][(int)next_x] == 'D')
 	if (map_x < 0 || map_y < 0 ||
 		map_y >= gen->map.height ||
 		map_x >= gen->map.width ||

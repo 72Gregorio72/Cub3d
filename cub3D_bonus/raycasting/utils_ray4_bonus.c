@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:02:12 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 13:25:04 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/06/30 14:38:10 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,20 @@ void	update_matrix(int old_x, int old_y, t_player *player, t_gen *gen)
 
 	if (old_y >= 0 && old_y < gen->map.height
 		&& old_x >= 0 && old_x < gen->map.width)
+	{
+		if (gen->map.map_matrix[old_y][old_x] == 'D')
+			return ;
 		gen->map.map_matrix[old_y][old_x] = '0';
+	}
 	new_x = (int)player->x;
 	new_y = (int)player->y;
 	if (new_y >= 0 && new_y < gen->map.height
 		&& new_x >= 0 && new_x < gen->map.width)
+	{
+		if (gen->map.map_matrix[new_y][new_x] == 'D')
+			return ;
 		gen->map.map_matrix[new_y][new_x] = gen->player_orientation;
+	}
 }
 
 void	check_movements_util_2(t_gen *gen)
