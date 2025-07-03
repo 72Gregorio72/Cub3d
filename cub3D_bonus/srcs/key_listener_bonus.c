@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 13:15:29 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:29:27 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,18 @@ char	*mlx_get_key_name(int keycode)
 	return ("?");
 }
 
+int	mouse_release(int button, int x, int y, t_gen *gen)
+{
+	(void)x;
+	(void)y;
+	if (button == 1)
+	{
+		if (gen->dragging_slider)
+			gen->dragging_slider = 0;
+	}
+	return (0);
+}
+
 int	on_mouse_click(int button, int x, int y, t_gen *gen)
 {
 	if (button == MOUSE_LEFT_CLICK && !gen->in_menu && gen->ignore_next_mouse)
@@ -151,7 +163,6 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 			{
 				gen->selected_key_index = i;
 				gen->waiting_key_for = i + 1;
-				open_options_menu(gen);
 				return (0);
 			}
 		}
@@ -160,20 +171,7 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 	{
 		if (x >= gen->dragging_slider_button.x1 && x <= gen->dragging_slider_button.x2
 				&& y >= gen->dragging_slider_button.y1 && y <= gen->dragging_slider_button.y2)
-		{
 			gen->dragging_slider = 1;
-			printf("Dragging slider\n");
-		}
-		else
-			gen->dragging_slider = 0;
-	}
-	if (button == MOUSE_LEFT_RELEASE)
-	{
-		if (gen->dragging_slider)
-		{
-			gen->dragging_slider = 0;
-			printf("Stopped dragging slider\n");
-		}
 	}
 	if (gen->in_menu)
 	{

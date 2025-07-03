@@ -132,6 +132,7 @@ int	main(int ac, char **av)
 	mlx_mouse_hook(gen.win_ptr, &on_mouse_click, &gen);
 	mlx_hook(gen.win_ptr, MotionNotify, PointerMotionMask,
 		&on_mouse_move, &gen);
+	mlx_hook(gen.win_ptr, 5, 1L<<3, mouse_release, &gen);
 	mlx_loop_hook(gen.mlx_ptr, game_loop, &gen);
 	mlx_loop(gen.mlx_ptr);
 	return (0);

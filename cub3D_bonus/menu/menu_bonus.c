@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 13:09:39 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:29:23 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,13 +397,8 @@ void draw_map_preview_scaled(t_gen *gen, int base_x, int base_y, int width, int 
 	}
 }
 
-void	open_options_menu(t_gen *gen)
+void	draw_slider(t_gen *gen)
 {
-	clear_image(&gen->img);
-	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
-	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
-	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 100, 80, 0xFFFFFF, "OPTIONS");
-	mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, 200, 0xFFFFFF, "Mouse Sensitivity:");
 	int slider_x = 100 + (int)(gen->player_options.mouse_sensitivity * 200.0);
 	for (int x = 100; x <= 300; x++)
 		put_pixel(&gen->img, x, 220, 0xAAAAAA);
@@ -415,7 +410,16 @@ void	open_options_menu(t_gen *gen)
 	gen->dragging_slider_button.x2 = slider_x + 5;
 	gen->dragging_slider_button.y2 = 225;
 	gen->player_options.mouse_sensitivity = (slider_x - 100) / 200.0;
-	printf("Mouse Sensitivity: %.2f\n", gen->player_options.mouse_sensitivity);
+}
+
+void	open_options_menu(t_gen *gen)
+{
+	clear_image(&gen->img);
+	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 100, 80, 0xFFFFFF, "OPTIONS");
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, 200, 0xFFFFFF, "Mouse Sensitivity:");
+	draw_slider(gen);
 	const char *keys[] = {"UP", "DOWN", "LEFT", "RIGHT"};
 	int *bindings[] = {
 		&gen->player_options.key_up,
@@ -423,7 +427,6 @@ void	open_options_menu(t_gen *gen)
 		&gen->player_options.key_left,
 		&gen->player_options.key_right
 	};
-
 	for (int i = 0; i < 4; i++)
 	{
 		int y = 300 + i * 50;

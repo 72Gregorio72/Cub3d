@@ -439,5 +439,7 @@ void	rotate_view(t_gen *gen);
 int		zombie_in_door(t_gen *gen);
 void	open_options_menu(t_gen *gen);
 char	*mlx_get_key_name(int keycode);
+int		mouse_release(int button, int x, int y, t_gen *gen);
+void	draw_slider(t_gen *gen);
 
 #endif
