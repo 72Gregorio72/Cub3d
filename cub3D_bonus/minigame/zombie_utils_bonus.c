@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 12:03:50 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:17:25 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,11 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 			d.next_y = 0;
 		else if (d.next_y >= gen->map.height)
 			d.next_y = gen->map.height - 1;
-		if (gen->map.map_matrix[(int)z->y][(int)d.next_x] != '1')
+		if (gen->map.map_matrix[(int)z->y][(int)d.next_x] != '1'
+			&& gen->map.map_matrix[(int)z->y][(int)d.next_x] != 'D')
 			z->x = d.next_x;
-		if (gen->map.map_matrix[(int)d.next_y][(int)z->x] != '1')
+		if (gen->map.map_matrix[(int)d.next_y][(int)z->x] != '1'
+			&& gen->map.map_matrix[(int)d.next_y][(int)z->x] != 'D')
 			z->y = d.next_y;
 	}
 	else

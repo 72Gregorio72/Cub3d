@@ -12,27 +12,6 @@
 
 #include "cub3d_bonus.h"
 
-void	load_zombies(t_gen *gen)
-{
-	int	i;
-	int	j;
-
-	gen->zombies = NULL;
-	gen->num_zombies = 0;
-	i = 0;
-	while (i < gen->map.height)
-	{
-		j = 0;
-		while (j < gen->map.width)
-		{
-			if (gen->map.map_matrix[i][j] == 'Z')
-				add_zombie(gen, j + 0.5, i + 0.5);
-			j++;
-		}
-		i++;
-	}
-}
-
 void	util_spawn_zombies(unsigned long *last_spawn_time,
 	unsigned long *current_time, t_gen *gen)
 {
@@ -76,16 +55,13 @@ void	spawn_zombies(t_gen *gen)
 
 int	game_loop(t_gen *gen)
 {
-	if (gen->in_menu)
-		return (0);
 	static unsigned long	last_time;
 	unsigned long			current_time;
 
+	if (gen->in_menu)
+		return (0);
 	last_time = 0;
-	if (gen->keys.left)
-		rotate_player(gen, -ROTATE_SPEED);
-	if (gen->keys.right)
-		rotate_player(gen, ROTATE_SPEED);
+	util_rotate_player(gen);
 	clear_image(&gen->img);
 	spawn_zombies(gen);
 	raycasting(gen);
@@ -119,11 +95,7 @@ int	main(int ac, char **av)
 		return (free_gen(&gen, 1), 0);
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
-	load_textures(&gen);
-	load_zombies(&gen);
-	load_button_images(&gen);
-	rotate_view(&gen);
-	//gen.in_menu = 0;
+	load_img(&gen);
 	draw_menu(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);

@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 14:37:17 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:18:32 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	on_key_release(int keycode, t_gen *gen)
 		gen->keys.right = 0;
 	if (keycode == KB_E)
 		draw_menu(gen);
+	if (keycode == KB_Q)
+		gen->door.flag_door_open = 1;
 	return (0);
 }
 
@@ -109,7 +111,7 @@ int	on_mouse_move(int x, int y, t_gen *gen)
 			gen->player_options.mouse_sensitivity = 0.1;
 		open_options_menu(gen);
 	}
-	if (gen->in_menu)
+	if (gen->in_menu && gen->map_selection)
 		return (0);
 	if (!gen->mouse_initialized)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ray_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:02 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/03 10:30:42 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:12:34 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,16 @@ void	init_ray(t_ray *ray, t_gen *gen)
 
 void	check_hit_doors(t_ray *ray, t_gen *gen)
 {
-	t_zombie	*z;
 	double		door_x;
 	double		door_y;
-	double		dist;
 
 	door_x = ray->map_x + 0.5;
 	door_y = ray->map_y + 0.5;
-	z = gen->zombies;
 	gen->door.dist_player = sqrt(pow(gen->player.x - door_x, 2)
 			+ pow(gen->player.y - door_y, 2));
-	gen->door.dist_zombie = 1000.0;
-	while (z)
-	{
-		dist = sqrt(pow(z->x - door_x, 2) + pow(z->y - door_y, 2));
-		if (dist < gen->door.dist_zombie)
-			gen->door.dist_zombie = dist;
-		z = z->next;
-	}
-	if ((gen->door.dist_player >= 1.0 || gen->door.dist_zombie < 2.0)
-		&& !zombie_in_door(gen))
+	if (gen->door.dist_player >= 1.5)
+		gen->door.flag_door_open = 0;
+	if (!gen->door.flag_door_open)
 	{
 		ray->hit = 1;
 		ray->hit_tile = 'D';

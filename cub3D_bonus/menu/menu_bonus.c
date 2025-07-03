@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:12:14 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:16:49 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,9 @@ void	free_gen_map(t_gen *gen)
 
 	if (gen->map.map_matrix)
 	{
-		i = 0;
-		while (i < gen->map.height)
-		{
+		i = -1;
+		while (++i < gen->map.height)
 			free(gen->map.map_matrix[i]);
-			i++;
-		}
 		free(gen->map.map_matrix);
 		gen->map.map_matrix = NULL;
 	}
@@ -107,6 +104,10 @@ void	free_gen_map(t_gen *gen)
 	if (gen->map.ceil_color)
 		free(gen->map.ceil_color);
 	free_gen_map_util(gen);
+	if (gen->map.c_tex)
+		free(gen->map.c_tex);
+	if (gen->map.f_tex)
+		free(gen->map.f_tex);
 }
 
 int	get_map(char *path, t_gen *gen)
@@ -257,63 +258,6 @@ void	draw_map_preview(t_gen *gen, int preview_origin_x, int preview_origin_y)
 	}
 }
 
-void	draw_map_selector(t_gen *gen)
-{
-	int		i;
-	int		count;
-	char	**map_files;
-	int		base_x[] = {100, 750, 1400};
-	int		col, row;
-	int		x, y;
-	int		offset_y = gen->scroll_offset_y;
-
-	clear_image(&gen->img);
-	map_files = get_map_files(&count);
-	if (!map_files || count == 0)
-	{
-		mlx_string_put(gen->mlx_ptr, gen->win_ptr, 50, 50,
-			0xFF0000, "No map files found in /maps");
-		return ;
-	}
-	gen->map_button_count = 0;
-	i = 0;
-	while (i < count && i < MAX_MAPS)
-	{
-		col = i % 3;
-		row = i / 3;
-
-		x = base_x[col];
-		y = 150 + row * (PREVIEW_HEIGHT + PREVIEW_MARGIN_Y) + offset_y;
-		if (get_map(map_files[i], gen))
-			draw_map_preview(gen, x, y);
-		free(gen->map_file_path);
-		gen->map_file_path = ft_strdup(map_files[i]);
-		gen->map_buttons[gen->map_button_count++] = (t_map_button){
-			.x0 = x,
-			.y0 = y,
-			.x1 = x + PREVIEW_WIDTH,
-			.y1 = y + PREVIEW_HEIGHT,
-			.text = map_files[i] + 5,
-			.action = NULL,
-			.filepath = ft_strdup(map_files[i])
-		};
-
-		i++;
-	}
-	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
-	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 80, 100,
-		0xFFFFFF, "Select a map:");
-	for (i = 0; i < gen->map_button_count; i++)
-	{
-		int text_x = gen->map_buttons[i].x0 + 100 - ft_strlen(gen->map_buttons[i].text) * 4;
-		int text_y = gen->map_buttons[i].y0 + 20;
-		mlx_string_put(gen->mlx_ptr, gen->win_ptr, text_x, text_y, 0x000000, gen->map_buttons[i].text);
-		free(map_files[i]);
-	}
-
-	free(map_files);
-}
-
 void	start_game(t_gen *gen)
 {
 	gen->in_menu = 0;
@@ -322,8 +266,16 @@ void	start_game(t_gen *gen)
 
 void	open_map_selection(t_gen *gen)
 {
+	gen->map_selection = 1;
 	clear_image(&gen->img);
 	draw_map_selector(gen);
+}
+
+void	back_home_menu(t_gen *gen)
+{
+	gen->map_selection = 0;
+	clear_image(&gen->img);
+	draw_menu(gen);
 }
 
 void	exit_game(t_gen *gen)
@@ -382,13 +334,82 @@ void	draw_button_with_action(t_gen *gen, t_map_button *button)
 		tex = &gen->btn_exit_game;
 	else if (button->action == open_options_menu)
 		tex = &gen->btn_options;
+	else if (button->action == back_home_menu)
+		tex = &gen->btn_back_home;
 	if (tex && tex->img_ptr)
 	{
 		int offset_x = (button->x1 - button->x0 - tex->width) / 2;
 		int offset_y = (button->y1 - button->y0 - tex->height) / 2;
 		draw_texture(&gen->img, tex, button->x0 + offset_x, button->y0 + offset_y);
 	}
-	draw_button_debug_outline(&gen->img, button->x0, button->y0, button->x1 - 1, button->y1 - 1, 0xFF0000);
+}
+
+
+void	draw_map_selector(t_gen *gen)
+{
+	int		i;
+	int		count;
+	char	**map_files;
+	int		base_x[] = {100, 750, 1400};
+	int		col, row;
+	int		x, y;
+	int		offset_y = gen->scroll_offset_y;
+
+	clear_image(&gen->img);
+	map_files = get_map_files(&count);
+	if (!map_files || count == 0)
+	{
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr, 50, 50,
+			0xFF0000, "No map files found in /maps");
+		return ;
+	}
+	gen->map_button_count = 0;
+	i = 0;
+	while (i < count && i < MAX_MAPS)
+	{
+		col = i % 3;
+		row = i / 3;
+
+		x = base_x[col];
+		y = 150 + row * (PREVIEW_HEIGHT + PREVIEW_MARGIN_Y) + offset_y;
+		if (get_map(map_files[i], gen))
+			draw_map_preview(gen, x, y);
+		free(gen->map_file_path);
+		gen->map_file_path = ft_strdup(map_files[i]);
+		gen->map_buttons[gen->map_button_count++] = (t_map_button){
+			.x0 = x,
+			.y0 = y,
+			.x1 = x + PREVIEW_WIDTH,
+			.y1 = y + PREVIEW_HEIGHT,
+			.text = map_files[i] + 5,
+			.action = NULL,
+			.filepath = ft_strdup(map_files[i])
+		};
+		i++;
+	}
+	int padding = 30;
+	int	button_w = 300;
+	int	button_h = 130;
+	t_map_button	button;
+	set_button(&button,
+		SCREEN_X - button_w - padding,
+		padding,
+		SCREEN_X - padding,
+		padding + button_h,
+		"", back_home_menu);
+	draw_button_with_action(gen, &button);
+	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
+	gen->map_buttons[3] = button;
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 80, 100,
+		0xFFFFFF, "Select a map:");
+	for (i = 0; i < gen->map_button_count; i++)
+	{
+		int text_x = gen->map_buttons[i].x0 + 100 - ft_strlen(gen->map_buttons[i].text) * 4;
+		int text_y = gen->map_buttons[i].y0 + 20;
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr, text_x, text_y, 0x000000, gen->map_buttons[i].text);
+		free(map_files[i]);
+	}
+	free(map_files);
 }
 
 void draw_map_preview_scaled(t_gen *gen, int base_x, int base_y, int width, int height, int cube_size)

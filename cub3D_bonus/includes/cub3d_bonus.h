@@ -45,6 +45,7 @@
 # define KB_A 97
 # define KB_D 100
 # define KB_E 101
+# define KB_Q 113
 # define KB_ESC 65307
 # define KB_UP 65362
 # define KB_DOWN 65364
@@ -87,7 +88,7 @@
 # define PREVIEW_HEIGHT 200
 # define PREVIEW_MARGIN_Y 80
 
-typedef struct s_gen t_gen;
+typedef struct s_gen	t_gen;
 
 typedef struct s_point
 {
@@ -243,8 +244,8 @@ typedef struct s_door
 	t_tex		door_closed;
 	t_tex		door_half_open;
 	t_tex		door_open;
-	double		dist_zombie;
 	double		dist_player;
+	int			flag_door_open;
 }				t_door;
 
 typedef struct player_options
@@ -268,6 +269,42 @@ typedef struct s_key_button
 
 typedef struct s_gen
 {
+	void			*mlx_ptr;
+	void			*win_ptr;
+	int				ignore_next_mouse;
+	int				last_mouse_x;
+	int				mouse_initialized;
+	int				last_mouse_y;
+	t_img			img;
+	t_player		player;
+	t_keys			keys;
+	t_map			map;
+	t_zombie		*zombies;
+	int				num_zombies;
+	t_projectile	*projectiles;
+	char			player_orientation;
+	char			arrow_orientation;
+	t_tex			*zombie_tex_walking[26];
+	t_tex			*zombie_tex_attacking[17];
+	t_tex			*zombie_tex_dead[21];
+	t_tex			*zombie_tex_hit[13];
+	t_door			door;
+	int				max_health;
+	int				health;
+	int				ammo;
+	int				mouse_vertical_offset;
+	double			zbuffer[SCREEN_X];
+	int				in_menu;
+	t_map_button	map_buttons[MAX_MAPS];
+	int				map_button_count;
+	int				scroll_offset_y;
+	t_tex			btn_start_game;
+	t_tex			btn_map_selection;
+	t_tex			btn_exit_game;
+	t_tex			btn_back_home;
+	char			*map_file_path;
+	int				counter_spawn;
+	int				map_selection;
 	void				*mlx_ptr;
 	void				*win_ptr;
 	int					ignore_next_mouse;
@@ -451,6 +488,13 @@ void	reset_player(t_gen *gen);
 int		get_map(char *path, t_gen *gen);
 size_t	get_current_time(void);
 void	rotate_view(t_gen *gen);
+int		zombie_near_door(t_gen *gen, t_ray *ray);
+void	load_zombies(t_gen *gen);
+
+//utils
+void	util_rotate_player(t_gen *gen);
+void	load_img(t_gen *gen);
+void	util_destroy_zombie_tex(t_gen *gen);
 int		zombie_in_door(t_gen *gen);
 void	open_options_menu(t_gen *gen);
 char	*mlx_get_key_name(int keycode);
