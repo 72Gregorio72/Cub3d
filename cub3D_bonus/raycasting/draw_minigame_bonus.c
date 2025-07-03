@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 10:30:14 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 10:35:53 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,7 @@ void draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z)
 	int y, x;
 	int tex_x, tex_y;
 	double tex_pos;
-	int y, x;
-	int tex_x, tex_y;
-	double tex_pos;
 
-	int sprite_screen_x = d->sprite_screen_x;
-	int sprite_height = d->line_height;
-	int sprite_width = sprite_height;
 	int sprite_screen_x = d->sprite_screen_x;
 	int sprite_height = d->line_height;
 	int sprite_width = sprite_height;
@@ -65,10 +59,6 @@ void draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z)
 	else if (sprite_width < MIN_SPRITE_WIDTH)
 		sprite_width = MIN_SPRITE_WIDTH;
 
-	int draw_start_y = fmax(0, d->draw_start);
-	int draw_end_y = fmin(SCREEN_Y - 1, d->draw_end);
-	int draw_start_x = fmax(0, sprite_screen_x - sprite_width / 2);
-	int draw_end_x = fmin(SCREEN_X - 1, sprite_screen_x + sprite_width / 2);
 	int draw_start_y = fmax(0, d->draw_start);
 	int draw_end_y = fmin(SCREEN_Y - 1, d->draw_end);
 	int draw_start_x = fmax(0, sprite_screen_x - sprite_width / 2);

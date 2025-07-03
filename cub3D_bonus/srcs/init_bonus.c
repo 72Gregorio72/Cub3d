@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 10:32:31 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 11:52:31 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	load_button_images(t_gen *gen)
 {
-	gen->btn_start_game = *get_texture("textures/start_btn.xpm", gen);
-	gen->btn_map_selection = *get_texture("textures/select_map.xpm", gen);
-	gen->btn_exit_game = *get_texture("textures/quit.xpm", gen);
+	load_texture(gen->mlx_ptr, "textures/start_btn.xpm", &gen->btn_start_game);
+	load_texture(gen->mlx_ptr, "textures/select_map.xpm", &gen->btn_map_selection);
+	load_texture(gen->mlx_ptr, "textures/quit.xpm", &gen->btn_exit_game);
 }
 
 void	init_main(t_gen *gen)
@@ -36,6 +36,7 @@ void	init_main(t_gen *gen)
 	gen->in_menu = 1;
 	gen->map_button_count = 0;
 	gen->counter_spawn = 0;
+	gen->scroll_offset_y = 0;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)
@@ -119,7 +120,25 @@ void	load_textures(t_gen *gen)
 			gen->zombie_tex_hit, 13);
 }
 
+void	reset_zombies(t_gen *gen)
+{
+	t_zombie	*current;
+	t_zombie	*next;
+
+	current = gen->zombies;
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	gen->zombies = NULL;
+	gen->num_zombies = 0;
+	gen->counter_spawn = 0;
+}
+
 void	reset_player(t_gen *gen)
 {
 	get_map(gen->map_file_path, gen);
+	reset_zombies(gen);
 }

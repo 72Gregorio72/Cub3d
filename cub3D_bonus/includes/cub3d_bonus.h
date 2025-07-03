@@ -213,12 +213,12 @@ typedef struct s_zombie
 
 typedef struct s_map_button
 {
-	int	x0;
-	int	y0;
-	int	x1;
-	int	y1;
-	char *text;
-	void (*action)(t_gen *gen);
+	int		x0;
+	int		y0;
+	int		x1;
+	int		y1;
+	char	*text;
+	void	(*action)(t_gen *gen);
 	char	*filepath;
 }	t_map_button;
 
@@ -266,6 +266,7 @@ typedef struct s_gen
 	t_tex			btn_map_selection;
 	t_tex			btn_exit_game;
 	char			*map_file_path;
+	int				counter_spawn;
 }				t_gen;
 
 typedef struct s_ray
@@ -376,7 +377,6 @@ void	add_projectile(t_gen *gen);
 void	util_calculate_prog(t_draw_data d, t_gen *gen, int x, int y);
 
 // zombie
-void	update_walking(t_zombie *z);
 void	update_hit(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_attacking(t_zombie *z);
@@ -406,5 +406,8 @@ t_tex	*get_texture(char *path, t_gen *gen);
 void	load_button_images(t_gen *gen);
 void	reset_player(t_gen *gen);
 int		get_map(char *path, t_gen *gen);
+size_t	get_current_time(void);
+void	rotate_view(t_gen *gen);
+int		zombie_in_door(t_gen *gen);
 
 #endif

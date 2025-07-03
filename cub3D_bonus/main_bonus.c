@@ -123,6 +123,7 @@ int	main(int ac, char **av)
 	load_zombies(&gen);
 	load_button_images(&gen);
 	rotate_view(&gen);
+	//gen.in_menu = 0;
 	draw_menu(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);

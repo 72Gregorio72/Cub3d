@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 10:29:52 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 11:43:58 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,24 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 		d.step_y = d.dy / d.dist * ZOMBIE_SPEED;
 		d.next_x = z->x + d.step_x;
 		d.next_y = z->y + d.step_y;
+		if (d.next_x < 0)
+			d.next_x = 0;
+		else if (d.next_x >= gen->map.width)
+			d.next_x = gen->map.width - 1;
+		if (d.next_y < 0)
+			d.next_y = 0;
+		else if (d.next_y >= gen->map.height)
+			d.next_y = gen->map.height - 1;
+		printf("Zombie at (%d, %d) moving to (%f, %f)\n",
+			(int)z->x, (int)z->y, d.next_x, d.next_y);
+		printf("num zombies: %d\n", gen->num_zombies);
 		if (gen->map.map_matrix[(int)z->y][(int)d.next_x] != '1')
 			z->x = d.next_x;
 		if (gen->map.map_matrix[(int)d.next_y][(int)z->x] != '1')
 			z->y = d.next_y;
 	}
 	else
-	{
 		z->is_walking = 0;
-	}
 	if (old_x != (int)z->x || old_y != (int)z->y)
 		update_matrix_zombie(old_x, old_y, z, gen);
 }
@@ -118,6 +127,8 @@ void	update_zombies_position(t_gen *gen)
 	size_t		now;
 
 	z = gen->zombies;
+	if (!z)
+		return ;
 	now = get_current_time();
 	while (z)
 	{

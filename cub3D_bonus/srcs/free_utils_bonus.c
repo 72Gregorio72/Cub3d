@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 09:58:43 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/03 11:47:54 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,12 @@ void	util_close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->door.door_half_open.img_ptr);
 	if (gen->door.door_open.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->door.door_open.img_ptr);
+	if (gen->btn_exit_game.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->btn_exit_game.img_ptr);
+	if (gen->btn_map_selection.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->btn_map_selection.img_ptr);
+	if (gen->btn_start_game.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->btn_start_game.img_ptr);
 }
 
 int	close_window(t_gen *gen)

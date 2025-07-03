@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   zombie_animator_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/27 10:56:24 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/27 10:56:24 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/03 10:37:08 by gpicchio          #+#    #+#             */
+/*   Updated: 2025/07/03 10:37:08 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	util_animate_zombies(t_zombie *z, t_gen *gen)
+void	update_walking(t_zombie *z)
 {
-	if (z->is_dead && z->is_hit)
-		return ;
 	z->is_walking = 1;
 	z->is_attacking = 0;
+	z->is_dead = 0;
+	z->is_hit = 0;
 	z->animation_frame = 0;
 }
 

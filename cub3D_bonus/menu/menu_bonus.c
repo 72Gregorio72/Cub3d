@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/01 23:27:22 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/03 11:24:31 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,6 @@ void	free_gen_map(t_gen *gen)
 int	get_map(char *path, t_gen *gen)
 {
 	free_gen_map(gen);
-	if (gen->map.map_matrix)
-	{
-		free_matrix(gen->map.map_matrix, gen->map.height);
-		gen->map.map_matrix = NULL;
-	}
 	if (gen->map.floor_color)
 		free(gen->map.floor_color);
 	if (gen->map.ceil_color)
@@ -206,7 +201,9 @@ void	draw_map_preview(t_gen *gen, int preview_origin_x, int preview_origin_y)
 				{
 					for (int x = 0; x < cube_size; x++)
 					{
-						int color = (x == 0 || y == 0 || x == cube_size - 1 || y == cube_size - 1) ? 0x000000 : 0xCCCCCC;
+						int color = 0x000000;
+						if (y == 0 || y == cube_size - 1 || x == 0 || x == cube_size - 1)
+							color = 0xAAAAAA;
 						put_pixel(&gen->img, iso_x + x, iso_y + y, color);
 					}
 				}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/01 23:19:37 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/03 11:23:10 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,6 @@ int	on_key_press(int keycode, t_gen *gen)
 	{
 		close_window(gen);
 		exit(0);
-	}
-	if (gen->in_menu)
-	{
-		if (keycode == 'w' || keycode == 'W')
-		{
-			gen->in_menu = 0;
-			reset_player(gen);
-			mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
-		}
-		if (keycode == 'q' || keycode == 'Q')
-		{
-			close_window(gen);
-			exit(0);
-		}
-		return (0);
 	}
 	if (keycode == KB_W)
 		gen->keys.w = 1;
@@ -117,7 +102,7 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 				else if (btn.action)
 					btn.action(gen);
 				gen->ignore_next_mouse = 1;
-				break;
+				break ;
 			}
 		}
 	}
