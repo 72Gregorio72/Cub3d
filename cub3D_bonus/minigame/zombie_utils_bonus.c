@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   zombie_utils_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 11:43:58 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:04:33 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,11 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 			d.next_y = 0;
 		else if (d.next_y >= gen->map.height)
 			d.next_y = gen->map.height - 1;
-		printf("Zombie at (%d, %d) moving to (%f, %f)\n",
-			(int)z->x, (int)z->y, d.next_x, d.next_y);
-		printf("num zombies: %d\n", gen->num_zombies);
-		if (gen->map.map_matrix[(int)z->y][(int)d.next_x] != '1')
+		if (gen->map.map_matrix[(int)z->y][(int)d.next_x] != '1'
+			&& gen->map.map_matrix[(int)z->y][(int)d.next_x] != 'D')
 			z->x = d.next_x;
-		if (gen->map.map_matrix[(int)d.next_y][(int)z->x] != '1')
+		if (gen->map.map_matrix[(int)d.next_y][(int)z->x] != '1'
+			&& gen->map.map_matrix[(int)d.next_y][(int)z->x] != 'D')
 			z->y = d.next_y;
 	}
 	else

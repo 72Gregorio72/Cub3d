@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 11:23:10 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:25:15 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	on_key_release(int keycode, t_gen *gen)
 		gen->keys.right = 0;
 	if (keycode == KB_E)
 		draw_menu(gen);
+	if (keycode == KB_Q)
+		gen->door.flag_door_open = 1;
 	return (0);
 }
 
@@ -106,7 +108,7 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 			}
 		}
 	}
-	if (gen->in_menu)
+	if (gen->in_menu && gen->map_selection)
 	{
 		if (button == MOUSE_SCROLL_UP)
 		{

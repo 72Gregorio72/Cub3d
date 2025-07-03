@@ -45,6 +45,7 @@
 # define KB_A 97
 # define KB_D 100
 # define KB_E 101
+# define KB_Q 113
 # define KB_ESC 65307
 # define KB_UP 65362
 # define KB_DOWN 65364
@@ -86,7 +87,7 @@
 # define PREVIEW_HEIGHT 200
 # define PREVIEW_MARGIN_Y 80
 
-typedef struct s_gen t_gen;
+typedef struct s_gen	t_gen;
 
 typedef struct s_point
 {
@@ -227,8 +228,8 @@ typedef struct s_door
 	t_tex		door_closed;
 	t_tex		door_half_open;
 	t_tex		door_open;
-	double		dist_zombie;
 	double		dist_player;
+	int			flag_door_open;
 }				t_door;
 
 typedef struct s_gen
@@ -265,8 +266,10 @@ typedef struct s_gen
 	t_tex			btn_start_game;
 	t_tex			btn_map_selection;
 	t_tex			btn_exit_game;
+	t_tex			btn_back_home;
 	char			*map_file_path;
 	int				counter_spawn;
+	int				map_selection;
 }				t_gen;
 
 typedef struct s_ray
@@ -408,6 +411,12 @@ void	reset_player(t_gen *gen);
 int		get_map(char *path, t_gen *gen);
 size_t	get_current_time(void);
 void	rotate_view(t_gen *gen);
-int		zombie_in_door(t_gen *gen);
+int		zombie_near_door(t_gen *gen, t_ray *ray);
+void	load_zombies(t_gen *gen);
+
+//utils
+void	util_rotate_player(t_gen *gen);
+void	load_img(t_gen *gen);
+void	util_destroy_zombie_tex(t_gen *gen);
 
 #endif

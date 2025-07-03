@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 11:52:31 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:13:47 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	load_button_images(t_gen *gen)
 {
 	load_texture(gen->mlx_ptr, "textures/start_btn.xpm", &gen->btn_start_game);
-	load_texture(gen->mlx_ptr, "textures/select_map.xpm", &gen->btn_map_selection);
+	load_texture(gen->mlx_ptr, "textures/select_map.xpm",
+		&gen->btn_map_selection);
 	load_texture(gen->mlx_ptr, "textures/quit.xpm", &gen->btn_exit_game);
+	load_texture(gen->mlx_ptr, "textures/quit.xpm", &gen->btn_back_home);
 }
 
 void	init_main(t_gen *gen)
@@ -37,6 +39,8 @@ void	init_main(t_gen *gen)
 	gen->map_button_count = 0;
 	gen->counter_spawn = 0;
 	gen->scroll_offset_y = 0;
+	gen->map_selection = 0;
+	gen->door.flag_door_open = 0;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)
@@ -141,4 +145,5 @@ void	reset_player(t_gen *gen)
 {
 	get_map(gen->map_file_path, gen);
 	reset_zombies(gen);
+	load_zombies(gen);
 }
