@@ -33,6 +33,19 @@ void	load_zombies(t_gen *gen)
 	}
 }
 
+void	util_spawn_zombies(unsigned long *last_spawn_time,
+	unsigned long *current_time, t_gen *gen)
+{
+	*current_time = get_current_time();
+	if (*last_spawn_time == 0)
+		*last_spawn_time = *current_time;
+	if (*current_time - *last_spawn_time >= 60000)
+	{
+		gen->counter_spawn++;
+		*last_spawn_time = *current_time;
+	}
+}
+
 void	spawn_zombies(t_gen *gen)
 {
 	static unsigned long	last_spawn_time = 0;
@@ -41,22 +54,18 @@ void	spawn_zombies(t_gen *gen)
 	int						random_w;
 	int						attempts;
 
-	current_time = get_current_time();
-	if (last_spawn_time == 0)
-		last_spawn_time = current_time;
-	if (current_time - last_spawn_time >= 60000)
-	{
-		gen->counter_spawn++;
-		last_spawn_time = current_time;
-	}
+	util_spawn_zombies(&last_spawn_time, &current_time, gen);
 	while (gen->counter_spawn > 0)
 	{
 		attempts = 0;
-		do {
+		random_h = rand() % gen->map.height;
+		random_w = rand() % gen->map.width;
+		while (gen->map.map_matrix[random_h][random_w] != '0' && attempts < 100)
+		{
 			random_h = rand() % gen->map.height;
 			random_w = rand() % gen->map.width;
 			attempts++;
-		} while (gen->map.map_matrix[random_h][random_w] != '0' && attempts < 100);
+		}
 		if (attempts >= 100)
 			return ;
 		gen->map.map_matrix[random_h][random_w] = 'Z';

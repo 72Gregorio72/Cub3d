@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/01 15:41:29 by vcastald         ###   ########.fr       */
+/*   Created: 2025/07/03 09:55:47 by vcastald          #+#    #+#             */
+/*   Updated: 2025/07/03 09:55:50 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "cub3d_bonus.h"
 
@@ -109,7 +108,7 @@ void	calculate_proj(t_gen *gen, t_draw_data d, int x, int y)
 	double	min_radius;
 	double	max_radius;
 	double	dynamic_radius;
-	
+
 	if (d.transform_y > 0.0)
 	{
 		d.screen_x = (int)((SCREEN_X / 2)

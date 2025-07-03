@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 15:12:30 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/02 18:08:35 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/03 09:59:17 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ int	zombie_in_door(t_gen *gen)
 	}
 	return (0);
 }
-	
+
 t_tex	*select_texture_door(t_gen *gen)
 {
 	if (gen->door.dist_player >= 3.0 || gen->door.dist_zombie >= 3.0)
 		return (&gen->door.door_closed);
 	else if ((gen->door.dist_player >= 1.0 && gen->door.dist_player < 2.0)
-			|| (gen->door.dist_zombie >= 1.0 && gen->door.dist_zombie < 2.0))
+		|| (gen->door.dist_zombie >= 1.0 && gen->door.dist_zombie < 2.0))
 		return (&gen->door.door_open);
 	else if ((gen->door.dist_player >= 2.0 && gen->door.dist_player < 3.0)
-			|| (gen->door.dist_zombie >= 2.0 && gen->door.dist_zombie < 3.0))
+		|| (gen->door.dist_zombie >= 2.0 && gen->door.dist_zombie < 3.0))
 		return (&gen->door.door_half_open);
 	return (NULL);
 }

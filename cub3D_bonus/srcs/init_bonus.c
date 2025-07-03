@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/02 17:05:25 by vcastald         ###   ########.fr       */
+/*   Created: 2025/07/03 09:59:50 by vcastald          #+#    #+#             */
+/*   Updated: 2025/07/03 10:11:58 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "cub3d_bonus.h"
 
@@ -49,22 +48,38 @@ t_tex	*get_texture(char *path, t_gen *gen)
 	return (tex);
 }
 
-void	load_animation(t_gen *gen, const char *base_path, t_tex **tex_array, int count)
+void	util_load_animation(char **ext,
+	char **path, const char *base_path, char *num)
 {
-	for (int i = 0; i < count; i++)
+	*ext = ft_strjoin(base_path, num);
+	*path = ft_strjoin(*ext, ".xpm");
+	free(num);
+	free(*ext);
+}
+
+void	load_animation(t_gen *gen, const char *base_path,
+	t_tex **tex_array, int count)
+{
+	int		i;
+	char	*num;
+	char	*ext;
+	char	*path;
+
+	i = -1;
+	while (++i < count)
 	{
-		char *num = ft_itoa(i);
-		char *ext = ft_strjoin(base_path, num);
-		char *path = ft_strjoin(ext, ".xpm");
-		free(num);
-		free(ext);
+		num = ft_itoa(i);
+		util_load_animation(&ext, &path, base_path, num);
 		if (!path)
+		{
+			i++;
 			continue ;
+		}
 		tex_array[i] = get_texture(path, gen);
 		if (!tex_array[i])
 		{
-			fprintf(stderr, RED "Failed to load texture: %s\n" RESET, path);
 			free(path);
+			i++;
 			continue ;
 		}
 		free(path);
@@ -79,8 +94,10 @@ void	load_textures(t_gen *gen)
 	load_texture(gen->mlx_ptr, gen->map.s_tex, &gen->map.south);
 	load_texture(gen->mlx_ptr, gen->map.e_tex, &gen->map.east);
 	load_texture(gen->mlx_ptr, gen->map.w_tex, &gen->map.west);
-	load_texture(gen->mlx_ptr, "textures/door/door.xpm", &gen->door.door_closed);
-	load_texture(gen->mlx_ptr, "textures/door/door1.xpm", &gen->door.door_half_open);
+	load_texture(gen->mlx_ptr, "textures/door/door.xpm",
+		&gen->door.door_closed);
+	load_texture(gen->mlx_ptr, "textures/door/door1.xpm",
+		&gen->door.door_half_open);
 	load_texture(gen->mlx_ptr, "textures/door/door2.xpm", &gen->door.door_open);
 	load_animation(gen, "zombie_anim/walking_xpm/Zwalking",
 		gen->zombie_tex_walking, 26);

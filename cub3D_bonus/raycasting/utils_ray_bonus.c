@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:02 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/02 18:08:05 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/03 09:59:31 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	check_hit_doors(t_ray *ray, t_gen *gen)
 	t_zombie	*z;
 	double		door_x;
 	double		door_y;
-	double 		dist;
+	double		dist;
 
 	door_x = ray->map_x + 0.5;
 	door_y = ray->map_y + 0.5;
