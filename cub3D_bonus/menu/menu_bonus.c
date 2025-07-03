@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:11:24 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:24:59 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ static char	**get_map_files(int *count)
 	if (!files)
 		return (NULL);
 	i = 0;
-	while ((entry = readdir(dir)))
+	entry = readdir(dir);
+	while (entry)
 	{
 		if (entry->d_type == 8
 			&& ft_strnstr(entry->d_name, ".cub", ft_strlen(entry->d_name)))
 			files[i++] = ft_strjoin("maps/", entry->d_name);
+		entry = readdir(dir);
 	}
 	files[i] = NULL;
 	*count = i;
@@ -71,6 +73,20 @@ void	load_map1(char *path, t_gen *gen)
 	close(fd);
 }
 
+void	free_gen_map_util(t_gen *gen)
+{
+	gen->map.floor_color = NULL;
+	gen->map.ceil_color = NULL;
+	if (gen->map.n_tex)
+		free(gen->map.n_tex);
+	if (gen->map.s_tex)
+		free(gen->map.s_tex);
+	if (gen->map.w_tex)
+		free(gen->map.w_tex);
+	if (gen->map.e_tex)
+		free(gen->map.e_tex);
+}
+
 void	free_gen_map(t_gen *gen)
 {
 	int	i;
@@ -87,16 +103,7 @@ void	free_gen_map(t_gen *gen)
 		free(gen->map.floor_color);
 	if (gen->map.ceil_color)
 		free(gen->map.ceil_color);
-	gen->map.floor_color = NULL;
-	gen->map.ceil_color = NULL;
-	if (gen->map.n_tex)
-		free(gen->map.n_tex);
-	if (gen->map.s_tex)
-		free(gen->map.s_tex);
-	if (gen->map.w_tex)
-		free(gen->map.w_tex);
-	if (gen->map.e_tex)
-		free(gen->map.e_tex);
+	free_gen_map_util(gen);
 	if (gen->map.c_tex)
 		free(gen->map.c_tex);
 	if (gen->map.f_tex)
@@ -143,36 +150,68 @@ void	start_game_from_map(t_gen *gen, const char *filepath)
 	draw_menu(gen);
 }
 
-void	draw_rounded_background(t_gen *gen, int x, int y, int width, int height, int radius, int color)
+void	if_checks(int i, int j, int radius, int *cx, int *cy)
 {
-	int	text_area_color = 0xFFFFFF;
-	for (int i = 0; i < height; i++)
+	if (j < radius)
+		*cx = radius;
+	else if (j >= PREVIEW_WIDTH - radius)
+		*cx = PREVIEW_WIDTH - radius - 1;
+	else
+		*cx = j;
+	if (i < radius)
+		*cy = radius;
+	else if (i >= PREVIEW_HEIGHT - radius)
+		*cy = PREVIEW_HEIGHT - radius - 1;
+	else
+		*cy = i;
+}
+
+void	draw_square(t_gen *gen, t_menu_data *data)
+{
+	data->dx = data->j - data->cx;
+	data->dy = data->i - data->cy;
+	if (data->dx * data->dx + data->dy * data->dy
+		<= data->radius * data->radius)
 	{
-		for (int j = 0; j < width; j++)
-		{
-			int cx, cy;
-			if (j < radius)
-				cx = radius;
-			else if (j >= width - radius)
-				cx = width - radius - 1;
-			else
-				cx = j;
-			if (i < radius)
-				cy = radius;
-			else if (i >= height - radius)
-				cy = height - radius - 1;
-			else
-				cy = i;
-			int dx = j - cx;
-			int dy = i - cy;
-			if (dx * dx + dy * dy <= radius * radius)
-			{
-				if (i < height / 5)
-					put_pixel(&gen->img, x + j, y + i, text_area_color);
-				else
-					put_pixel(&gen->img, x + j, y + i, color);
-			}
-		}
+		if (data->i < PREVIEW_HEIGHT / 5)
+			put_pixel(&gen->img, data->x + data->j,
+				data->y + data->i, data->text_area_color);
+		else
+			put_pixel(&gen->img, data->x + data->j,
+				data->y + data->i, data->color);
+	}
+}
+
+void	draw_width(t_gen *gen, int x, int y, int i)
+{
+	t_menu_data	data;
+
+	data.text_area_color = 0xFFFFFF;
+	data.radius = 12;
+	data.color = 0x383838;
+	data.j = 0;
+	data.i = i;
+	data.x = x;
+	data.y = y;
+	while (data.j < PREVIEW_WIDTH)
+	{
+		if_checks(data.i, data.j, data.radius, &data.cx, &data.cy);
+		draw_square(gen, &data);
+		data.j++;
+	}
+}
+
+void	draw_rounded_background(t_gen *gen, int x, int y)
+{
+	int	text_area_color;
+	int	i;
+
+	i = 0;
+	text_area_color = 0xFFFFFF;
+	while (i < PREVIEW_HEIGHT)
+	{
+		draw_width(gen, x, y, i);
+		i++;
 	}
 }
 
@@ -188,7 +227,7 @@ void	draw_map_preview(t_gen *gen, int preview_origin_x, int preview_origin_y)
 	int center_offset_y = (map_w + map_h) * cube_size / 4;
 	int base_x = preview_cx - center_offset_x;
 	int base_y = preview_cy - center_offset_y;
-	draw_rounded_background(gen, preview_origin_x, preview_origin_y, PREVIEW_WIDTH, PREVIEW_HEIGHT, 12, 0x888888);
+	draw_rounded_background(gen, preview_origin_x, preview_origin_y);
 	for (int i = 0; i < map_h; i++)
 	{
 		for (int j = 0; j < map_w; j++)
@@ -292,6 +331,8 @@ void	draw_button_with_action(t_gen *gen, t_map_button *button)
 		tex = &gen->btn_map_selection;
 	else if (button->action == exit_game)
 		tex = &gen->btn_exit_game;
+	else if (button->action == open_options_menu)
+		tex = &gen->btn_options;
 	else if (button->action == back_home_menu)
 		tex = &gen->btn_back_home;
 	if (tex && tex->img_ptr)
@@ -416,6 +457,93 @@ void draw_map_preview_scaled(t_gen *gen, int base_x, int base_y, int width, int 
 	}
 }
 
+void	draw_slider(t_gen *gen)
+{
+	int slider_x = 100 + (int)(gen->player_options.mouse_sensitivity * 200.0);
+	for (int x = 100; x <= 300; x++)
+		put_pixel(&gen->img, x, 220, 0xAAAAAA);
+	for (int dx = -5; dx <= 5; dx++)
+		for (int dy = -5; dy <= 5; dy++)
+			put_pixel(&gen->img, slider_x + dx, 220 + dy, 0xFF0000);
+	gen->dragging_slider_button.x1 = slider_x - 5;
+	gen->dragging_slider_button.y1 = 215;
+	gen->dragging_slider_button.x2 = slider_x + 5;
+	gen->dragging_slider_button.y2 = 225;
+	gen->player_options.mouse_sensitivity = (slider_x - 100) / 200.0;
+}
+
+int	update_buttons(t_gen *gen, int x, int y)
+{
+	int				i;
+	t_key_button	key_btn;
+
+	i = 0;
+	while (i < 4)
+	{
+		key_btn = gen->key_buttons[i];
+		if (x >= key_btn.x1 && x <= key_btn.x2
+			&& y >= key_btn.y1 && y <= key_btn.y2)
+		{
+			gen->selected_key_index = i;
+			gen->waiting_key_for = i + 1;
+			open_options_menu(gen);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	open_options_menu(t_gen *gen)
+{
+	clear_image(&gen->img);
+	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 100, 80, 0xFFFFFF, "OPTIONS");
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, 200, 0xFFFFFF, "Mouse Sensitivity:");
+	draw_slider(gen);
+	const char *keys[] = {"UP", "DOWN", "LEFT", "RIGHT"};
+	int *bindings[] = {
+		&gen->player_options.key_up,
+		&gen->player_options.key_down,
+		&gen->player_options.key_left,
+		&gen->player_options.key_right
+	};
+	for (int i = 0; i < 4; i++)
+	{
+		int y = 300 + i * 50;
+		int bx1 = 300, by1 = y - 10;
+		int bx2 = 360, by2 = y + 20;
+		char *key_name = mlx_get_key_name(*bindings[i]);
+		char *tmp = ft_strjoin(keys[i], ": ");
+		char *buf = ft_strjoin(tmp, key_name);
+		free(tmp);
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, y, 0xFFFFFF, buf);
+		int color = 0xAAAAAA;
+		if (gen->selected_key_index == i)
+		{
+			color = 0xFFFFFF;
+			mlx_string_put(gen->mlx_ptr, gen->win_ptr, 400, y + 10, 0xFFFFFF, "Press a new key");
+		}
+		for (int x = bx1; x <= bx2; x++)
+			for (int y2 = by1; y2 <= by2; y2++)
+				put_pixel(&gen->img, x, y2, color);
+		gen->key_buttons[i].x1 = bx1;
+		gen->key_buttons[i].y1 = by1;
+		gen->key_buttons[i].x2 = bx2;
+		gen->key_buttons[i].y2 = by2;
+		gen->key_buttons[i].key = bindings[i];
+		gen->key_buttons[i].label = keys[i];
+	}
+	set_button(&gen->map_buttons[0],
+		SCREEN_X - 250, SCREEN_Y - 100,
+		SCREEN_X - 50, SCREEN_Y - 50,
+		"BACK", draw_menu);
+	gen->map_button_count = 1;
+	draw_button_with_action(gen, &gen->map_buttons[0]);
+	gen->selected_key_index = -1;
+}
+
 void	draw_menu(t_gen *gen)
 {
 	int	map_area_x = 500;
@@ -427,6 +555,7 @@ void	draw_menu(t_gen *gen)
 	int	button_start_y = 200;
 	int	i = 0;
 
+	gen->map_selection = 0;
 	gen->in_menu = 1;
 	clear_image(&gen->img);
 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
@@ -454,6 +583,10 @@ void	draw_menu(t_gen *gen)
 		right_column_x, button_start_y + 2 * (button_h + button_spacing + extra_spacing),
 		right_column_x + button_w, button_start_y + 3 * button_h + 2 * (button_spacing + extra_spacing),
 		"QUIT", exit_game);
+	set_button(&gen->map_buttons[gen->map_button_count++],
+		right_column_x, button_start_y + 3 * (button_h + button_spacing + extra_spacing),
+		right_column_x + button_w, button_start_y + 4 * button_h + 3 * (button_spacing + extra_spacing),
+		"OPTIONS", open_options_menu);
 	while (i < gen->map_button_count)
 		draw_button_with_action(gen, &gen->map_buttons[i++]);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
