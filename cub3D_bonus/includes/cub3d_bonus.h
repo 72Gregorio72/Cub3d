@@ -269,42 +269,6 @@ typedef struct s_key_button
 
 typedef struct s_gen
 {
-	void			*mlx_ptr;
-	void			*win_ptr;
-	int				ignore_next_mouse;
-	int				last_mouse_x;
-	int				mouse_initialized;
-	int				last_mouse_y;
-	t_img			img;
-	t_player		player;
-	t_keys			keys;
-	t_map			map;
-	t_zombie		*zombies;
-	int				num_zombies;
-	t_projectile	*projectiles;
-	char			player_orientation;
-	char			arrow_orientation;
-	t_tex			*zombie_tex_walking[26];
-	t_tex			*zombie_tex_attacking[17];
-	t_tex			*zombie_tex_dead[21];
-	t_tex			*zombie_tex_hit[13];
-	t_door			door;
-	int				max_health;
-	int				health;
-	int				ammo;
-	int				mouse_vertical_offset;
-	double			zbuffer[SCREEN_X];
-	int				in_menu;
-	t_map_button	map_buttons[MAX_MAPS];
-	int				map_button_count;
-	int				scroll_offset_y;
-	t_tex			btn_start_game;
-	t_tex			btn_map_selection;
-	t_tex			btn_exit_game;
-	t_tex			btn_back_home;
-	char			*map_file_path;
-	int				counter_spawn;
-	int				map_selection;
 	void				*mlx_ptr;
 	void				*win_ptr;
 	int					ignore_next_mouse;
@@ -334,12 +298,14 @@ typedef struct s_gen
 	t_map_button		map_buttons[MAX_MAPS];
 	int					map_button_count;
 	int					scroll_offset_y;
+	t_tex				btn_options;
 	t_tex				btn_start_game;
 	t_tex				btn_map_selection;
 	t_tex				btn_exit_game;
-	t_tex				btn_options;
+	t_tex				btn_back_home;
 	char				*map_file_path;
 	int					counter_spawn;
+	int					map_selection;
 	t_player_options	player_options;
 	int					in_options;
 	int					waiting_key_for;

@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:16:49 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:24:59 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,6 @@ void	draw_rounded_background(t_gen *gen, int x, int y)
 {
 	int	text_area_color;
 	int	i;
-	int	j;
 
 	i = 0;
 	text_area_color = 0xFFFFFF;
@@ -556,6 +555,7 @@ void	draw_menu(t_gen *gen)
 	int	button_start_y = 200;
 	int	i = 0;
 
+	gen->map_selection = 0;
 	gen->in_menu = 1;
 	clear_image(&gen->img);
 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);

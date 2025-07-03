@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:18:32 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:22:53 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int	on_mouse_move(int x, int y, t_gen *gen)
 		gen->mouse_initialized = 1;
 		return (0);
 	}
-	mouse_check(x, y, gen);
+	if (!gen->in_menu)
+		mouse_check(x, y, gen);
 	return (0);
 }
