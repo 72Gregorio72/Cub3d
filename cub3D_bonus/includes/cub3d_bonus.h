@@ -143,6 +143,76 @@ typedef struct s_menu_data
 	int	y;
 }	t_menu_data;
 
+typedef struct s_option_data
+{
+	int			i;
+	int			y;
+	int			bx1;
+	int			by1;
+	int			bx2;
+	int			by2;
+	char		*key_name;
+	char		*tmp;
+	char		*buf;
+	const char	*keys[4];
+	int			*bindings[4];
+	int			color;
+	int			x;
+	int			y2;
+}	t_option_data;
+
+typedef struct s_map_preview
+{
+	int	map_w;
+	int	map_h;
+	int	preview_cx;
+	int	preview_cy;
+	int	max_dim;
+	int	cube_size;
+	int	center_offset_x;
+	int	center_offset_y;
+	int	base_x;
+	int	base_y;
+	int	i;
+	int	j;
+	int	y;
+	int	x;
+	int	iso_x;
+	int	iso_y;
+	int	color;
+}	t_map_preview;
+
+typedef struct s_map_button
+{
+	int		x0;
+	int		y0;
+	int		x1;
+	int		y1;
+	char	*text;
+	void	(*action)(t_gen *gen);
+	char	*filepath;
+}	t_map_button;
+
+typedef struct s_map_selector
+{
+	int				i;
+	int				count;
+	char			**map_files;
+	int				base_x[3];
+	int				col;
+	int				row;
+	int				x;
+	int				y;
+	int				offset_y;
+	int				padding;
+	int				button_w;
+	int				button_h;
+	t_map_button	button;
+	int				text_x;
+	int				text_y;
+	int				j;
+}	t_map_selector;
+
 typedef struct s_projectile
 {
 	double				x;
@@ -236,17 +306,6 @@ typedef struct s_zombie
 	int				animation_frame;
 	t_tex			*texture;
 }	t_zombie;
-
-typedef struct s_map_button
-{
-	int		x0;
-	int		y0;
-	int		x1;
-	int		y1;
-	char	*text;
-	void	(*action)(t_gen *gen);
-	char	*filepath;
-}	t_map_button;
 
 typedef struct s_door
 {

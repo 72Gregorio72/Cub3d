@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/04 11:18:40 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:02:25 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,45 +213,83 @@ void	draw_rounded_background(t_gen *gen, int x, int y)
 	}
 }
 
+void	set_preview(t_map_preview *preview,
+	t_gen *gen, int preview_origin_x, int preview_origin_y)
+{
+	preview->map_w = gen->map.width;
+	preview->map_h = gen->map.height;
+	preview->preview_cx = preview_origin_x + PREVIEW_WIDTH / 2;
+	preview->preview_cy = preview_origin_y + PREVIEW_HEIGHT / 2;
+	preview->max_dim = preview->map_w + preview->map_h;
+	preview->cube_size = PREVIEW_WIDTH / preview->max_dim;
+	preview->center_offset_x = (preview->map_w - preview->map_h)
+		* preview->cube_size / 2;
+	preview->center_offset_y = (preview->map_w + preview->map_h)
+		* preview->cube_size / 4;
+	preview->base_x = preview->preview_cx - preview->center_offset_x;
+	preview->base_y = preview->preview_cy - preview->center_offset_y;
+	draw_rounded_background(gen, preview_origin_x, preview_origin_y);
+}
+
+void	draw_wall_cube(t_gen *gen, t_map_preview *preview)
+{
+	while (preview->y < preview->cube_size)
+	{
+		preview->x = 0;
+		while (preview->x < preview->cube_size)
+		{
+			preview->color = 0x000000;
+			if (preview->y == 0 || preview->y == preview->cube_size - 1
+				|| preview->x == 0 || preview->x == preview->cube_size - 1)
+				preview->color = 0xAAAAAA;
+			put_pixel(&gen->img, preview->iso_x
+				+ preview->x, preview->iso_y + preview->y, preview->color);
+			preview->x++;
+		}
+		preview->y++;
+	}
+}
+
+void	draw_wall_preview(t_gen *gen, t_map_preview *preview)
+{
+	if (gen->map.map_matrix[preview->i][preview->j] == '1')
+	{
+		preview->iso_x = preview->base_x
+			+ (preview->j - preview->i) * preview->cube_size;
+		preview->iso_y = preview->base_y
+			+ (preview->j + preview->i) * preview->cube_size / 2;
+		preview->y = 0;
+		draw_wall_cube(gen, preview);
+		preview->y = 0;
+		while (preview->y < 5)
+		{
+			preview->x = 0;
+			while (preview->x < preview->cube_size)
+			{
+				put_pixel(&gen->img, preview->iso_x
+					+ preview->x, preview->iso_y - preview->y, 0xEEEEEE);
+				preview->x++;
+			}
+			preview->y++;
+		}
+	}
+}
+
 void	draw_map_preview(t_gen *gen, int preview_origin_x, int preview_origin_y)
 {
-	int map_w = gen->map.width;
-	int map_h = gen->map.height;
-	int preview_cx = preview_origin_x + PREVIEW_WIDTH / 2;
-	int preview_cy = preview_origin_y + PREVIEW_HEIGHT / 2;
-	int max_dim = map_w + map_h;
-	int cube_size = PREVIEW_WIDTH / max_dim;
-	int center_offset_x = (map_w - map_h) * cube_size / 2;
-	int center_offset_y = (map_w + map_h) * cube_size / 4;
-	int base_x = preview_cx - center_offset_x;
-	int base_y = preview_cy - center_offset_y;
-	draw_rounded_background(gen, preview_origin_x, preview_origin_y);
-	for (int i = 0; i < map_h; i++)
-	{
-		for (int j = 0; j < map_w; j++)
-		{
-			if (gen->map.map_matrix[i][j] == '1')
-			{
-				int iso_x = base_x + (j - i) * cube_size;
-				int iso_y = base_y + (j + i) * cube_size / 2;
+	t_map_preview	preview;
 
-				for (int y = 0; y < cube_size; y++)
-				{
-					for (int x = 0; x < cube_size; x++)
-					{
-						int color = 0x000000;
-						if (y == 0 || y == cube_size - 1 || x == 0 || x == cube_size - 1)
-							color = 0xAAAAAA;
-						put_pixel(&gen->img, iso_x + x, iso_y + y, color);
-					}
-				}
-				for (int y = 0; y < 5; y++)
-				{
-					for (int x = 0; x < cube_size; x++)
-						put_pixel(&gen->img, iso_x + x, iso_y - y, 0xEEEEEE);
-				}
-			}
+	set_preview(&preview, gen, preview_origin_x, preview_origin_y);
+	preview.i = 0;
+	while (preview.i < preview.map_h)
+	{
+		preview.j = 0;
+		while (preview.j < preview.map_w)
+		{
+			draw_wall_preview(gen, &preview);
+			preview.j++;
 		}
+		preview.i++;
 	}
 }
 
@@ -293,36 +331,55 @@ void	set_button(t_map_button *button, int x0, int y0, int x1, int y1, char *text
 
 void	draw_texture(t_img *img, t_tex *tex, int x0, int y0)
 {
-	for (int y = 0; y < tex->height; y++)
+	int				y;
+	int				x;
+	char			*pixel;
+	unsigned int	color;
+
+	y = 0;
+	while (y < tex->height)
 	{
-		for (int x = 0; x < tex->width; x++)
+		x = 0;
+		while (x < tex->width)
 		{
-			char *pixel = tex->data + (y * tex->line_length + x * (tex->bpp / 8));
-			unsigned int color = *(unsigned int *)pixel;
+			pixel = tex->data + (y * tex->line_length + x * (tex->bpp / 8));
+			color = *(unsigned int *)pixel;
 			if ((color & 0x00FFFFFF) != 0x000000)
 				put_pixel(img, x0 + x, y0 + y, color);
+			x++;
 		}
+		y++;
 	}
 }
 
 void	draw_button_debug_outline(t_img *img, int x0, int y0, int x1, int y1, int color)
 {
-	for (int x = x0; x <= x1; x++)
+	int		x;
+	int		y;
+
+	x = x0;
+	while (x <= x1)
 	{
 		put_pixel(img, x, y0, color);
 		put_pixel(img, x, y1, color);
+		x++;
 	}
-	for (int y = y0; y <= y1; y++)
+	y = y0;
+	while (y <= y1)
 	{
 		put_pixel(img, x0, y, color);
 		put_pixel(img, x1, y, color);
+		y++;
 	}
 }
 
 void	draw_button_with_action(t_gen *gen, t_map_button *button)
 {
-	t_tex *tex = NULL;
+	t_tex	*tex;
+	int		offset_x;
+	int		offset_y;
 
+	tex = NULL;
 	if (button->action == start_game)
 		tex = &gen->btn_start_game;
 	else if (button->action == open_map_selection)
@@ -333,141 +390,200 @@ void	draw_button_with_action(t_gen *gen, t_map_button *button)
 		tex = &gen->btn_options;
 	else if (button->action == back_home_menu)
 		tex = &gen->btn_back_home;
+	offset_x = (button->x1 - button->x0 - tex->width) / 2;
+	offset_y = (button->y1 - button->y0 - tex->height) / 2;
 	if (tex && tex->img_ptr)
-	{
-		int offset_x = (button->x1 - button->x0 - tex->width) / 2;
-		int offset_y = (button->y1 - button->y0 - tex->height) / 2;
-		draw_texture(&gen->img, tex, button->x0 + offset_x, button->y0 + offset_y);
-	}
+		draw_texture(&gen->img, tex, button->x0
+			+ offset_x, button->y0 + offset_y);
 }
 
-
-void	draw_map_selector(t_gen *gen)
+void	set_map_preview(t_gen *gen, t_map_selector *map)
 {
-	int		i;
-	int		count;
-	char	**map_files;
-	int		base_x[] = {100, 750, 1400};
-	int		col, row;
-	int		x, y;
-	int		offset_y = gen->scroll_offset_y;
+	map->base_x[0] = 100;
+	map->base_x[1] = 750;
+	map->base_x[2] = 1400;
+	map->offset_y = gen->scroll_offset_y;
+	map->padding = 30;
+	map->button_w = 300;
+	map->button_h = 130;
 
 	clear_image(&gen->img);
-	map_files = get_map_files(&count);
-	if (!map_files || count == 0)
+	map->map_files = get_map_files(&map->count);
+	if (!map->map_files || map->count == 0)
 	{
 		mlx_string_put(gen->mlx_ptr, gen->win_ptr, 50, 50,
 			0xFF0000, "No map files found in /maps");
 		return ;
 	}
 	gen->map_button_count = 0;
-	i = 0;
-	while (i < count && i < MAX_MAPS)
-	{
-		col = i % 3;
-		row = i / 3;
+	map->i = 0;
+}
 
-		x = base_x[col];
-		y = 150 + row * (PREVIEW_HEIGHT + PREVIEW_MARGIN_Y) + offset_y;
-		if (get_map(map_files[i], gen))
-			draw_map_preview(gen, x, y);
+void	draw_map_ui(t_map_selector *map, t_gen *gen)
+{
+	while (map->i < map->count && map->i < MAX_MAPS)
+	{
+		map->col = map->i % 3;
+		map->row = map->i / 3;
+		map->x = map->base_x[map->col];
+		map->y = 150 + map->row
+			* (PREVIEW_HEIGHT + PREVIEW_MARGIN_Y) + map->offset_y;
+		if (get_map(map->map_files[map->i], gen))
+			draw_map_preview(gen, map->x, map->y);
 		free(gen->map_file_path);
-		gen->map_file_path = ft_strdup(map_files[i]);
+		gen->map_file_path = ft_strdup(map->map_files[map->i]);
 		gen->map_buttons[gen->map_button_count++] = (t_map_button){
-			.x0 = x,
-			.y0 = y,
-			.x1 = x + PREVIEW_WIDTH,
-			.y1 = y + PREVIEW_HEIGHT,
-			.text = map_files[i] + 5,
+			.x0 = map->x,
+			.y0 = map->y,
+			.x1 = map->x + PREVIEW_WIDTH,
+			.y1 = map->y + PREVIEW_HEIGHT,
+			.text = map->map_files[map->i] + 5,
 			.action = NULL,
-			.filepath = ft_strdup(map_files[i])
+			.filepath = ft_strdup(map->map_files[map->i])
 		};
-		i++;
+		map->i++;
 	}
-	int padding = 30;
-	int	button_w = 300;
-	int	button_h = 130;
-	t_map_button	button;
-	set_button(&button,
-		SCREEN_X - button_w - padding,
-		padding,
-		SCREEN_X - padding,
-		padding + button_h,
+}
+
+void	write_filename(t_map_selector *map, t_gen *gen)
+{
+	map->j = 0;
+	while (map->j < gen->map_button_count)
+	{
+		map->text_x = gen->map_buttons[map->j].x0
+			+ 100 - ft_strlen(gen->map_buttons[map->j].text) * 4;
+		map->text_y = gen->map_buttons[map->j].y0 + 20;
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr,
+			map->text_x, map->text_y, 0x000000, gen->map_buttons[map->j].text);
+		free(map->map_files[map->j]);
+		map->j++;
+	}
+}
+
+void	draw_map_selector(t_gen *gen)
+{
+	t_map_selector	map;
+
+	set_map_preview(gen, &map);
+	draw_map_ui(&map, gen);
+	set_button(&map.button,
+		SCREEN_X - map.button_w - map.padding,
+		map.padding,
+		SCREEN_X - map.padding,
+		map.padding + map.button_h,
 		"", back_home_menu);
-	draw_button_with_action(gen, &button);
+	draw_button_with_action(gen, &map.button);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
-	gen->map_buttons[3] = button;
+	gen->map_buttons[3] = map.button;
 	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 80, 100,
 		0xFFFFFF, "Select a map:");
-	for (i = 0; i < gen->map_button_count; i++)
-	{
-		int text_x = gen->map_buttons[i].x0 + 100 - ft_strlen(gen->map_buttons[i].text) * 4;
-		int text_y = gen->map_buttons[i].y0 + 20;
-		mlx_string_put(gen->mlx_ptr, gen->win_ptr, text_x, text_y, 0x000000, gen->map_buttons[i].text);
-		free(map_files[i]);
-	}
-	free(map_files);
+	write_filename(&map, gen);
+	free(map.map_files);
 }
 
-void draw_map_preview_scaled(t_gen *gen, int base_x, int base_y, int width, int height, int cube_size)
+// void draw_map_preview_scaled(t_gen *gen, int base_x, int base_y, int width, int height, int cube_size)
+// {
+// 	int i, j, x, y;
+// 	int iso_x, iso_y;
+// 	int color;
+// 	int top_offset = cube_size / 2;
+
+// 	i = 0;
+// 	while (i < height && i < gen->map.height)
+// 	{
+// 		j = 0;
+// 		while (j < width && j < gen->map.width)
+// 		{
+// 			if (gen->map.map_matrix[i][j] == '1')
+// 			{
+// 				iso_x = base_x + (j - i) * cube_size;
+// 				iso_y = base_y + (j + i) * cube_size / 2;
+
+// 				y = 0;
+// 				while (y < cube_size)
+// 				{
+// 					x = 0;
+// 					while (x < cube_size)
+// 					{
+// 						color = (x == 0 || y == 0 || x == cube_size - 1 || y == cube_size - 1) ? 0x000000 : 0xCCCCCC;
+// 						put_pixel(&gen->img, iso_x + x, iso_y + y, color);
+// 						x++;
+// 					}
+// 					y++;
+// 				}
+// 				y = 0;
+// 				while (y < top_offset)
+// 				{
+// 					x = 0;
+// 					while (x < cube_size)
+// 					{
+// 						color = (x == 0 || y == 0 || x == cube_size - 1 || y == top_offset - 1) ? 0x000000 : 0xEEEEEE;
+// 						put_pixel(&gen->img, iso_x + x, iso_y - y, color);
+// 						x++;
+// 					}
+// 					y++;
+// 				}
+// 			}
+// 			if (gen->map.map_matrix[i][j] == 'N'
+// 				|| gen->map.map_matrix[i][j] == 'S'
+// 				|| gen->map.map_matrix[i][j] == 'E'
+// 				|| gen->map.map_matrix[i][j] == 'W')
+// 			{
+// 				iso_x = base_x + (j - i) * cube_size;
+// 				iso_y = base_y + (j + i) * cube_size / 2;
+// 				y = 0;
+// 				while (y < cube_size)
+// 				{
+// 					x = 0;
+// 					while (x < cube_size)
+// 					{
+// 						put_pixel(&gen->img, iso_x + x, iso_y + y, 0xff0000);
+// 						x++;
+// 					}
+// 					y++;
+// 				}
+// 			}
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
+
+void	set_slider(t_gen *gen, int slider_x)
 {
-	int i, j;
-	int top_offset = cube_size / 2;
-
-	for (i = 0; i < height && i < gen->map.height; i++)
-	{
-		for (j = 0; j < width && j < gen->map.width; j++)
-		{
-			if (gen->map.map_matrix[i][j] == '1')
-			{
-				int iso_x = base_x + (j - i) * cube_size;
-				int iso_y = base_y + (j + i) * cube_size / 2;
-
-				for (int y = 0; y < cube_size; y++)
-				{
-					for (int x = 0; x < cube_size; x++)
-					{
-						int color = (x == 0 || y == 0 || x == cube_size - 1 || y == cube_size - 1) ? 0x000000 : 0xCCCCCC;
-						put_pixel(&gen->img, iso_x + x, iso_y + y, color);
-					}
-				}
-				for (int y = 0; y < top_offset; y++)
-				{
-					for (int x = 0; x < cube_size; x++)
-					{
-						int color = (x == 0 || y == 0 || x == cube_size - 1 || y == top_offset - 1) ? 0x000000 : 0xEEEEEE;
-						put_pixel(&gen->img, iso_x + x, iso_y - y, color);
-					}
-				}
-			}
-			if (gen->map.map_matrix[i][j] == 'N'
-				|| gen->map.map_matrix[i][j] == 'S'
-				|| gen->map.map_matrix[i][j] == 'E'
-				|| gen->map.map_matrix[i][j] == 'W')
-			{
-				int iso_x = base_x + (j - i) * cube_size;
-				int iso_y = base_y + (j + i) * cube_size / 2;
-				for (int y = 0; y < cube_size; y++)
-					for (int x = 0; x < cube_size; x++)
-						put_pixel(&gen->img, iso_x + x, iso_y + y, 0xff0000);
-			}
-		}
-	}
-}
-
-void	draw_slider(t_gen *gen)
-{
-	int slider_x = 100 + (int)(gen->player_options.mouse_sensitivity * 200.0);
-	for (int x = 100; x <= 300; x++)
-		put_pixel(&gen->img, x, 220, 0xAAAAAA);
-	for (int dx = -5; dx <= 5; dx++)
-		for (int dy = -5; dy <= 5; dy++)
-			put_pixel(&gen->img, slider_x + dx, 220 + dy, 0xFF0000);
 	gen->dragging_slider_button.x1 = slider_x - 5;
 	gen->dragging_slider_button.y1 = 215;
 	gen->dragging_slider_button.x2 = slider_x + 5;
 	gen->dragging_slider_button.y2 = 225;
 	gen->player_options.mouse_sensitivity = (slider_x - 100) / 200.0;
+}
+
+void	draw_slider(t_gen *gen)
+{
+	int	slider_x;
+	int	x;
+	int	dx;
+	int	dy;
+
+	slider_x = 100 + (int)(gen->player_options.mouse_sensitivity * 200.0);
+	x = 100;
+	while (x <= 300)
+	{
+		put_pixel(&gen->img, x, 220, 0xAAAAAA);
+		x++;
+	}
+	dx = -5;
+	while (dx <= 5)
+	{
+		dy = -5;
+		while (dy <= 5)
+		{
+			put_pixel(&gen->img, slider_x + dx, 220 + dy, 0xFF0000);
+			dy++;
+		}
+		dx++;
+	}
+	set_slider(gen, slider_x);
 }
 
 int	update_buttons(t_gen *gen, int x, int y)
@@ -492,46 +608,81 @@ int	update_buttons(t_gen *gen, int x, int y)
 	return (1);
 }
 
-void	open_options_menu(t_gen *gen)
+void	set_options(t_gen *gen, t_option_data *data)
 {
+	data->y = 300 + data->i * 50;
+	data->bx1 = 300;
+	data->by1 = data->y - 10;
+	data->bx2 = 360;
+	data->by2 = data->y + 20;
+	data->key_name = mlx_get_key_name(*(data->bindings[data->i]));
+	data->tmp = ft_strjoin(data->keys[data->i], ": ");
+	data->buf = ft_strjoin(data->tmp, data->key_name);
+	free(data->tmp);
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100,
+		data->y, 0xFFFFFF, data->buf);
+	free(data->buf);
+	data->color = 0xAAAAAA;
+	if (gen->selected_key_index == data->i)
+	{
+		data->color = 0xFFFFFF;
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr,
+			400, data->y + 10, 0xFFFFFF, "Press a new key");
+	}
+}
+
+void	set_option_data(t_option_data *data, t_gen *gen)
+{
+	data->keys[0] = ft_strdup("UP");
+	data->keys[1] = ft_strdup("DOWN");
+	data->keys[2] = ft_strdup("LEFT");
+	data->keys[3] = ft_strdup("RIGHT");
+	data->bindings[0] = &gen->player_options.key_up;
+	data->bindings[1] = &gen->player_options.key_down;
+	data->bindings[2] = &gen->player_options.key_left;
+	data->bindings[3] = &gen->player_options.key_right;
 	clear_image(&gen->img);
 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
-	mlx_string_put(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2 - 100, 80, 0xFFFFFF, "OPTIONS");
-	mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, 200, 0xFFFFFF, "Mouse Sensitivity:");
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr,
+		SCREEN_X / 2 - 100, 80, 0xFFFFFF, "OPTIONS");
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr,
+		100, 200, 0xFFFFFF, "Mouse Sensitivity:");
 	draw_slider(gen);
-	const char *keys[] = {"UP", "DOWN", "LEFT", "RIGHT"};
-	int *bindings[] = {
-		&gen->player_options.key_up,
-		&gen->player_options.key_down,
-		&gen->player_options.key_left,
-		&gen->player_options.key_right
-	};
-	for (int i = 0; i < 4; i++)
+}
+
+void	draw_option(t_option_data *data, t_gen *gen)
+{
+	data->x = data->bx1;
+	while (data->x <= data->bx2)
 	{
-		int y = 300 + i * 50;
-		int bx1 = 300, by1 = y - 10;
-		int bx2 = 360, by2 = y + 20;
-		char *key_name = mlx_get_key_name(*bindings[i]);
-		char *tmp = ft_strjoin(keys[i], ": ");
-		char *buf = ft_strjoin(tmp, key_name);
-		free(tmp);
-		mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100, y, 0xFFFFFF, buf);
-		int color = 0xAAAAAA;
-		if (gen->selected_key_index == i)
+		data->y2 = data->by1;
+		while (data->y2 <= data->by2)
 		{
-			color = 0xFFFFFF;
-			mlx_string_put(gen->mlx_ptr, gen->win_ptr, 400, y + 10, 0xFFFFFF, "Press a new key");
+			put_pixel(&gen->img, data->x, data->y2, data->color);
+			data->y2++;
 		}
-		for (int x = bx1; x <= bx2; x++)
-			for (int y2 = by1; y2 <= by2; y2++)
-				put_pixel(&gen->img, x, y2, color);
-		gen->key_buttons[i].x1 = bx1;
-		gen->key_buttons[i].y1 = by1;
-		gen->key_buttons[i].x2 = bx2;
-		gen->key_buttons[i].y2 = by2;
-		gen->key_buttons[i].key = bindings[i];
-		gen->key_buttons[i].label = keys[i];
+		data->x++;
+	}
+	gen->key_buttons[data->i].x1 = data->bx1;
+	gen->key_buttons[data->i].y1 = data->by1;
+	gen->key_buttons[data->i].x2 = data->bx2;
+	gen->key_buttons[data->i].y2 = data->by2;
+	gen->key_buttons[data->i].key = data->bindings[data->i];
+	gen->key_buttons[data->i].label = data->keys[data->i];
+}
+
+void	open_options_menu(t_gen *gen)
+{
+	t_option_data	data;
+
+	set_option_data(&data, gen);
+	data.i = 0;
+	while (data.i < 4)
+	{
+		set_options(gen, &data);
+		draw_option(&data, gen);
+		data.i++;
 	}
 	set_button(&gen->map_buttons[0],
 		SCREEN_X - 250, SCREEN_Y - 100,
@@ -542,50 +693,48 @@ void	open_options_menu(t_gen *gen)
 	gen->selected_key_index = -1;
 }
 
+void	set_buttons(t_gen *gen)
+{
+	int	i;
+
+	i = 0;
+	set_button(&gen->map_buttons[gen->map_button_count++],
+		SCREEN_X - 400 - 100, 200,
+		SCREEN_X - 400 - 100 + 400, 200 + 180,
+		"START", start_game);
+	set_button(&gen->map_buttons[gen->map_button_count++],
+		SCREEN_X - 400 - 100, 200 + 180 + 40 + 60,
+		SCREEN_X - 400 - 100 + 400, 200 + 2 * 180 + 40 + 60,
+		"SELECT", open_map_selection);
+	set_button(&gen->map_buttons[gen->map_button_count++],
+		SCREEN_X - 400 - 100, 200 + 2 * (180 + 40 + 60),
+		SCREEN_X - 400 - 100 + 400, 200 + 3 * 180 + 2 * (40 + 60),
+		"QUIT", exit_game);
+	set_button(&gen->map_buttons[gen->map_button_count++],
+		SCREEN_X - 400 - 100, 200 + 3 * (180 + 40 + 60),
+		SCREEN_X - 400 - 100 + 400, 200 + 4 * 180 + 3 * (40 + 60),
+		"OPTIONS", open_options_menu);
+	while (i < gen->map_button_count)
+		draw_button_with_action(gen, &gen->map_buttons[i++]);
+}
+
 void	draw_menu(t_gen *gen)
 {
-	int	map_area_x = 500;
-	int	map_area_y = 300;
-	int	button_w = 400;
-	int	button_h = 180;
-	int	button_spacing = 40;
-	int	right_column_x = SCREEN_X - button_w - 100;
-	int	button_start_y = 200;
-	int	i = 0;
+	int	title_x;
 
+	title_x = (SCREEN_X - ft_strlen("CUB3D") * 20) / 2;
 	gen->map_selection = 0;
 	gen->in_menu = 1;
 	clear_image(&gen->img);
 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
-	char *title = "CUB3D";
-	int title_x = (SCREEN_X - ft_strlen(title) * 20) / 2;
-	mlx_string_put(gen->mlx_ptr, gen->win_ptr, title_x, 80, 0xFFFFFF, title);
+	mlx_string_put(gen->mlx_ptr, gen->win_ptr, title_x, 80, 0xFFFFFF, "CUB3D");
 	if (gen->map.map_matrix && gen->map.width > 0 && gen->map.height > 0)
 	{
-		draw_map_preview_scaled(gen, map_area_x, map_area_y,
-			gen->map.width, gen->map.height, 15);
+		draw_map_preview(gen, 100, 150);
 		mlx_string_put(gen->mlx_ptr, gen->win_ptr,
-			map_area_x, map_area_y - 30, 0xFFFFFF, "MAPPA");
+			500, 300 - 30, 0xFFFFFF, "MAPPA");
 	}
 	gen->map_button_count = 0;
-	int extra_spacing = 60;
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		right_column_x, button_start_y,
-		right_column_x + button_w, button_start_y + button_h,
-		"START", start_game);
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		right_column_x, button_start_y + button_h + button_spacing + extra_spacing,
-		right_column_x + button_w, button_start_y + 2 * button_h + button_spacing + extra_spacing,
-		"SELECT", open_map_selection);
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		right_column_x, button_start_y + 2 * (button_h + button_spacing + extra_spacing),
-		right_column_x + button_w, button_start_y + 3 * button_h + 2 * (button_spacing + extra_spacing),
-		"QUIT", exit_game);
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		right_column_x, button_start_y + 3 * (button_h + button_spacing + extra_spacing),
-		right_column_x + button_w, button_start_y + 4 * button_h + 3 * (button_spacing + extra_spacing),
-		"OPTIONS", open_options_menu);
-	while (i < gen->map_button_count)
-		draw_button_with_action(gen, &gen->map_buttons[i++]);
+	set_buttons(gen);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 }
