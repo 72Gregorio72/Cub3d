@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_utils_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:51:50 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:47:25 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 		add_projectile(gen);
 	if (button == MOUSE_LEFT_CLICK && gen->in_menu)
 		handle_menu_click(x, y, gen);
-	if (gen->in_menu)
+	if (gen->in_menu && gen->map_selection)
 		handle_slider_and_scroll(button, x, y, gen);
 	return (0);
 }

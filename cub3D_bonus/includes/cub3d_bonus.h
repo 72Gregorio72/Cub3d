@@ -143,24 +143,6 @@ typedef struct s_menu_data
 	int	y;
 }	t_menu_data;
 
-typedef struct s_option_data
-{
-	int			i;
-	int			y;
-	int			bx1;
-	int			by1;
-	int			bx2;
-	int			by2;
-	char		*key_name;
-	char		*tmp;
-	char		*buf;
-	const char	*keys[4];
-	int			*bindings[4];
-	int			color;
-	int			x;
-	int			y2;
-}	t_option_data;
-
 typedef struct s_map_preview
 {
 	int	map_w;
@@ -193,6 +175,28 @@ typedef struct s_map_button
 	char	*filepath;
 }	t_map_button;
 
+typedef struct s_option_data
+{
+	int				i;
+	int				y;
+	int				bx1;
+	int				by1;
+	int				bx2;
+	int				by2;
+	char			*key_name;
+	char			*tmp;
+	char			*buf;
+	const char		*keys[4];
+	int				*bindings[4];
+	int				color;
+	int				x;
+	int				y2;
+	t_map_button	btn;
+	int				padding;
+	int				button_w;
+	int				button_h;
+}	t_option_data;
+
 typedef struct s_map_selector
 {
 	int				i;
@@ -204,7 +208,8 @@ typedef struct s_map_selector
 	int				x;
 	int				y;
 	int				offset_y;
-	int				padding;
+	int				padding_x;
+	int				padding_y;
 	int				button_w;
 	int				button_h;
 	t_map_button	button;

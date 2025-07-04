@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:52:32 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:40:15 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove)
 		free(tmp);
 		gen->num_zombies--;
 	}
-	printf(GREEN"Zombie hit and removed\n"RESET);
 }
 
 void	update_matrix_zombie(int old_x, int old_y, t_zombie *zombie, t_gen *gen)

@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/04 16:02:25 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:45:10 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,6 +309,7 @@ void	open_map_selection(t_gen *gen)
 void	back_home_menu(t_gen *gen)
 {
 	gen->map_selection = 0;
+	gen->in_menu = 1;
 	clear_image(&gen->img);
 	draw_menu(gen);
 }
@@ -403,10 +404,10 @@ void	set_map_preview(t_gen *gen, t_map_selector *map)
 	map->base_x[1] = 750;
 	map->base_x[2] = 1400;
 	map->offset_y = gen->scroll_offset_y;
-	map->padding = 30;
+	map->padding_x = 10;
+	map->padding_y = 100;
 	map->button_w = 300;
 	map->button_h = 130;
-
 	clear_image(&gen->img);
 	map->map_files = get_map_files(&map->count);
 	if (!map->map_files || map->count == 0)
@@ -467,10 +468,10 @@ void	draw_map_selector(t_gen *gen)
 	set_map_preview(gen, &map);
 	draw_map_ui(&map, gen);
 	set_button(&map.button,
-		SCREEN_X - map.button_w - map.padding,
-		map.padding,
-		SCREEN_X - map.padding,
-		map.padding + map.button_h,
+		SCREEN_X - map.button_w - map.padding_x,
+		map.padding_y,
+		SCREEN_X - map.padding_x,
+		map.padding_y + map.button_h,
 		"", back_home_menu);
 	draw_button_with_action(gen, &map.button);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
@@ -633,6 +634,9 @@ void	set_options(t_gen *gen, t_option_data *data)
 
 void	set_option_data(t_option_data *data, t_gen *gen)
 {
+	data->padding = 200;
+	data->button_w = 100;
+	data->button_h = 50;
 	data->keys[0] = ft_strdup("UP");
 	data->keys[1] = ft_strdup("DOWN");
 	data->keys[2] = ft_strdup("LEFT");
@@ -642,8 +646,6 @@ void	set_option_data(t_option_data *data, t_gen *gen)
 	data->bindings[2] = &gen->player_options.key_left;
 	data->bindings[3] = &gen->player_options.key_right;
 	clear_image(&gen->img);
-	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
-	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 	mlx_string_put(gen->mlx_ptr, gen->win_ptr,
 		SCREEN_X / 2 - 100, 80, 0xFFFFFF, "OPTIONS");
 	mlx_string_put(gen->mlx_ptr, gen->win_ptr,
@@ -684,13 +686,18 @@ void	open_options_menu(t_gen *gen)
 		draw_option(&data, gen);
 		data.i++;
 	}
-	set_button(&gen->map_buttons[0],
-		SCREEN_X - 250, SCREEN_Y - 100,
-		SCREEN_X - 50, SCREEN_Y - 50,
-		"BACK", draw_menu);
+	set_button(&data.btn,
+			SCREEN_X - data.button_w - data.padding,
+			data.padding,
+			SCREEN_X - data.padding,
+			data.padding + data.button_h,
+			"", back_home_menu);
 	gen->map_button_count = 1;
-	draw_button_with_action(gen, &gen->map_buttons[0]);
+	gen->map_buttons[4] = data.btn;
+	draw_button_with_action(gen, &data.btn);
 	gen->selected_key_index = -1;
+	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 }
 
 void	set_buttons(t_gen *gen)
@@ -707,13 +714,15 @@ void	set_buttons(t_gen *gen)
 		SCREEN_X - 400 - 100 + 400, 200 + 2 * 180 + 40 + 60,
 		"SELECT", open_map_selection);
 	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100, 200 + 2 * (180 + 40 + 60),
-		SCREEN_X - 400 - 100 + 400, 200 + 3 * 180 + 2 * (40 + 60),
-		"QUIT", exit_game);
+		SCREEN_X - 400 - 100 + 20,
+		200 + 2 * (180 + 40 + 60),
+		SCREEN_X - 400 - 100 + 400 - 20,
+		200 + 3 * 180 + 2 * (40 + 60) - 10,
+		"OPTIONS", open_options_menu);
 	set_button(&gen->map_buttons[gen->map_button_count++],
 		SCREEN_X - 400 - 100, 200 + 3 * (180 + 40 + 60),
 		SCREEN_X - 400 - 100 + 400, 200 + 4 * 180 + 3 * (40 + 60),
-		"OPTIONS", open_options_menu);
+		"QUIT", exit_game);
 	while (i < gen->map_button_count)
 		draw_button_with_action(gen, &gen->map_buttons[i++]);
 }

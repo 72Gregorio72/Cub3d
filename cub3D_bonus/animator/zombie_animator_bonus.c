@@ -19,7 +19,6 @@ void	util_animate_zombie(t_zombie *z, t_gen *gen)
 		z->animation_frame++;
 		if (z->animation_frame >= 13)
 		{
-			printf(GREEN"Zombie hit animation finished\n"RESET);
 			z->is_hit = 0;
 			z->animation_frame = 0;
 			z->is_walking = 1;
