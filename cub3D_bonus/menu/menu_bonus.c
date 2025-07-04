@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:24:59 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/04 11:18:40 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,11 +203,9 @@ void	draw_width(t_gen *gen, int x, int y, int i)
 
 void	draw_rounded_background(t_gen *gen, int x, int y)
 {
-	int	text_area_color;
 	int	i;
 
 	i = 0;
-	text_area_color = 0xFFFFFF;
 	while (i < PREVIEW_HEIGHT)
 	{
 		draw_width(gen, x, y, i);

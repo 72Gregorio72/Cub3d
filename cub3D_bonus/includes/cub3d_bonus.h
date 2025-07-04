@@ -98,25 +98,34 @@ typedef struct s_point
 
 typedef struct s_draw_data
 {
-	double	dx;
-	double	dy;
-	double	inv_det;
-	double	transform_x;
-	double	transform_y;
-	int		sprite_screen_x;
-	int		line_height;
-	int		draw_start;
-	int		draw_end;
-	int		screen_x;
-	int		screen_y;
-	int		radius;
-	int		px;
-	int		py;
-	double	dist;
-	double	step_x;
-	double	step_y;
-	double	next_x;
-	double	next_y;
+	double			dx;
+	double			dy;
+	double			inv_det;
+	double			transform_x;
+	double			transform_y;
+	int				sprite_screen_x;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+	int				screen_x;
+	int				screen_y;
+	int				radius;
+	int				px;
+	int				py;
+	double			dist;
+	double			step_x;
+	double			step_y;
+	double			next_x;
+	double			next_y;
+	int				sprite_height;
+	int				sprite_width;
+	unsigned int	color;
+	int				draw_start_y;
+	int				draw_end_y;
+	int				draw_start_x;
+	int				draw_end_x;
+	int				x;
+	int				tex_x;
 }	t_draw_data;
 
 typedef struct s_menu_data
@@ -462,6 +471,9 @@ void	update_walking(t_zombie *z);
 void	update_attacking(t_zombie *z);
 void	update_dead(t_zombie *z);
 void	update_hit(t_zombie *z);
+void	define_dimensions_zombies(t_draw_data *d);
+void	loop_on_y_draw_zombie_sprite(double tex_pos, t_gen *gen,
+			t_draw_data *d, t_tex *tex);
 
 //utils
 void	util_rotate_player(t_gen *gen);
@@ -473,5 +485,6 @@ char	*mlx_get_key_name(int keycode);
 int		mouse_release(int button, int x, int y, t_gen *gen);
 void	draw_slider(t_gen *gen);
 int		update_buttons(t_gen *gen, int x, int y);
+void	loop_calculate_proj(t_gen *gen, t_draw_data *d, int x, int y);
 
 #endif
