@@ -41,6 +41,15 @@ SRCS		=	main_bonus.c \
 				animator/update_zombies_bonus.c \
 				\
 				menu/menu_bonus.c \
+				menu/btn_functions_bonus.c \
+				menu/draw_map_preview_bonus.c \
+				menu/get_map_ui_bonus.c \
+				menu/set_preview_bonus.c \
+				menu/draw_set_btn_bonus.c \
+				menu/draw_selection_bonus.c \
+				menu/draw_options_bonus.c \
+
+
 				
 
 OBJS		= $(SRCS:.c=.o)
