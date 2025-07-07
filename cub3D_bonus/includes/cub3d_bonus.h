@@ -186,7 +186,7 @@ typedef struct s_option_data
 	char			*key_name;
 	char			*tmp;
 	char			*buf;
-	const char		*keys[4];
+	char			*keys[4];
 	int				*bindings[4];
 	int				color;
 	int				x;
@@ -376,6 +376,7 @@ typedef struct s_gen
 	t_tex				btn_map_selection;
 	t_tex				btn_exit_game;
 	t_tex				btn_back_home;
+	t_tex				title_tex;
 	char				*map_file_path;
 	int					counter_spawn;
 	int					map_selection;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:17:47 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/07 12:19:43 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,6 @@ void	util_close_window(t_gen *gen)
 {
 	if (gen->door.door_closed.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->door.door_closed.img_ptr);
-	if (gen->door.door_half_open.img_ptr)
-		mlx_destroy_image(gen->mlx_ptr, gen->door.door_half_open.img_ptr);
-	if (gen->door.door_open.img_ptr)
-		mlx_destroy_image(gen->mlx_ptr, gen->door.door_open.img_ptr);
 	if (gen->btn_exit_game.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->btn_exit_game.img_ptr);
 	if (gen->btn_map_selection.img_ptr)
@@ -118,6 +114,8 @@ int	close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.east.img_ptr);
 	if (gen->map.west.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->map.west.img_ptr);
+	if (gen->title_tex.img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->title_tex.img_ptr);
 	util_close_window(gen);
 	destroy_zombie_tex(gen);
 	if (gen->win_ptr)

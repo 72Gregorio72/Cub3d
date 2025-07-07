@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/04 17:45:10 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/07 11:56:59 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	start_game_from_map(t_gen *gen, const char *filepath)
 	if (!get_map((char *)filepath, gen))
 	{
 		ft_printf("Failed to load map: %s\n", filepath);
+		free((char *)filepath);
 		return ;
 	}
 	free(gen->map_file_path);
@@ -308,8 +309,6 @@ void	open_map_selection(t_gen *gen)
 
 void	back_home_menu(t_gen *gen)
 {
-	gen->map_selection = 0;
-	gen->in_menu = 1;
 	clear_image(&gen->img);
 	draw_menu(gen);
 }
@@ -440,7 +439,7 @@ void	draw_map_ui(t_map_selector *map, t_gen *gen)
 			.y1 = map->y + PREVIEW_HEIGHT,
 			.text = map->map_files[map->i] + 5,
 			.action = NULL,
-			.filepath = ft_strdup(map->map_files[map->i])
+			.filepath = ft_strdup(map->map_files[map->i]) //// da fare i free
 		};
 		map->i++;
 	}
@@ -542,7 +541,7 @@ void	draw_map_selector(t_gen *gen)
 // 						x++;
 // 					}
 // 					y++;
-// 				}
+// 				}make 
 // 			}
 // 			j++;
 // 		}
@@ -620,6 +619,7 @@ void	set_options(t_gen *gen, t_option_data *data)
 	data->tmp = ft_strjoin(data->keys[data->i], ": ");
 	data->buf = ft_strjoin(data->tmp, data->key_name);
 	free(data->tmp);
+	free(data->keys[data->i]);
 	mlx_string_put(gen->mlx_ptr, gen->win_ptr, 100,
 		data->y, 0xFFFFFF, data->buf);
 	free(data->buf);
@@ -692,9 +692,9 @@ void	open_options_menu(t_gen *gen)
 			SCREEN_X - data.padding,
 			data.padding + data.button_h,
 			"", back_home_menu);
+	draw_button_with_action(gen, &data.btn);
 	gen->map_button_count = 1;
 	gen->map_buttons[4] = data.btn;
-	draw_button_with_action(gen, &data.btn);
 	gen->selected_key_index = -1;
 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
@@ -706,22 +706,22 @@ void	set_buttons(t_gen *gen)
 
 	i = 0;
 	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100, 200,
-		SCREEN_X - 400 - 100 + 400, 200 + 180,
+		SCREEN_X - 400 - 100, 50,
+		SCREEN_X - 400 - 100 + 400, 50 + 180,
 		"START", start_game);
 	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100, 200 + 180 + 40 + 60,
-		SCREEN_X - 400 - 100 + 400, 200 + 2 * 180 + 40 + 60,
+		SCREEN_X - 400 - 100, 50 + 180 + 40 + 60,
+		SCREEN_X - 400 - 100 + 400, 50 + 2 * 180 + 40 + 60,
 		"SELECT", open_map_selection);
 	set_button(&gen->map_buttons[gen->map_button_count++],
 		SCREEN_X - 400 - 100 + 20,
-		200 + 2 * (180 + 40 + 60),
+		50 + 2 * (180 + 40 + 60),
 		SCREEN_X - 400 - 100 + 400 - 20,
-		200 + 3 * 180 + 2 * (40 + 60) - 10,
+		50 + 3 * 180 + 2 * (40 + 60) - 10,
 		"OPTIONS", open_options_menu);
 	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100, 200 + 3 * (180 + 40 + 60),
-		SCREEN_X - 400 - 100 + 400, 200 + 4 * 180 + 3 * (40 + 60),
+		SCREEN_X - 400 - 100, 50 + 3 * (180 + 40 + 60),
+		SCREEN_X - 400 - 100 + 400, 50 + 4 * 180 + 3 * (40 + 60),
 		"QUIT", exit_game);
 	while (i < gen->map_button_count)
 		draw_button_with_action(gen, &gen->map_buttons[i++]);
@@ -745,5 +745,6 @@ void	draw_menu(t_gen *gen)
 	}
 	gen->map_button_count = 0;
 	set_buttons(gen);
+	draw_texture(&gen->img, &gen->title_tex, SCREEN_X / 2 - gen->title_tex.width / 2, -20);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 }
