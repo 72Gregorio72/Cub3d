@@ -429,6 +429,7 @@ int		close_window(t_gen *gen);
 void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
 void	destroy_zombie_tex(t_gen *gen);
+void	free_buttons(t_gen *gen);
 
 //key listener
 int		on_key_press(int keycode, t_gen *gen);

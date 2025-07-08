@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/07 17:29:06 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/08 12:22:25 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,25 @@ void	open_options_menu(t_gen *gen)
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 }
 
+void	free_buttons(t_gen *gen)
+{
+	int	i;
+
+	i = 0;
+	while (i < gen->map_button_count)
+	{
+		if (gen->map_buttons[i].filepath)
+			free(gen->map_buttons[i].filepath);
+		i++;
+	}
+}
+
 void	draw_menu(t_gen *gen)
 {
 	int	title_x;
 
 	title_x = (SCREEN_X - ft_strlen("CUB3D") * 20) / 2;
+	free_buttons(gen);
 	gen->map_selection = 0;
 	gen->in_menu = 1;
 	clear_image(&gen->img);
