@@ -84,7 +84,7 @@ miniclean: fclean
 vale: re
 	make clean
 	@clear
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes > out ./$(NAME) $(ARSG)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARSG)
 
 push: miniclean
 	bash -i -c "push"
