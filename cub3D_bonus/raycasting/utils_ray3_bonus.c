@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:59:40 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/30 14:40:19 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:42:28 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	is_walkable(t_gen *gen, double x, double y)
 
 	mx = (int)x;
 	my = (int)y;
+	if (gen->map.map_matrix[my][mx] == 'D' && !gen->door.flag_door_open)
+		return (0);
 	return ((mx >= 0 && mx < gen->map.width
 			&& my >= 0 && my < gen->map.height
 			&& gen->map.map_matrix[my][mx] != '1'));

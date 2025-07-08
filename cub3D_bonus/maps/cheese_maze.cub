@@ -1,7 +1,7 @@
-NO ./textures/redbrick.xpm
-SO ./textures/eagle.xpm
-WE ./textures/wall_3.xpm
-EA ./textures/wood.xpm
+NO ./textures/walls/walls5.xpm
+SO ./textures/walls/walls2.xpm
+WE ./textures/walls/walls3.xpm
+EA ./textures/walls/walls4.xpm
 
 F 164,169,20
 C 153,204,255

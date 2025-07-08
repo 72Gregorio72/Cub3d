@@ -50,21 +50,21 @@ void	add_projectile(t_gen *gen)
 
 void	check_draw(t_gen *gen, double next_x, double next_y, t_projectile *curr)
 {
-	int	map_x = (int)next_x;
-	int	map_y = (int)next_y;
+	int	map_x;
+	int	map_y;
 	int	screen_xy[2];
 
+	map_x = (int)next_x;
+	map_y = (int)next_y;
 	if (gen->map.map_matrix[(int)next_y][(int)next_x] == '1'
-		|| gen->map.map_matrix[(int)next_y][(int)next_x] == 'D')
-	if (map_x < 0 || map_y < 0 ||
-		map_y >= gen->map.height ||
-		map_x >= gen->map.width ||
-		!gen->map.map_matrix[map_y])
+		|| (gen->map.map_matrix[(int)next_y][(int)next_x] == 'D'
+			&& !gen->door.flag_door_open)
+		|| map_x < 0 || map_y < 0 || map_y >= gen->map.height
+		|| map_x >= gen->map.width || !gen->map.map_matrix[map_y])
 	{
 		curr->active = 0;
 		return ;
 	}
-
 	if (gen->map.map_matrix[map_y][map_x] == '1')
 		curr->active = 0;
 	else

@@ -8,6 +8,7 @@ SRCS		=	main_bonus.c \
 				srcs/init_bonus.c \
 				srcs/key_listener_bonus.c \
 				srcs/utils.c \
+				srcs/utils_init_bonus.c \
 				srcs/key_listener_utils_bonus.c \
 				\
 				map_loader/utils_map_loader_bonus.c \
@@ -32,12 +33,23 @@ SRCS		=	main_bonus.c \
 				minigame/zombie_cpu_bonus.c \
 				minigame/fps_bonus.c \
 				minigame/zombie_utils_bonus.c \
+				minigame/zombie_utils_bonus2.c \
 				\
 				ui/draw_healthbar_bonus.c \
 				\
 				animator/zombie_animator_bonus.c \
+				animator/update_zombies_bonus.c \
 				\
 				menu/menu_bonus.c \
+				menu/btn_functions_bonus.c \
+				menu/draw_map_preview_bonus.c \
+				menu/get_map_ui_bonus.c \
+				menu/set_preview_bonus.c \
+				menu/draw_set_btn_bonus.c \
+				menu/draw_selection_bonus.c \
+				menu/draw_options_bonus.c \
+
+
 				
 
 OBJS		= $(SRCS:.c=.o)

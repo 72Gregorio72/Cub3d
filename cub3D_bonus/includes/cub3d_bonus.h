@@ -37,7 +37,13 @@
 # include "X11/keysym.h"
 # include <sys/time.h>
 # include <time.h>
+# include <dirent.h>
 
+# define MAPS_PER_ROW 3
+# define MAP_BOX_W 250
+# define MAP_BOX_H 50
+# define START_X 100
+# define START_Y 150
 # define SCREEN_X 1920
 # define SCREEN_Y 1080
 # define KB_W 119
@@ -98,25 +104,34 @@ typedef struct s_point
 
 typedef struct s_draw_data
 {
-	double	dx;
-	double	dy;
-	double	inv_det;
-	double	transform_x;
-	double	transform_y;
-	int		sprite_screen_x;
-	int		line_height;
-	int		draw_start;
-	int		draw_end;
-	int		screen_x;
-	int		screen_y;
-	int		radius;
-	int		px;
-	int		py;
-	double	dist;
-	double	step_x;
-	double	step_y;
-	double	next_x;
-	double	next_y;
+	double			dx;
+	double			dy;
+	double			inv_det;
+	double			transform_x;
+	double			transform_y;
+	int				sprite_screen_x;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+	int				screen_x;
+	int				screen_y;
+	int				radius;
+	int				px;
+	int				py;
+	double			dist;
+	double			step_x;
+	double			step_y;
+	double			next_x;
+	double			next_y;
+	int				sprite_height;
+	int				sprite_width;
+	unsigned int	color;
+	int				draw_start_y;
+	int				draw_end_y;
+	int				draw_start_x;
+	int				draw_end_x;
+	int				x;
+	int				tex_x;
 }	t_draw_data;
 
 typedef struct s_menu_data
@@ -133,24 +148,6 @@ typedef struct s_menu_data
 	int	x;
 	int	y;
 }	t_menu_data;
-
-typedef struct s_option_data
-{
-	int			i;
-	int			y;
-	int			bx1;
-	int			by1;
-	int			bx2;
-	int			by2;
-	char		*key_name;
-	char		*tmp;
-	char		*buf;
-	const char	*keys[4];
-	int			*bindings[4];
-	int			color;
-	int			x;
-	int			y2;
-}	t_option_data;
 
 typedef struct s_map_preview
 {
@@ -184,6 +181,28 @@ typedef struct s_map_button
 	char	*filepath;
 }	t_map_button;
 
+typedef struct s_option_data
+{
+	int				i;
+	int				y;
+	int				bx1;
+	int				by1;
+	int				bx2;
+	int				by2;
+	char			*key_name;
+	char			*tmp;
+	char			*buf;
+	char			*keys[4];
+	int				*bindings[4];
+	int				color;
+	int				x;
+	int				y2;
+	t_map_button	btn;
+	int				padding;
+	int				button_w;
+	int				button_h;
+}	t_option_data;
+
 typedef struct s_map_selector
 {
 	int				i;
@@ -195,7 +214,8 @@ typedef struct s_map_selector
 	int				x;
 	int				y;
 	int				offset_y;
-	int				padding;
+	int				padding_x;
+	int				padding_y;
 	int				button_w;
 	int				button_h;
 	t_map_button	button;
@@ -318,12 +338,12 @@ typedef struct player_options
 
 typedef struct s_key_button
 {
-	int x1;
-	int y1;
-	int x2;
-	int y2;
-	int *key;
-	const char *label;
+	int			x1;
+	int			y1;
+	int			x2;
+	int			y2;
+	int			*key;
+	const char	*label;
 }	t_key_button;
 
 typedef struct s_gen
@@ -362,6 +382,7 @@ typedef struct s_gen
 	t_tex				btn_map_selection;
 	t_tex				btn_exit_game;
 	t_tex				btn_back_home;
+	t_tex				title_tex;
 	char				*map_file_path;
 	int					counter_spawn;
 	int					map_selection;
@@ -473,13 +494,13 @@ void	draw_minimap_grid(t_img *img, t_gen *gen);
 void	draw_minimap(t_map *map, t_gen *gen);
 
 // projectile
-void	shoot_projectile(t_gen *gen, int x, int y);
 void	update_projectile_position(t_gen *gen);
 void	ft_lstclear_proj(t_projectile **stackA);
 void	draw_projectiles(t_gen *gen);
 void	cleanup_projectiles(t_gen *gen);
 void	add_projectile(t_gen *gen);
 void	util_calculate_prog(t_draw_data d, t_gen *gen, int x, int y);
+int		check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d);
 
 // zombie
 void	update_hit(t_zombie *z);
@@ -515,16 +536,52 @@ size_t	get_current_time(void);
 void	rotate_view(t_gen *gen);
 int		zombie_near_door(t_gen *gen, t_ray *ray);
 void	load_zombies(t_gen *gen);
+void	reset_zombies(t_gen *gen);
+void	update_walking(t_zombie *z);
+void	update_attacking(t_zombie *z);
+void	update_dead(t_zombie *z);
+void	update_hit(t_zombie *z);
+void	define_dimensions_zombies(t_draw_data *d);
+void	loop_on_y_draw_zombie_sprite(double tex_pos, t_gen *gen,
+			t_draw_data *d, t_tex *tex);
+
+// menu
+int		get_map(char *path, t_gen *gen);
+void	set_preview(t_map_preview *preview,
+			t_gen *gen, int preview_origin_x, int preview_origin_y);
+void	draw_map_preview(t_gen *gen, int preview_origin_x, int preview_origin_y);
+void	draw_texture(t_img *img, t_tex *tex, int x0, int y0);
+void	start_game_from_map(t_gen *gen, const char *filepath);
+void	draw_map_selector(t_gen *gen);
+void	open_options_menu(t_gen *gen);
+void	set_slider(t_gen *gen, int slider_x);
+void	draw_slider(t_gen *gen);
+void	set_options(t_gen *gen, t_option_data *data);
+void	set_option_data(t_option_data *data, t_gen *gen);
+void	draw_option(t_option_data *data, t_gen *gen);
+char	**get_map_files(int *count);
+
+// buttons
+int		update_buttons(t_gen *gen, int x, int y);
+void	set_buttons(t_gen *gen);
+void	draw_button_debug_outline(t_img *img, int x0, int y0, int x1, int y1, int color);
+void	draw_button_with_action(t_gen *gen, t_map_button *button);
+void	start_game(t_gen *gen);
+void	open_map_selection(t_gen *gen);
+void	back_home_menu(t_gen *gen);
+void	exit_game(t_gen *gen);
+void	set_button(t_map_button *button, int x0, int y0,
+			int x1, int y1, char *text, void (*action)(t_gen *));
 
 //utils
 void	util_rotate_player(t_gen *gen);
 void	load_img(t_gen *gen);
 void	util_destroy_zombie_tex(t_gen *gen);
-int		zombie_in_door(t_gen *gen);
 void	open_options_menu(t_gen *gen);
 char	*mlx_get_key_name(int keycode);
 int		mouse_release(int button, int x, int y, t_gen *gen);
 void	draw_slider(t_gen *gen);
 int		update_buttons(t_gen *gen, int x, int y);
+void	loop_calculate_proj(t_gen *gen, t_draw_data *d, int x, int y);
 
 #endif

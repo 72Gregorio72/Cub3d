@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   zombie_utils_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:32:00 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/03 15:17:25 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:40:15 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	remove_zombie(t_gen *gen, t_zombie *zombie_to_remove)
 		free(tmp);
 		gen->num_zombies--;
 	}
-	printf(GREEN"Zombie hit and removed\n"RESET);
 }
 
 void	update_matrix_zombie(int old_x, int old_y, t_zombie *zombie, t_gen *gen)
@@ -83,6 +82,22 @@ void	update_matrix_zombie(int old_x, int old_y, t_zombie *zombie, t_gen *gen)
 	}
 }
 
+void	util_move_zombie(t_draw_data *d, t_zombie *z, t_gen *gen)
+{
+	d->step_x = d->dx / d->dist * ZOMBIE_SPEED;
+	d->step_y = d->dy / d->dist * ZOMBIE_SPEED;
+	d->next_x = z->x + d->step_x;
+	d->next_y = z->y + d->step_y;
+	if (d->next_x < 0)
+		d->next_x = 0;
+	else if (d->next_x >= gen->map.width)
+		d->next_x = gen->map.width - 1;
+	if (d->next_y < 0)
+		d->next_y = 0;
+	else if (d->next_y >= gen->map.height)
+		d->next_y = gen->map.height - 1;
+}
+
 void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 {
 	int		old_x;
@@ -94,18 +109,7 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 		return ;
 	if (d.dist > 0.4)
 	{
-		d.step_x = d.dx / d.dist * ZOMBIE_SPEED;
-		d.step_y = d.dy / d.dist * ZOMBIE_SPEED;
-		d.next_x = z->x + d.step_x;
-		d.next_y = z->y + d.step_y;
-		if (d.next_x < 0)
-			d.next_x = 0;
-		else if (d.next_x >= gen->map.width)
-			d.next_x = gen->map.width - 1;
-		if (d.next_y < 0)
-			d.next_y = 0;
-		else if (d.next_y >= gen->map.height)
-			d.next_y = gen->map.height - 1;
+		util_move_zombie(&d, z, gen);
 		if (gen->map.map_matrix[(int)z->y][(int)d.next_x] != '1'
 			&& gen->map.map_matrix[(int)z->y][(int)d.next_x] != 'D')
 			z->x = d.next_x;
@@ -117,30 +121,4 @@ void	move_zombie(t_gen *gen, t_zombie *z, t_draw_data d)
 		z->is_walking = 0;
 	if (old_x != (int)z->x || old_y != (int)z->y)
 		update_matrix_zombie(old_x, old_y, z, gen);
-}
-
-void	update_zombies_position(t_gen *gen)
-{
-	t_zombie	*z;
-	t_draw_data	d;
-	size_t		now;
-
-	z = gen->zombies;
-	if (!z)
-		return ;
-	now = get_current_time();
-	while (z)
-	{
-		if (now - z->last_attack_time > 1000)
-			z->attacked = 0;
-		d.dx = gen->player.x - z->x;
-		d.dy = gen->player.y - z->y;
-		d.dist = sqrt(d.dx * d.dx + d.dy * d.dy);
-		move_zombie(gen, z, d);
-		if (d.dist <= 0.5 && !z->attacked)
-			update_attacking(z);
-		else if (!z->is_walking && d.dist > 0.5)
-			update_walking(z);
-		z = z->next;
-	}
 }

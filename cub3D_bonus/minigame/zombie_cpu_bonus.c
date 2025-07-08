@@ -101,28 +101,3 @@ int	check_proj_hit(t_gen *gen, t_projectile *p, t_zombie *z, t_draw_data d)
 	}
 	return (0);
 }
-
-void	check_zombie_hits(t_gen *gen)
-{
-	t_zombie		*z;
-	t_zombie		*next_z;
-	t_projectile	*proj;
-	t_projectile	*p;
-	t_draw_data		d;
-
-	ft_memset(&d, 0, sizeof(t_draw_data));
-	z = gen->zombies;
-	proj = gen->projectiles;
-	while (z)
-	{
-		next_z = z->next;
-		p = proj;
-		while (p)
-		{
-			if (!z->is_dead && check_proj_hit(gen, p, z, d))
-				break ;
-			p = p->next;
-		}
-		z = next_z;
-	}
-}
