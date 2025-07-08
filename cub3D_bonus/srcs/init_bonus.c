@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/04 17:02:02 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/08 10:37:33 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,5 @@ void	reset_player(t_gen *gen)
 	get_map(gen->map_file_path, gen);
 	reset_zombies(gen);
 	load_zombies(gen);
+	rotate_view(gen);
 }

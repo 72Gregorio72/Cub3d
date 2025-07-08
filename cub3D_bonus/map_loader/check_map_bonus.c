@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:52:58 by vcastald          #+#    #+#             */
-/*   Updated: 2025/06/26 12:34:52 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/08 10:40:44 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	parsing_map(t_gen *gen)
 	if (!map_check(gen) || !fill_colors(gen, 1) || !fill_colors(gen, 0)
 		|| !check_textures(gen))
 		return (0);
-	if (!check_closed(gen))
+	if (!check_closed(gen) || !unclosed_zero(&gen->map))
 		return (printf(RED"Error\n unclosed map!\n"RESET), 0);
 	return (1);
 }
