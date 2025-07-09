@@ -566,8 +566,8 @@ char	**get_map_files(int *count);
 // buttons
 int		update_buttons(t_gen *gen, int x, int y);
 void	set_buttons(t_gen *gen);
-void	draw_button_debug_outline(t_img *img,
-			int x0, int y0, int x1, int y1, int color);
+/* void	draw_button_debug_outline(t_img *img,
+			int x0, int y0, int x1, int y1, int color); */
 void	draw_button_with_action(t_gen *gen, t_map_button *button);
 void	start_game(t_gen *gen);
 void	open_map_selection(t_gen *gen);
