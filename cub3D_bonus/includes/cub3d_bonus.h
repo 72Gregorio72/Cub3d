@@ -552,6 +552,8 @@ void	set_preview(t_map_preview *preview,
 			t_gen *gen, int preview_origin_x, int preview_origin_y);
 void	draw_map_preview(t_gen *gen,
 			int preview_origin_x, int preview_origin_y);
+void	draw_map_preview(t_gen *gen,
+			int preview_origin_x, int preview_origin_y);
 void	draw_texture(t_img *img, t_tex *tex, int x0, int y0);
 void	start_game_from_map(t_gen *gen, const char *filepath);
 void	draw_map_selector(t_gen *gen);
