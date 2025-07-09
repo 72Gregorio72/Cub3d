@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/07 12:19:43 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:32:14 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	close_window(t_gen *gen)
 	if (gen->title_tex.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->title_tex.img_ptr);
 	util_close_window(gen);
+	free_buttons(gen);
 	destroy_zombie_tex(gen);
 	if (gen->win_ptr)
 		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);

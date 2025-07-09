@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:59:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/03 15:07:03 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/08 12:12:11 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	load_img(t_gen *gen)
 	load_zombies(gen);
 	load_button_images(gen);
 	rotate_view(gen);
+	open_options_menu(gen);
+	open_map_selection(gen);
 }
 
 void	util_rotate_player(t_gen *gen)
