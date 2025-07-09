@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:34:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/04 12:03:06 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:06:24 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,17 @@ void	draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z)
 {
 	t_tex			*tex;
 	double			tex_pos;
-	
+
 	tex = z->texture;
 	if (!tex || !tex->data)
 		return ;
 	define_dimensions_zombies(d);
-	d->x = d->draw_start_x;
-	while (d->x < d->draw_end_x)
+	d->x = d->draw_start_x - 1;
+	while (++d->x < d->draw_end_x)
 	{
-		d->tex_x = (int)((double)(d->x - (d->sprite_screen_x - d->sprite_width / 2))
-			/ d->sprite_width * tex->width);
+		d->tex_x = (int)((double)(d->x
+					- (d->sprite_screen_x - d->sprite_width / 2))
+				/ d->sprite_width * tex->width);
 		if (d->tex_x < 0)
 			d->tex_x = 0;
 		if (d->tex_x >= tex->width)
@@ -53,7 +54,6 @@ void	draw_zombie_sprite(t_gen *gen, t_draw_data *d, t_zombie *z)
 				* ((double)tex->height / d->sprite_height);
 			loop_on_y_draw_zombie_sprite(tex_pos, gen, d, tex);
 		}
-		d->x++;
 	}
 }
 

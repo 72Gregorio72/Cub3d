@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:41:33 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/08 10:37:27 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:05:14 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	exit_game(t_gen *gen)
 	close_window(gen);
 }
 
-void	set_button(t_map_button *button, int x0, int y0, int x1, int y1, char *text, void (*action)(t_gen *))
+void	set_button(t_map_button *button,
+	int x0, int y0, int x1, int y1, char *text, void (*action)(t_gen *))
 {
 	button->x0 = x0;
 	button->y0 = y0;

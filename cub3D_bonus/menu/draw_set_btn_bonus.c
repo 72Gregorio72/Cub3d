@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   draw_set_btn_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/09 13:32:02 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:24:36 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	draw_button_debug_outline(t_img *img, int x0, int y0, int x1, int y1, int color)
+void	draw_button_debug_outline(t_img *img,
+	int x0, int y0, int x1, int y1, int color)
 {
 	int		x;
 	int		y;

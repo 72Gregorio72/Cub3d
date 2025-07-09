@@ -550,7 +550,8 @@ void	loop_on_y_draw_zombie_sprite(double tex_pos, t_gen *gen,
 int		get_map(char *path, t_gen *gen);
 void	set_preview(t_map_preview *preview,
 			t_gen *gen, int preview_origin_x, int preview_origin_y);
-void	draw_map_preview(t_gen *gen, int preview_origin_x, int preview_origin_y);
+void	draw_map_preview(t_gen *gen,
+			int preview_origin_x, int preview_origin_y);
 void	draw_texture(t_img *img, t_tex *tex, int x0, int y0);
 void	start_game_from_map(t_gen *gen, const char *filepath);
 void	draw_map_selector(t_gen *gen);
@@ -565,7 +566,8 @@ char	**get_map_files(int *count);
 // buttons
 int		update_buttons(t_gen *gen, int x, int y);
 void	set_buttons(t_gen *gen);
-void	draw_button_debug_outline(t_img *img, int x0, int y0, int x1, int y1, int color);
+void	draw_button_debug_outline(t_img *img,
+			int x0, int y0, int x1, int y1, int color);
 void	draw_button_with_action(t_gen *gen, t_map_button *button);
 void	start_game(t_gen *gen);
 void	open_map_selection(t_gen *gen);
@@ -578,7 +580,6 @@ void	set_button(t_map_button *button, int x0, int y0,
 void	util_rotate_player(t_gen *gen);
 void	load_img(t_gen *gen);
 void	util_destroy_zombie_tex(t_gen *gen);
-void	open_options_menu(t_gen *gen);
 char	*mlx_get_key_name(int keycode);
 int		mouse_release(int button, int x, int y, t_gen *gen);
 void	draw_slider(t_gen *gen);

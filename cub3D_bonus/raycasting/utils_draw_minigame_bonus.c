@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:41:08 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/04 12:03:10 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:04:54 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	loop_calculate_proj(t_gen *gen, t_draw_data *d, int x, int y)
 			x++;
 		}
 		y++;
-	}	
+	}
 }
 
 void	define_dimensions_zombies(t_draw_data *d)
@@ -82,7 +82,8 @@ void	define_dimensions_zombies(t_draw_data *d)
 	d->draw_start_y = fmax(0, d->draw_start);
 	d->draw_end_y = fmin(SCREEN_Y - 1, d->draw_end);
 	d->draw_start_x = fmax(0, d->sprite_screen_x - d->sprite_width / 2);
-	d->draw_end_x = fmin(SCREEN_X - 1, d->sprite_screen_x + d->sprite_width / 2);
+	d->draw_end_x = fmin(SCREEN_X - 1,
+			d->sprite_screen_x + d->sprite_width / 2);
 }
 
 void	loop_on_y_draw_zombie_sprite(double tex_pos, t_gen *gen,
@@ -101,7 +102,7 @@ void	loop_on_y_draw_zombie_sprite(double tex_pos, t_gen *gen,
 		if (tex_y >= tex->height)
 			tex_y = tex->height - 1;
 		d->color = *(unsigned int *)(tex->data + tex_y * tex->line_length
-			+ d->tex_x * (tex->bpp / 8));
+				+ d->tex_x * (tex->bpp / 8));
 		if ((d->color & 0x00FFFFFF) != 0x000000)
 			put_pixel(&gen->img, d->x, y, d->color);
 		y++;
