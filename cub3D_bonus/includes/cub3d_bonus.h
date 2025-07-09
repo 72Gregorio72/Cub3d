@@ -393,6 +393,7 @@ typedef struct s_gen
 	int					selected_key_index;
 	int					dragging_slider;
 	t_key_button		dragging_slider_button;
+	int					is_initializing;
 }				t_gen;
 
 typedef struct s_ray

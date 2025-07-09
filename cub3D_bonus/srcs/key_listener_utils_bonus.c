@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_utils_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/04 17:47:25 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:18:20 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,21 @@ int	mouse_release(int button, int x, int y, t_gen *gen)
 	return (0);
 }
 
+void	handle_options_click(int x, int y, t_gen *gen)
+{
+	t_map_button	btn;
+
+	btn = gen->map_buttons[4];
+	if (x >= btn.x0 && x <= btn.x1 && y >= btn.y0 && y <= btn.y1)
+	{
+		if (btn.filepath)
+			start_game_from_map(gen, btn.filepath);
+		else if (btn.action)
+			btn.action(gen);
+		gen->ignore_next_mouse = 1;
+	}
+}
+
 void	handle_menu_click(int x, int y, t_gen *gen)
 {
 	t_map_button	btn;
@@ -57,24 +72,13 @@ void	handle_menu_click(int x, int y, t_gen *gen)
 			else if (btn.action)
 				btn.action(gen);
 			gen->ignore_next_mouse = 1;
-			break ;
 		}
 		i++;
 	}
-	if (!update_buttons(gen, x, y))
-		return ;
 }
 
-void	handle_slider_and_scroll(int button, int x, int y, t_gen *gen)
+void	handle_slider_and_scroll(int button, t_gen *gen)
 {
-	if (button == MOUSE_LEFT_CLICK)
-	{
-		if (x >= gen->dragging_slider_button.x1
-			&& x <= gen->dragging_slider_button.x2
-			&& y >= gen->dragging_slider_button.y1
-			&& y <= gen->dragging_slider_button.y2)
-			gen->dragging_slider = 1;
-	}
 	if (button == MOUSE_SCROLL_UP)
 	{
 		gen->scroll_offset_y += 100;
@@ -96,9 +100,21 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 {
 	if (button == MOUSE_LEFT_CLICK && !gen->in_menu && gen->ignore_next_mouse)
 		add_projectile(gen);
-	if (button == MOUSE_LEFT_CLICK && gen->in_menu)
+	if (button == MOUSE_LEFT_CLICK && gen->in_menu && !gen->in_options)
 		handle_menu_click(x, y, gen);
-	if (gen->in_menu && gen->map_selection)
-		handle_slider_and_scroll(button, x, y, gen);
+	else if (button == MOUSE_LEFT_CLICK && gen->in_options)
+		handle_options_click(x, y, gen);
+	if (gen->in_menu && gen->map_selection && !gen->in_options)
+		handle_slider_and_scroll(button, gen);
+	if (button == MOUSE_LEFT_CLICK && gen->in_options)
+	{
+		if (x >= gen->dragging_slider_button.x1
+			&& x <= gen->dragging_slider_button.x2
+			&& y >= gen->dragging_slider_button.y1
+			&& y <= gen->dragging_slider_button.y2)
+			gen->dragging_slider = 1;
+		if (!update_buttons(gen, x, y))
+			return (0);
+	}
 	return (0);
 }
