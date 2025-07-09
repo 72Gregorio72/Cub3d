@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_selection_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:52:18 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/09 10:06:41 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:21:18 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	draw_map_ui(t_map_selector *map, t_gen *gen)
 			.y1 = map->y + PREVIEW_HEIGHT,
 			.text = map->map_files[map->i] + 5,
 			.action = NULL,
-			.filepath = ft_strdup(map->map_files[map->i]) //// da fare i free
+			.filepath = ft_strdup(map->map_files[map->i])
 		};
 		map->i++;
 	}

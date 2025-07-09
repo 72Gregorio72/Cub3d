@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/09 10:16:08 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:23:45 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ void	open_options_menu(t_gen *gen)
 {
 	t_option_data	data;
 
+	gen->in_options = 1;
+	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 	set_option_data(&data, gen);
 	data.i = 0;
 	while (data.i < 4)
@@ -102,11 +105,9 @@ void	open_options_menu(t_gen *gen)
 		data.padding + data.button_h,
 		"", back_home_menu);
 	draw_button_with_action(gen, &data.btn);
-	gen->map_button_count = 1;
-	gen->map_buttons[3] = data.btn;
+	gen->map_buttons[4] = data.btn;
+	gen->map_button_count++;
 	gen->selected_key_index = -1;
-	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
-	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 }
 
 void	free_buttons(t_gen *gen)
@@ -129,6 +130,7 @@ void	draw_menu(t_gen *gen)
 	title_x = (SCREEN_X - ft_strlen("CUB3D") * 20) / 2;
 	free_buttons(gen);
 	gen->map_selection = 0;
+	gen->in_options = 0;
 	gen->in_menu = 1;
 	clear_image(&gen->img);
 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
