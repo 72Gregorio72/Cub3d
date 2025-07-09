@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/08 10:37:33 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:04:32 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	load_button_images(t_gen *gen)
 		&gen->btn_map_selection);
 	load_texture(gen->mlx_ptr, "textures/quit.xpm", &gen->btn_exit_game);
 	load_texture(gen->mlx_ptr, "textures/option_btn.xpm", &gen->btn_options);
-	load_texture(gen->mlx_ptr, "textures/red_cross_tiny.xpm", &gen->btn_back_home);
+	load_texture(gen->mlx_ptr,
+		"textures/red_cross_tiny.xpm", &gen->btn_back_home);
 }
 
 void	init_keys(t_gen *gen)

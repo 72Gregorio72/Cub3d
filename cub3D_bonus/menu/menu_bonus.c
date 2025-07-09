@@ -6,13 +6,14 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/08 12:22:25 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:16:08 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-// void draw_map_preview_scaled(t_gen *gen, int base_x, int base_y, int width, int height, int cube_size)
+// void draw_map_preview_scaled(t_gen *gen,
+//int base_x, int base_y, int width, int height, int cube_size)
 // {
 // 	int i, j, x, y;
 // 	int iso_x, iso_y;
@@ -36,7 +37,8 @@
 // 					x = 0;
 // 					while (x < cube_size)
 // 					{
-// 						color = (x == 0 || y == 0 || x == cube_size - 1 || y == cube_size - 1) ? 0x000000 : 0xCCCCCC;
+// 						color = (x == 0 || y == 0
+//|| x == cube_size - 1 || y == cube_size - 1) ? 0x000000 : 0xCCCCCC;
 // 						put_pixel(&gen->img, iso_x + x, iso_y + y, color);
 // 						x++;
 // 					}
@@ -48,7 +50,8 @@
 // 					x = 0;
 // 					while (x < cube_size)
 // 					{
-// 						color = (x == 0 || y == 0 || x == cube_size - 1 || y == top_offset - 1) ? 0x000000 : 0xEEEEEE;
+// 						color = (x == 0 || y == 0
+//|| x == cube_size - 1 || y == top_offset - 1) ? 0x000000 : 0xEEEEEE;
 // 						put_pixel(&gen->img, iso_x + x, iso_y - y, color);
 // 						x++;
 // 					}
@@ -93,11 +96,11 @@ void	open_options_menu(t_gen *gen)
 		data.i++;
 	}
 	set_button(&data.btn,
-			SCREEN_X - data.button_w - data.padding,
-			data.padding,
-			SCREEN_X - data.padding,
-			data.padding + data.button_h,
-			"", back_home_menu);
+		SCREEN_X - data.button_w - data.padding,
+		data.padding,
+		SCREEN_X - data.padding,
+		data.padding + data.button_h,
+		"", back_home_menu);
 	draw_button_with_action(gen, &data.btn);
 	gen->map_button_count = 1;
 	gen->map_buttons[3] = data.btn;
@@ -138,6 +141,7 @@ void	draw_menu(t_gen *gen)
 	}
 	gen->map_button_count = 0;
 	set_buttons(gen);
-	draw_texture(&gen->img, &gen->title_tex, SCREEN_X / 2 - gen->title_tex.width / 2, -20);
+	draw_texture(&gen->img, &gen->title_tex,
+		SCREEN_X / 2 - gen->title_tex.width / 2, -20);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
 }

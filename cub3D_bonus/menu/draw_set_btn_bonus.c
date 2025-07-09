@@ -6,13 +6,14 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/08 11:58:57 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:24:36 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	draw_button_debug_outline(t_img *img, int x0, int y0, int x1, int y1, int color)
+void	draw_button_debug_outline(t_img *img,
+	int x0, int y0, int x1, int y1, int color)
 {
 	int		x;
 	int		y;
