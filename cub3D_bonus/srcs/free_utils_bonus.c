@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/09 15:17:27 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:10:39 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,20 @@ void	util_close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->btn_back_home.img_ptr);
 }
 
+void	free_all_buttons(t_gen *gen)
+{
+	int	i;
+
+	i = 0;
+	while (i < gen->map_button_count)
+	{
+		if (gen->map_buttons[i].filepath)
+			free(gen->map_buttons[i].filepath);
+		i++;
+	}
+	free(gen->map_buttons);
+}
+
 int	close_window(t_gen *gen)
 {
 	if (gen->img.img_ptr)
@@ -117,7 +131,7 @@ int	close_window(t_gen *gen)
 	if (gen->title_tex.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->title_tex.img_ptr);
 	util_close_window(gen);
-	free_buttons(gen);
+	free_all_buttons(gen);
 	destroy_zombie_tex(gen);
 	if (gen->win_ptr)
 		mlx_destroy_window(gen->mlx_ptr, gen->win_ptr);

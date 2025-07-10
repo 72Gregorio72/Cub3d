@@ -346,6 +346,15 @@ typedef struct s_key_button
 	const char	*label;
 }	t_key_button;
 
+typedef struct s_menu_button
+{
+	int			x1;
+	int			y1;
+	int			x0;
+	int			y0;
+	void		(*action)(t_gen *gen);
+}	t_menu_button;
+
 typedef struct s_gen
 {
 	void				*mlx_ptr;
@@ -374,7 +383,8 @@ typedef struct s_gen
 	int					mouse_vertical_offset;
 	double				zbuffer[SCREEN_X];
 	int					in_menu;
-	t_map_button		map_buttons[MAX_MAPS];
+	t_map_button		*map_buttons;
+	t_menu_button		menu_buttons[4];
 	int					map_button_count;
 	int					scroll_offset_y;
 	t_tex				btn_options;
@@ -430,7 +440,7 @@ int		close_window(t_gen *gen);
 void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
 void	destroy_zombie_tex(t_gen *gen);
-void	free_buttons(t_gen *gen);
+void	free_gpicchio_matrix(char **matrix);
 
 //key listener
 int		on_key_press(int keycode, t_gen *gen);
@@ -555,7 +565,6 @@ void	draw_map_preview(t_gen *gen,
 			int preview_origin_x, int preview_origin_y);
 void	draw_texture(t_img *img, t_tex *tex, int x0, int y0);
 void	start_game_from_map(t_gen *gen, const char *filepath);
-void	draw_map_selector(t_gen *gen);
 void	open_options_menu(t_gen *gen);
 void	set_slider(t_gen *gen, int slider_x);
 void	draw_slider(t_gen *gen);
@@ -566,16 +575,17 @@ char	**get_map_files(int *count);
 
 // buttons
 int		update_buttons(t_gen *gen, int x, int y);
-void	set_buttons(t_gen *gen);
+void	set_menu_buttons(t_gen *gen);
 void	draw_button_debug_outline(t_img *img,
 			int x0, int y0, int x1, int y1, int color);
-void	draw_button_with_action(t_gen *gen, t_map_button *button);
+void	draw_button_with_action(t_gen *gen, t_menu_button *button);
 void	start_game(t_gen *gen);
 void	open_map_selection(t_gen *gen);
 void	back_home_menu(t_gen *gen);
 void	exit_game(t_gen *gen);
-void	set_button(t_map_button *button, int x0, int y0,
-			int x1, int y1, char *text, void (*action)(t_gen *));
+void	set_button(t_menu_button *button,
+		int x0, int y0, int x1, int y1, void (*action)(t_gen *));
+void	set_map_buttons(t_gen *gen);
 
 //utils
 void	util_rotate_player(t_gen *gen);

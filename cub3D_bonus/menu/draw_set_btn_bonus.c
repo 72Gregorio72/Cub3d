@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_set_btn_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/09 10:24:36 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 10:53:49 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	draw_button_debug_outline(t_img *img,
 	}
 }
 
-void	draw_button_with_action(t_gen *gen, t_map_button *button)
+void	draw_button_with_action(t_gen *gen, t_menu_button *button)
 {
 	t_tex	*tex;
 	int		offset_x;
@@ -47,10 +47,8 @@ void	draw_button_with_action(t_gen *gen, t_map_button *button)
 		tex = &gen->btn_map_selection;
 	else if (button->action == exit_game)
 		tex = &gen->btn_exit_game;
-	else if (button->action == open_options_menu)
-		tex = &gen->btn_options;
-	else if (button->action == back_home_menu)
-		tex = &gen->btn_back_home;
+	// else if (button->action == open_options_menu)
+	// 	tex = &gen->btn_options;
 	offset_x = (button->x1 - button->x0 - tex->width) / 2;
 	offset_y = (button->y1 - button->y0 - tex->height) / 2;
 	if (tex && tex->img_ptr)
@@ -58,31 +56,22 @@ void	draw_button_with_action(t_gen *gen, t_map_button *button)
 			+ offset_x, button->y0 + offset_y);
 }
 
-void	set_buttons(t_gen *gen)
+void	set_menu_buttons(t_gen *gen)
 {
-	int	i;
-
-	i = 0;
-	set_button(&gen->map_buttons[gen->map_button_count++],
+	set_button(&gen->menu_buttons[0],
 		SCREEN_X - 400 - 100, 50,
-		SCREEN_X - 400 - 100 + 400, 50 + 180,
-		"START", start_game);
-	set_button(&gen->map_buttons[gen->map_button_count++],
+		SCREEN_X - 400 - 100 + 400, 50 + 180, start_game);
+	set_button(&gen->menu_buttons[1],
 		SCREEN_X - 400 - 100, 50 + 180 + 40 + 60,
-		SCREEN_X - 400 - 100 + 400, 50 + 2 * 180 + 40 + 60,
-		"SELECT", open_map_selection);
-	set_button(&gen->map_buttons[gen->map_button_count++],
+		SCREEN_X - 400 - 100 + 400, 50 + 2 * 180 + 40 + 60, open_map_selection);
+	set_button(&gen->menu_buttons[2],
 		SCREEN_X - 400 - 100 + 20,
 		50 + 2 * (180 + 40 + 60),
 		SCREEN_X - 400 - 100 + 400 - 20,
-		50 + 3 * 180 + 2 * (40 + 60) - 10,
-		"OPTIONS", open_options_menu);
-	set_button(&gen->map_buttons[gen->map_button_count++],
+		50 + 3 * 180 + 2 * (40 + 60) - 10, start_game);
+	set_button(&gen->menu_buttons[3],
 		SCREEN_X - 400 - 100, 50 + 3 * (180 + 40 + 60),
-		SCREEN_X - 400 - 100 + 400, 50 + 4 * 180 + 3 * (40 + 60),
-		"QUIT", exit_game);
-	while (i < gen->map_button_count)
-		draw_button_with_action(gen, &gen->map_buttons[i++]);
+		SCREEN_X - 400 - 100 + 400, 50 + 4 * 180 + 3 * (40 + 60), exit_game);
 }
 
 int	update_buttons(t_gen *gen, int x, int y)
@@ -99,7 +88,7 @@ int	update_buttons(t_gen *gen, int x, int y)
 		{
 			gen->selected_key_index = i;
 			gen->waiting_key_for = i + 1;
-			open_options_menu(gen);
+			// open_options_menu(gen);
 			return (0);
 		}
 		i++;

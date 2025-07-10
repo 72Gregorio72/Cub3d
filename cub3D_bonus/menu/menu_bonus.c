@@ -6,129 +6,95 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/09 15:23:45 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:15:13 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-// void draw_map_preview_scaled(t_gen *gen,
-//int base_x, int base_y, int width, int height, int cube_size)
+// void	open_options_menu(t_gen *gen)
 // {
-// 	int i, j, x, y;
-// 	int iso_x, iso_y;
-// 	int color;
-// 	int top_offset = cube_size / 2;
+// 	t_option_data	data;
 
-// 	i = 0;
-// 	while (i < height && i < gen->map.height)
+// 	gen->in_options = 1;
+// 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+// 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
+// 	set_option_data(&data, gen);
+// 	data.i = 0;
+// 	while (data.i < 4)
 // 	{
-// 		j = 0;
-// 		while (j < width && j < gen->map.width)
-// 		{
-// 			if (gen->map.map_matrix[i][j] == '1')
-// 			{
-// 				iso_x = base_x + (j - i) * cube_size;
-// 				iso_y = base_y + (j + i) * cube_size / 2;
-
-// 				y = 0;
-// 				while (y < cube_size)
-// 				{
-// 					x = 0;
-// 					while (x < cube_size)
-// 					{
-// 						color = (x == 0 || y == 0
-//|| x == cube_size - 1 || y == cube_size - 1) ? 0x000000 : 0xCCCCCC;
-// 						put_pixel(&gen->img, iso_x + x, iso_y + y, color);
-// 						x++;
-// 					}
-// 					y++;
-// 				}
-// 				y = 0;
-// 				while (y < top_offset)
-// 				{
-// 					x = 0;
-// 					while (x < cube_size)
-// 					{
-// 						color = (x == 0 || y == 0
-//|| x == cube_size - 1 || y == top_offset - 1) ? 0x000000 : 0xEEEEEE;
-// 						put_pixel(&gen->img, iso_x + x, iso_y - y, color);
-// 						x++;
-// 					}
-// 					y++;
-// 				}
-// 			}
-// 			if (gen->map.map_matrix[i][j] == 'N'
-// 				|| gen->map.map_matrix[i][j] == 'S'
-// 				|| gen->map.map_matrix[i][j] == 'E'
-// 				|| gen->map.map_matrix[i][j] == 'W')
-// 			{
-// 				iso_x = base_x + (j - i) * cube_size;
-// 				iso_y = base_y + (j + i) * cube_size / 2;
-// 				y = 0;
-// 				while (y < cube_size)
-// 				{
-// 					x = 0;
-// 					while (x < cube_size)
-// 					{
-// 						put_pixel(&gen->img, iso_x + x, iso_y + y, 0xff0000);
-// 						x++;
-// 					}
-// 					y++;
-// 				}make 
-// 			}
-// 			j++;
-// 		}
-// 		i++;
+// 		set_options(gen, &data);
+// 		draw_option(&data, gen);
+// 		data.i++;
 // 	}
+// 	set_button(&data.btn,
+// 		SCREEN_X - data.button_w - data.padding,
+// 		data.padding,
+// 		SCREEN_X - data.padding,
+// 		data.padding + data.button_h,
+// 		"", back_home_menu);
+// 	draw_button_with_action(gen, &data.btn);
+// 	gen->map_buttons[4] = data.btn;
+// 	gen->map_button_count++;
+// 	gen->selected_key_index = -1;
 // }
 
-void	open_options_menu(t_gen *gen)
+void	set_map_preview(t_gen *gen, t_map_selector *map)
 {
-	t_option_data	data;
-
-	gen->in_options = 1;
-	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
-	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
-	set_option_data(&data, gen);
-	data.i = 0;
-	while (data.i < 4)
+	map->base_x[0] = 100;
+	map->base_x[1] = 750;
+	map->base_x[2] = 1400;
+	map->offset_y = gen->scroll_offset_y;
+	map->padding_x = 10;
+	map->padding_y = 100;
+	map->button_w = 300;
+	map->button_h = 130;
+	clear_image(&gen->img);
+	map->map_files = get_map_files(&map->count);
+	if (!map->map_files || map->count == 0)
 	{
-		set_options(gen, &data);
-		draw_option(&data, gen);
-		data.i++;
+		mlx_string_put(gen->mlx_ptr, gen->win_ptr, 50, 50,
+			0xFF0000, "No map files found in /maps");
+		return ;
 	}
-	set_button(&data.btn,
-		SCREEN_X - data.button_w - data.padding,
-		data.padding,
-		SCREEN_X - data.padding,
-		data.padding + data.button_h,
-		"", back_home_menu);
-	draw_button_with_action(gen, &data.btn);
-	gen->map_buttons[4] = data.btn;
-	gen->map_button_count++;
-	gen->selected_key_index = -1;
+	map->i = 0;
 }
 
-void	free_buttons(t_gen *gen)
+void	set_map_buttons(t_gen *gen)
 {
-	int	i;
+	t_map_selector	map;
 
-	i = 0;
-	while (i < gen->map_button_count)
+	set_map_preview(gen, &map);
+	gen->map_buttons = malloc(sizeof(t_map_button) * map.count);
+	gen->map_button_count = map.count;
+	while (map.i < map.count && map.i < MAX_MAPS)
 	{
-		if (gen->map_buttons[i].filepath)
-			free(gen->map_buttons[i].filepath);
-		i++;
+		map.col = map.i % 3;
+		map.row = map.i / 3;
+		map.x = map.base_x[map.col];
+		map.y = 150 + map.row;
+		free(gen->map_file_path);
+		gen->map_file_path = ft_strdup(map.map_files[map.i]);
+		gen->map_buttons[map.i] = (t_map_button){
+			.x0 = map.x,
+			.y0 = map.y,
+			.x1 = map.x + PREVIEW_WIDTH,
+			.y1 = map.y + PREVIEW_HEIGHT,
+			.action = NULL,
+			.filepath = ft_strdup(map.map_files[map.i])
+		};
+		map.i++;
 	}
+	free_gpicchio_matrix(map.map_files);
 }
 
 void	draw_menu(t_gen *gen)
 {
 	int	title_x;
+	int	i;
 
+	i = 0;
 	title_x = (SCREEN_X - ft_strlen("CUB3D") * 20) / 2;
-	free_buttons(gen);
 	gen->map_selection = 0;
 	gen->in_options = 0;
 	gen->in_menu = 1;
@@ -141,8 +107,11 @@ void	draw_menu(t_gen *gen)
 		mlx_string_put(gen->mlx_ptr, gen->win_ptr,
 			500, 300 - 30, 0xFFFFFF, "MAPPA");
 	}
-	gen->map_button_count = 0;
-	set_buttons(gen);
+	while (i < 4)
+	{
+		draw_button_with_action(gen, &gen->menu_buttons[i]);
+		i++;
+	}
 	draw_texture(&gen->img, &gen->title_tex,
 		SCREEN_X / 2 - gen->title_tex.width / 2, -20);
 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);

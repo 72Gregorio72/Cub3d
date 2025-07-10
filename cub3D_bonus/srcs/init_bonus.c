@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/09 10:04:32 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:18:02 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	init_keys(t_gen *gen)
 	gen->player_options.key_right = KB_D;
 }
 
+void	init_all_buttons(t_gen *gen)
+{
+	set_menu_buttons(gen);
+}
+
 void	init_main(t_gen *gen)
 {
 	srand(time(NULL));
@@ -47,7 +52,6 @@ void	init_main(t_gen *gen)
 	gen->ammo = 10;
 	gen->mouse_vertical_offset = 0;
 	gen->in_menu = 1;
-	gen->map_button_count = 0;
 	gen->counter_spawn = 0;
 	gen->scroll_offset_y = 0;
 	init_keys(gen);
@@ -57,6 +61,7 @@ void	init_main(t_gen *gen)
 	gen->dragging_slider = 0;
 	gen->map_selection = 0;
 	gen->door.flag_door_open = 0;
+	init_all_buttons(gen);
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)
