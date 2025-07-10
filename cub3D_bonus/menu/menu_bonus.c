@@ -6,38 +6,38 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 12:15:13 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:42:09 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-// void	open_options_menu(t_gen *gen)
-// {
-// 	t_option_data	data;
+void	open_options_menu(t_gen *gen)
+{
+	t_option_data	data;
 
-// 	gen->in_options = 1;
-// 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
-// 	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
-// 	set_option_data(&data, gen);
-// 	data.i = 0;
-// 	while (data.i < 4)
-// 	{
-// 		set_options(gen, &data);
-// 		draw_option(&data, gen);
-// 		data.i++;
-// 	}
-// 	set_button(&data.btn,
-// 		SCREEN_X - data.button_w - data.padding,
-// 		data.padding,
-// 		SCREEN_X - data.padding,
-// 		data.padding + data.button_h,
-// 		"", back_home_menu);
-// 	draw_button_with_action(gen, &data.btn);
-// 	gen->map_buttons[4] = data.btn;
-// 	gen->map_button_count++;
-// 	gen->selected_key_index = -1;
-// }
+	gen->in_options = 1;
+	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
+	mlx_put_image_to_window(gen->mlx_ptr, gen->win_ptr, gen->img.img_ptr, 0, 0);
+	set_option_data(&data, gen);
+	data.i = 0;
+	while (data.i < 4)
+	{
+		set_options(gen, &data);
+		draw_option(&data, gen);
+		data.i++;
+	}
+	// set_button(&data.btn,
+	// 	SCREEN_X - data.button_w - data.padding,
+	// 	data.padding,
+	// 	SCREEN_X - data.padding,
+	// 	data.padding + data.button_h,
+	// 	back_home_menu);
+	//draw_button_with_action(gen, &data.btn);
+	//gen->map_buttons[4] = data.btn;
+	//gen->map_button_count++;
+	gen->selected_key_index = -1;
+}
 
 void	set_map_preview(t_gen *gen, t_map_selector *map)
 {

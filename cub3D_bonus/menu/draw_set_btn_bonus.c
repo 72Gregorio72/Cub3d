@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/10 10:53:49 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:44:39 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	draw_button_with_action(t_gen *gen, t_menu_button *button)
 		tex = &gen->btn_map_selection;
 	else if (button->action == exit_game)
 		tex = &gen->btn_exit_game;
-	// else if (button->action == open_options_menu)
-	// 	tex = &gen->btn_options;
+	else if (button->action == open_options_menu)
+		tex = &gen->btn_options;
 	offset_x = (button->x1 - button->x0 - tex->width) / 2;
 	offset_y = (button->y1 - button->y0 - tex->height) / 2;
 	if (tex && tex->img_ptr)
@@ -68,7 +68,7 @@ void	set_menu_buttons(t_gen *gen)
 		SCREEN_X - 400 - 100 + 20,
 		50 + 2 * (180 + 40 + 60),
 		SCREEN_X - 400 - 100 + 400 - 20,
-		50 + 3 * 180 + 2 * (40 + 60) - 10, start_game);
+		50 + 3 * 180 + 2 * (40 + 60) - 10, open_options_menu);
 	set_button(&gen->menu_buttons[3],
 		SCREEN_X - 400 - 100, 50 + 3 * (180 + 40 + 60),
 		SCREEN_X - 400 - 100 + 400, 50 + 4 * 180 + 3 * (40 + 60), exit_game);
@@ -88,7 +88,7 @@ int	update_buttons(t_gen *gen, int x, int y)
 		{
 			gen->selected_key_index = i;
 			gen->waiting_key_for = i + 1;
-			// open_options_menu(gen);
+			open_options_menu(gen);
 			return (0);
 		}
 		i++;

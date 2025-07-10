@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 11:18:02 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:44:08 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ void	init_keys(t_gen *gen)
 	gen->player_options.key_down = KB_S;
 	gen->player_options.key_left = KB_A;
 	gen->player_options.key_right = KB_D;
-}
-
-void	init_all_buttons(t_gen *gen)
-{
-	set_menu_buttons(gen);
 }
 
 void	init_main(t_gen *gen)
@@ -61,7 +56,6 @@ void	init_main(t_gen *gen)
 	gen->dragging_slider = 0;
 	gen->map_selection = 0;
 	gen->door.flag_door_open = 0;
-	init_all_buttons(gen);
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)

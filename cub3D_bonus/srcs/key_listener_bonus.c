@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 10:53:57 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:50:01 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	on_key_press(int keycode, t_gen *gen)
 		else if (gen->waiting_key_for == 4)
 			gen->player_options.key_right = keycode;
 		gen->waiting_key_for = 0;
-		// open_options_menu(gen);
+		open_options_menu(gen);
 		return (0);
 	}
 	return (0);
@@ -109,7 +109,13 @@ int	on_mouse_move(int x, int y, t_gen *gen)
 		gen->player_options.mouse_sensitivity = (x - 100) / 200.0;
 		if (gen->player_options.mouse_sensitivity <= 0)
 			gen->player_options.mouse_sensitivity = 0.1;
-		// open_options_menu(gen);
+		static unsigned long last_call = 0;
+		unsigned long current_time = get_current_time();
+		if (current_time - last_call >= 10)
+		{
+			open_options_menu(gen);
+			last_call = current_time;
+		}
 	}
 	if (gen->in_menu && gen->map_selection)
 		return (0);
