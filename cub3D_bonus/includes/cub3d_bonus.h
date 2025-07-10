@@ -387,7 +387,7 @@ typedef struct s_gen
 	double				zbuffer[SCREEN_X];
 	int					in_menu;
 	t_map_button		*map_buttons;
-	t_menu_button		menu_buttons[4];
+	t_menu_button		menu_buttons[5];
 	int					map_button_count;
 	int					scroll_offset_y;
 	t_tex				btn_options;
@@ -408,6 +408,9 @@ typedef struct s_gen
 	t_key_button		dragging_slider_button;
 	int					is_initializing;
 	t_map_selector		x_btn_container[2];
+	int					in_map_editor;
+	int					is_drawing;
+	int					edited_map[100][100];
 }				t_gen;
 
 typedef struct s_ray
@@ -609,5 +612,9 @@ void	draw_slider(t_gen *gen);
 int		update_buttons(t_gen *gen, int x, int y);
 void	loop_calculate_proj(t_gen *gen, t_draw_data *d, int x, int y);
 void	util_close_window(t_gen *gen);
+
+// map editor
+void	map_editor(t_gen *gen);
+void	draw_in_editor(int x, int y, t_gen *gen);
 
 #endif

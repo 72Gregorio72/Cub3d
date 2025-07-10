@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_set_btn_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/10 14:43:09 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:02:01 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	draw_button_with_action(t_gen *gen, t_menu_button *button)
 		tex = &gen->btn_options;
 	else if (button->action == back_home_menu)
 		tex = &gen->btn_back_home;
+	else if (button->action == map_editor)
+		tex = &gen->btn_start_game;
 	offset_x = (button->x1 - button->x0 - tex->width) / 2;
 	offset_y = (button->y1 - button->y0 - tex->height) / 2;
 	if (tex && tex->img_ptr)
@@ -78,6 +80,11 @@ void	set_menu_buttons(t_gen *gen)
 	data.y0 = data.y1 + spacing;
 	data.y1 = data.y0 + 60;
 	set_button(&gen->menu_buttons[3], data, exit_game);
+	data.x0 = SCREEN_X / 2;
+	data.y0 = SCREEN_Y / 2;
+	data.x1 = SCREEN_X / 2 + 200;
+	data.y1 = data.y0 + 60;
+	set_button(&gen->menu_buttons[4], data, map_editor);
 }
 
 int	update_buttons(t_gen *gen, int x, int y)

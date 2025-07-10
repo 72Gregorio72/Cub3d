@@ -50,6 +50,8 @@ SRCS		=	main_bonus.c \
 				menu/draw_set_btn_bonus.c \
 				menu/draw_selection_bonus.c \
 				menu/draw_options_bonus.c \
+				\
+				map_editor/map_editor_bonus.c \
 
 
 				

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 14:32:38 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:25:15 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	draw_menu(t_gen *gen)
 	title_x = (SCREEN_X - ft_strlen("CUB3D") * 20) / 2;
 	gen->map_selection = 0;
 	gen->in_options = 0;
+	gen->in_map_editor = 0;
 	gen->in_menu = 1;
 	clear_image(&gen->img);
 	mlx_clear_window(gen->mlx_ptr, gen->win_ptr);
@@ -104,7 +105,7 @@ void	draw_menu(t_gen *gen)
 		mlx_string_put(gen->mlx_ptr, gen->win_ptr,
 			500, 300 - 30, 0xFFFFFF, "MAPPA");
 	}
-	while (i < 4)
+	while (i < 5)
 	{
 		draw_button_with_action(gen, &gen->menu_buttons[i]);
 		i++;

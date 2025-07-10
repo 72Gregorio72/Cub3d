@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 14:36:13 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:06:11 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,24 @@ void	init_keys(t_gen *gen)
 	gen->player_options.key_down = KB_S;
 	gen->player_options.key_left = KB_A;
 	gen->player_options.key_right = KB_D;
+}
+
+void	init_edited_map(int edited_map[100][100])
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < 100)
+	{
+		j = 0;
+		while (j < 100)
+		{
+			edited_map[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
 }
 
 void	init_main(t_gen *gen)
@@ -57,6 +75,8 @@ void	init_main(t_gen *gen)
 	gen->map_selection = 0;
 	gen->door.flag_door_open = 0;
 	gen->is_initializing = 0;
+	gen->is_drawing = 0;
+	init_edited_map(gen->edited_map);
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)

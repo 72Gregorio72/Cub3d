@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_utils_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 14:41:45 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:00:31 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ int	mouse_release(int button, int x, int y, t_gen *gen)
 {
 	(void)x;
 	(void)y;
+	if (button == MOUSE_LEFT_CLICK && gen->in_map_editor)
+	{
+		gen->is_drawing = 0;
+		return (0);
+	}
 	if (button == 1)
 	{
 		if (gen->dragging_slider)
@@ -59,7 +64,7 @@ void	handle_menu_click(int x, int y, t_gen *gen)
 	int				i;
 
 	i = 0;
-	while (i < 4)
+	while (i < 5)
 	{
 		btn = gen->menu_buttons[i];
 		if (x >= btn.x0 && x <= btn.x1 && y >= btn.y0 && y <= btn.y1)

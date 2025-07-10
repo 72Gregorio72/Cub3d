@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_utils_2_bonus.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 14:41:56 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:03:21 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	on_mouse_move(int x, int y, t_gen *gen)
 			last_call = current_time;
 		}
 	}
+	if (gen->is_drawing)
+		draw_in_editor(x, y, gen);
 	if (gen->in_menu && gen->map_selection)
 		return (0);
 	if (!gen->mouse_initialized)
@@ -75,6 +77,11 @@ void	handle_map_selection_click(int x, int y, t_gen *gen)
 
 int	on_mouse_click(int button, int x, int y, t_gen *gen)
 {
+	if (button == MOUSE_LEFT_CLICK && gen->in_map_editor)
+	{
+		gen->is_drawing = 1;
+		return (0);
+	}
 	if (button == MOUSE_LEFT_CLICK && !gen->in_menu && gen->ignore_next_mouse)
 		add_projectile(gen);
 	if (button == MOUSE_LEFT_CLICK && gen->in_menu
