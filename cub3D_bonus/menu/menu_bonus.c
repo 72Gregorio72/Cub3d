@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:52:09 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/09 15:23:45 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:31:40 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ void	draw_menu(t_gen *gen)
 	int	title_x;
 
 	title_x = (SCREEN_X - ft_strlen("CUB3D") * 20) / 2;
-	free_buttons(gen);
 	gen->map_selection = 0;
 	gen->in_options = 0;
 	gen->in_menu = 1;
