@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/10 14:32:32 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:43:09 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	draw_button_with_action(t_gen *gen, t_menu_button *button)
 void	set_menu_buttons(t_gen *gen)
 {
 	t_draw_data	data;
+	int			spacing;
 
-	int spacing = 176;
-
+	spacing = 176;
 	data.x0 = SCREEN_X - 400 - 100;
 	data.y0 = 50;
 	data.x1 = SCREEN_X - 400 - 100 + 400;

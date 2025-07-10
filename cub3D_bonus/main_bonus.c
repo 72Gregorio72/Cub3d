@@ -96,7 +96,6 @@ int	main(int ac, char **av)
 	gen.mlx_ptr = mlx_init();
 	gen.win_ptr = mlx_new_window(gen.mlx_ptr, SCREEN_X, SCREEN_Y, "cub3D");
 	load_img(&gen);
-	gen.is_initializing = 0;
 	draw_menu(&gen);
 	mlx_hook(gen.win_ptr, DestroyNotify, StructureNotifyMask,
 		&close_window, &gen);

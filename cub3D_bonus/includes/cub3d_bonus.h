@@ -445,6 +445,7 @@ void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
 void	destroy_zombie_tex(t_gen *gen);
 void	free_gpicchio_matrix(char **matrix);
+void	free_all_buttons(t_gen *gen);
 
 //key listener
 int		on_key_press(int keycode, t_gen *gen);
@@ -453,6 +454,10 @@ int		on_mouse_move(int x, int y, t_gen *gen);
 int		on_mouse_click(int button, int x, int y, t_gen *gen);
 int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
+void	mouse_check(int x, int y, t_gen *gen);
+void	handle_menu_click(int x, int y, t_gen *gen);
+void	handle_options_click(int x, int y, t_gen *gen);
+void	handle_scroll(int button, t_gen *gen);
 
 //load map
 void	read_file(int fd, int i, t_gen *gen, int y);
@@ -582,15 +587,15 @@ char	**get_map_files(int *count);
 // buttons
 int		update_buttons(t_gen *gen, int x, int y);
 void	set_menu_buttons(t_gen *gen);
-void	draw_button_debug_outline(t_img *img,
-			int x0, int y0, int x1, int y1, int color);
+/*void	draw_button_debug_outline(t_img *img,
+			int x0, int y0, int x1, int y1, int color);*/
 void	draw_button_with_action(t_gen *gen, t_menu_button *button);
 void	start_game(t_gen *gen);
 void	open_map_selection(t_gen *gen);
 void	back_home_menu(t_gen *gen);
 void	exit_game(t_gen *gen);
 void	set_button(t_menu_button *button,
-		t_draw_data data, void (*action)(t_gen *));
+			t_draw_data data, void (*action)(t_gen *));
 void	set_map_buttons(t_gen *gen);
 void	set_x_buttons(t_gen *gen, t_map_selector map, int i);
 
@@ -603,5 +608,6 @@ int		mouse_release(int button, int x, int y, t_gen *gen);
 void	draw_slider(t_gen *gen);
 int		update_buttons(t_gen *gen, int x, int y);
 void	loop_calculate_proj(t_gen *gen, t_draw_data *d, int x, int y);
+void	util_close_window(t_gen *gen);
 
 #endif
