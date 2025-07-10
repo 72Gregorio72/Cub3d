@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_options_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:58:28 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/09 10:16:03 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:18:56 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ void	set_options(t_gen *gen, t_option_data *data)
 
 void	set_option_data(t_option_data *data, t_gen *gen)
 {
-	data->padding = 200;
-	data->button_w = 100;
-	data->button_h = 50;
 	data->keys[0] = ft_strdup("UP");
 	data->keys[1] = ft_strdup("DOWN");
 	data->keys[2] = ft_strdup("LEFT");

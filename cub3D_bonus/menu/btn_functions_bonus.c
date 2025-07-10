@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:41:33 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/10 11:14:06 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:05:32 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void	exit_game(t_gen *gen)
 }
 
 void	set_button(t_menu_button *button,
-	int x0, int y0, int x1, int y1, void (*action)(t_gen *))
+		t_draw_data data, void (*action)(t_gen *))
 {
-	button->x0 = x0;
-	button->y0 = y0;
-	button->x1 = x1;
-	button->y1 = y1;
+	button->x0 = data.x0;
+	button->y0 = data.y0;
+	button->x1 = data.x1;
+	button->y1 = data.y1;
 	button->action = action;
 }

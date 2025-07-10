@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 12:44:08 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:54:32 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_tex	*get_texture(char *path, t_gen *gen)
 void	reset_player(t_gen *gen)
 {
 	get_map(gen->map_file_path, gen);
+	gen->health = gen->max_health;
 	reset_zombies(gen);
 	load_zombies(gen);
 	rotate_view(gen);

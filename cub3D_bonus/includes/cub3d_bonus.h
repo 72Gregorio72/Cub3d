@@ -132,6 +132,10 @@ typedef struct s_draw_data
 	int				draw_end_x;
 	int				x;
 	int				tex_x;
+	int				x0;
+	int				y0;
+	int				x1;
+	int				y1;
 }	t_draw_data;
 
 typedef struct s_menu_data
@@ -170,6 +174,15 @@ typedef struct s_map_preview
 	int	color;
 }	t_map_preview;
 
+typedef struct s_menu_button
+{
+	int			x1;
+	int			y1;
+	int			x0;
+	int			y0;
+	void		(*action)(t_gen *gen);
+}	t_menu_button;
+
 typedef struct s_map_button
 {
 	int		x0;
@@ -197,7 +210,6 @@ typedef struct s_option_data
 	int				color;
 	int				x;
 	int				y2;
-	t_map_button	btn;
 	int				padding;
 	int				button_w;
 	int				button_h;
@@ -218,7 +230,7 @@ typedef struct s_map_selector
 	int				padding_y;
 	int				button_w;
 	int				button_h;
-	t_map_button	button;
+	t_menu_button	x_btn;
 	int				text_x;
 	int				text_y;
 	int				j;
@@ -346,15 +358,6 @@ typedef struct s_key_button
 	const char	*label;
 }	t_key_button;
 
-typedef struct s_menu_button
-{
-	int			x1;
-	int			y1;
-	int			x0;
-	int			y0;
-	void		(*action)(t_gen *gen);
-}	t_menu_button;
-
 typedef struct s_gen
 {
 	void				*mlx_ptr;
@@ -404,6 +407,7 @@ typedef struct s_gen
 	int					dragging_slider;
 	t_key_button		dragging_slider_button;
 	int					is_initializing;
+	t_map_selector		x_btn_container[2];
 }				t_gen;
 
 typedef struct s_ray
@@ -584,8 +588,9 @@ void	open_map_selection(t_gen *gen);
 void	back_home_menu(t_gen *gen);
 void	exit_game(t_gen *gen);
 void	set_button(t_menu_button *button,
-		int x0, int y0, int x1, int y1, void (*action)(t_gen *));
+		t_draw_data data, void (*action)(t_gen *));
 void	set_map_buttons(t_gen *gen);
+void	set_x_buttons(t_gen *gen, t_map_selector map, int i);
 
 //utils
 void	util_rotate_player(t_gen *gen);
