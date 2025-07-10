@@ -7,9 +7,11 @@ SRCS		=	main_bonus.c \
 				srcs/player_loader_bonus.c \
 				srcs/init_bonus.c \
 				srcs/key_listener_bonus.c \
-				srcs/utils.c \
+				srcs/utils_bonus.c \
+				srcs/utils2_bonus.c \
 				srcs/utils_init_bonus.c \
 				srcs/key_listener_utils_bonus.c \
+				srcs/key_listener_utils_2_bonus.c \
 				\
 				map_loader/utils_map_loader_bonus.c \
 				map_loader/check_map_bonus.c \

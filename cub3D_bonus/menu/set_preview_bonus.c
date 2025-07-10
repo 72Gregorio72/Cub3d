@@ -6,26 +6,26 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:46:24 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/07 15:46:47 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:48:05 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	if_checks(int i, int j, int radius, int *cx, int *cy)
+void	if_checks(t_menu_data *data, int *cx, int *cy)
 {
-	if (j < radius)
-		*cx = radius;
-	else if (j >= PREVIEW_WIDTH - radius)
-		*cx = PREVIEW_WIDTH - radius - 1;
+	if (data->j < data->radius)
+		*cx = data->radius;
+	else if (data->j >= PREVIEW_WIDTH - data->radius)
+		*cx = PREVIEW_WIDTH - data->radius - 1;
 	else
-		*cx = j;
-	if (i < radius)
-		*cy = radius;
-	else if (i >= PREVIEW_HEIGHT - radius)
-		*cy = PREVIEW_HEIGHT - radius - 1;
+		*cx = data->j;
+	if (data->i < data->radius)
+		*cy = data->radius;
+	else if (data->i >= PREVIEW_HEIGHT - data->radius)
+		*cy = PREVIEW_HEIGHT - data->radius - 1;
 	else
-		*cy = i;
+		*cy = data->i;
 }
 
 void	draw_square(t_gen *gen, t_menu_data *data)
@@ -57,7 +57,7 @@ void	draw_width(t_gen *gen, int x, int y, int i)
 	data.y = y;
 	while (data.j < PREVIEW_WIDTH)
 	{
-		if_checks(data.i, data.j, data.radius, &data.cx, &data.cy);
+		if_checks(&data, &data.cx, &data.cy);
 		draw_square(gen, &data);
 		data.j++;
 	}

@@ -27,21 +27,6 @@ void	free_gpicchio_matrix(char **matrix)
 	free(matrix);
 }
 
-void	free_matrix(char **matrix, int height)
-{
-	int	i;
-
-	if (!matrix)
-		return ;
-	i = 0;
-	while (i < height)
-	{
-		free(matrix[i]);
-		i++;
-	}
-	free(matrix);
-}
-
 void	free_zombies(t_zombie *zombies)
 {
 	t_zombie	*tmp;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 12:50:01 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:41:52 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,35 +96,4 @@ void	mouse_check(int x, int y, t_gen *gen)
 			gen->mouse_vertical_offset = 500;
 	}
 	mlx_mouse_move(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
-}
-
-int	on_mouse_move(int x, int y, t_gen *gen)
-{
-	if (gen->dragging_slider)
-	{
-		if (x < 100)
-			x = 100;
-		if (x > 300)
-			x = 300;
-		gen->player_options.mouse_sensitivity = (x - 100) / 200.0;
-		if (gen->player_options.mouse_sensitivity <= 0)
-			gen->player_options.mouse_sensitivity = 0.1;
-		static unsigned long last_call = 0;
-		unsigned long current_time = get_current_time();
-		if (current_time - last_call >= 10)
-		{
-			open_options_menu(gen);
-			last_call = current_time;
-		}
-	}
-	if (gen->in_menu && gen->map_selection)
-		return (0);
-	if (!gen->mouse_initialized)
-	{
-		gen->mouse_initialized = 1;
-		return (0);
-	}
-	if (!gen->in_menu)
-		mouse_check(x, y, gen);
-	return (0);
 }

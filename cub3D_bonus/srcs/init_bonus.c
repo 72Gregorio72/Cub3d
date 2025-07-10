@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 12:54:32 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:36:13 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	init_main(t_gen *gen)
 	gen->dragging_slider = 0;
 	gen->map_selection = 0;
 	gen->door.flag_door_open = 0;
+	gen->is_initializing = 0;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)
