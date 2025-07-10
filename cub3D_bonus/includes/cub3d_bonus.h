@@ -132,6 +132,10 @@ typedef struct s_draw_data
 	int				draw_end_x;
 	int				x;
 	int				tex_x;
+	int				x0;
+	int				y0;
+	int				x1;
+	int				y1;
 }	t_draw_data;
 
 typedef struct s_menu_data
@@ -170,6 +174,15 @@ typedef struct s_map_preview
 	int	color;
 }	t_map_preview;
 
+typedef struct s_menu_button
+{
+	int			x1;
+	int			y1;
+	int			x0;
+	int			y0;
+	void		(*action)(t_gen *gen);
+}	t_menu_button;
+
 typedef struct s_map_button
 {
 	int		x0;
@@ -197,7 +210,6 @@ typedef struct s_option_data
 	int				color;
 	int				x;
 	int				y2;
-	t_map_button	btn;
 	int				padding;
 	int				button_w;
 	int				button_h;
@@ -218,7 +230,7 @@ typedef struct s_map_selector
 	int				padding_y;
 	int				button_w;
 	int				button_h;
-	t_map_button	button;
+	t_menu_button	x_btn;
 	int				text_x;
 	int				text_y;
 	int				j;
@@ -374,7 +386,8 @@ typedef struct s_gen
 	int					mouse_vertical_offset;
 	double				zbuffer[SCREEN_X];
 	int					in_menu;
-	t_map_button		map_buttons[MAX_MAPS];
+	t_map_button		*map_buttons;
+	t_menu_button		menu_buttons[4];
 	int					map_button_count;
 	int					scroll_offset_y;
 	t_tex				btn_options;
@@ -394,6 +407,7 @@ typedef struct s_gen
 	int					dragging_slider;
 	t_key_button		dragging_slider_button;
 	int					is_initializing;
+	t_map_selector		x_btn_container[2];
 }				t_gen;
 
 typedef struct s_ray
@@ -430,7 +444,7 @@ int		close_window(t_gen *gen);
 void	clear_image(t_img *img);
 void	free_matrix(char **matrix, int height);
 void	destroy_zombie_tex(t_gen *gen);
-void	free_buttons(t_gen *gen);
+void	free_gpicchio_matrix(char **matrix);
 
 //key listener
 int		on_key_press(int keycode, t_gen *gen);
@@ -557,7 +571,6 @@ void	draw_map_preview(t_gen *gen,
 			int preview_origin_x, int preview_origin_y);
 void	draw_texture(t_img *img, t_tex *tex, int x0, int y0);
 void	start_game_from_map(t_gen *gen, const char *filepath);
-void	draw_map_selector(t_gen *gen);
 void	open_options_menu(t_gen *gen);
 void	set_slider(t_gen *gen, int slider_x);
 void	draw_slider(t_gen *gen);
@@ -568,16 +581,18 @@ char	**get_map_files(int *count);
 
 // buttons
 int		update_buttons(t_gen *gen, int x, int y);
-void	set_buttons(t_gen *gen);
-/* void	draw_button_debug_outline(t_img *img,
-			int x0, int y0, int x1, int y1, int color); */
-void	draw_button_with_action(t_gen *gen, t_map_button *button);
+void	set_menu_buttons(t_gen *gen);
+void	draw_button_debug_outline(t_img *img,
+			int x0, int y0, int x1, int y1, int color);
+void	draw_button_with_action(t_gen *gen, t_menu_button *button);
 void	start_game(t_gen *gen);
 void	open_map_selection(t_gen *gen);
 void	back_home_menu(t_gen *gen);
 void	exit_game(t_gen *gen);
-void	set_button(t_map_button *button, int x0, int y0,
-			int x1, int y1, char *text, void (*action)(t_gen *));
+void	set_button(t_menu_button *button,
+		t_draw_data data, void (*action)(t_gen *));
+void	set_map_buttons(t_gen *gen);
+void	set_x_buttons(t_gen *gen, t_map_selector map, int i);
 
 //utils
 void	util_rotate_player(t_gen *gen);

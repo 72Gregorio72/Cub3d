@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:51:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/09 15:27:37 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:32:32 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 	}
 } */
 
-void	draw_button_with_action(t_gen *gen, t_map_button *button)
+void	draw_button_with_action(t_gen *gen, t_menu_button *button)
 {
 	t_tex	*tex;
 	int		offset_x;
@@ -58,31 +58,26 @@ void	draw_button_with_action(t_gen *gen, t_map_button *button)
 			+ offset_x, button->y0 + offset_y);
 }
 
-void	set_buttons(t_gen *gen)
+void	set_menu_buttons(t_gen *gen)
 {
-	int	i;
+	t_draw_data	data;
 
-	i = 0;
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100, 50,
-		SCREEN_X - 400 - 100 + 400, 50 + 180,
-		"START", start_game);
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100, 50 + 180 + 40 + 60,
-		SCREEN_X - 400 - 100 + 400, 50 + 2 * 180 + 40 + 60,
-		"SELECT", open_map_selection);
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100 + 20,
-		50 + 2 * (180 + 40 + 60),
-		SCREEN_X - 400 - 100 + 400 - 20,
-		50 + 3 * 180 + 2 * (40 + 60) - 10,
-		"OPTIONS", open_options_menu);
-	set_button(&gen->map_buttons[gen->map_button_count++],
-		SCREEN_X - 400 - 100, 50 + 3 * (180 + 40 + 60),
-		SCREEN_X - 400 - 100 + 400, 50 + 4 * 180 + 3 * (40 + 60),
-		"QUIT", exit_game);
-	while (i < gen->map_button_count)
-		draw_button_with_action(gen, &gen->map_buttons[i++]);
+	int spacing = 176;
+
+	data.x0 = SCREEN_X - 400 - 100;
+	data.y0 = 50;
+	data.x1 = SCREEN_X - 400 - 100 + 400;
+	data.y1 = data.y0 + 180;
+	set_button(&gen->menu_buttons[0], data, start_game);
+	data.y0 = data.y1 + spacing;
+	data.y1 = data.y0 + 60;
+	set_button(&gen->menu_buttons[1], data, open_map_selection);
+	data.y0 = data.y1 + spacing;
+	data.y1 = data.y0 + 60;
+	set_button(&gen->menu_buttons[2], data, open_options_menu);
+	data.y0 = data.y1 + spacing;
+	data.y1 = data.y0 + 60;
+	set_button(&gen->menu_buttons[3], data, exit_game);
 }
 
 int	update_buttons(t_gen *gen, int x, int y)

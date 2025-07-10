@@ -59,6 +59,8 @@ void	damage_player(t_zombie *z, t_gen *gen)
 		z->attacked = 1;
 		z->last_attack_time = get_current_time();
 		gen->health -= z->attack_power;
+		if (gen->health <= 0)
+			draw_menu(gen);
 		z->animation_frame = 0;
 		z->is_attacking = 0;
 	}

@@ -6,7 +6,7 @@
 /*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:59:00 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/09 15:03:53 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:44:13 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ void	load_img(t_gen *gen)
 	load_zombies(gen);
 	load_button_images(gen);
 	rotate_view(gen);
+	set_map_buttons(gen);
+	set_menu_buttons(gen);
 	open_options_menu(gen);
-	open_map_selection(gen);
 }
 
 void	util_rotate_player(t_gen *gen)

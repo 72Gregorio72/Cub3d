@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/09 10:04:32 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:54:32 by gpicchio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	init_main(t_gen *gen)
 	gen->ammo = 10;
 	gen->mouse_vertical_offset = 0;
 	gen->in_menu = 1;
-	gen->map_button_count = 0;
 	gen->counter_spawn = 0;
 	gen->scroll_offset_y = 0;
 	init_keys(gen);
@@ -82,6 +81,7 @@ t_tex	*get_texture(char *path, t_gen *gen)
 void	reset_player(t_gen *gen)
 {
 	get_map(gen->map_file_path, gen);
+	gen->health = gen->max_health;
 	reset_zombies(gen);
 	load_zombies(gen);
 	rotate_view(gen);
