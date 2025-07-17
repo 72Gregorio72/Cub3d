@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_editor_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:58:33 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 16:09:43 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/17 15:11:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	draw_in_editor(int x, int y, t_gen *gen)
 
 	selected_cell_x = x / CELL_SIZE;
 	selected_cell_y = y / CELL_SIZE;
-	printf("Selected cell: (%d, %d)\n", selected_cell_x, selected_cell_y);
 	draw_filled_square(gen,
 		OFFSET_X + selected_cell_x * CELL_SIZE,
 		OFFSET_Y + selected_cell_y * CELL_SIZE,

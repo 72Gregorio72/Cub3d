@@ -616,5 +616,6 @@ void	util_close_window(t_gen *gen);
 // map editor
 void	map_editor(t_gen *gen);
 void	draw_in_editor(int x, int y, t_gen *gen);
+void	create_map_file(t_gen *gen);
 
 #endif

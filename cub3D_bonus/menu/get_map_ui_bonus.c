@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_ui_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:44:34 by vcastald          #+#    #+#             */
-/*   Updated: 2025/07/07 16:00:39 by vcastald         ###   ########.fr       */
+/*   Updated: 2025/07/10 20:07:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,10 @@ void	free_gen_map(t_gen *gen)
 int	get_map(char *path, t_gen *gen)
 {
 	free_gen_map(gen);
-	if (gen->map.floor_color)
-		free(gen->map.floor_color);
-	if (gen->map.ceil_color)
-		free(gen->map.ceil_color);
+	// if (gen->map.floor_color)
+	// 	free(gen->map.floor_color);
+	// if (gen->map.ceil_color)
+	// 	free(gen->map.ceil_color);
 	if (gen->map.width > 0 || gen->map.height > 0)
 	{
 		gen->map.width = 0;
