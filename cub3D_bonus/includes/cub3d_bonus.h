@@ -358,6 +358,21 @@ typedef struct s_key_button
 	const char	*label;
 }	t_key_button;
 
+typedef struct s_button
+{
+	int		x0;
+	int		y0;
+	int		x1;
+	int		y1;
+	t_tex	*texture;
+	void	(*action)(t_gen *gen);
+}	t_button;
+
+typedef struct s_map_editor
+{
+	t_button	done_btn;
+}	t_map_editor;
+
 typedef struct s_gen
 {
 	void				*mlx_ptr;
@@ -408,6 +423,7 @@ typedef struct s_gen
 	t_key_button		dragging_slider_button;
 	int					is_initializing;
 	t_map_selector		x_btn_container[2];
+	t_map_editor		map_editor;
 	int					in_map_editor;
 	int					is_drawing;
 	int					edited_map[100][100];

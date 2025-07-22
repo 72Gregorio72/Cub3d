@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 16:06:11 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:06:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_keys(t_gen *gen)
 	gen->player_options.key_right = KB_D;
 }
 
-void	init_edited_map(int edited_map[100][100])
+void	init_edited_map(int edited_map[100][100], t_gen *gen)
 {
 	int	i;
 	int	j;
@@ -48,6 +48,11 @@ void	init_edited_map(int edited_map[100][100])
 		}
 		i++;
 	}
+	gen->map_editor.done_btn.x0 = SCREEN_X - 200;
+	gen->map_editor.done_btn.y0 = SCREEN_Y - 100;
+	gen->map_editor.done_btn.x1 = SCREEN_X - 50;
+	gen->map_editor.done_btn.y1 = SCREEN_Y - 50;
+	//gen->map_editor.done_btn.texture = get_texture("textures/start_btn.xpm", gen);
 }
 
 void	init_main(t_gen *gen)
@@ -76,7 +81,7 @@ void	init_main(t_gen *gen)
 	gen->door.flag_door_open = 0;
 	gen->is_initializing = 0;
 	gen->is_drawing = 0;
-	init_edited_map(gen->edited_map);
+	init_edited_map(gen->edited_map, gen);
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)

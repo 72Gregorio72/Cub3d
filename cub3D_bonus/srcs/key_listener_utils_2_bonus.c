@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_utils_2_bonus.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 16:03:21 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:55:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,24 @@ void	handle_map_selection_click(int x, int y, t_gen *gen)
 	}
 }
 
+void	handle_map_editor_click(int x, int y, t_gen *gen)
+{
+	printf("Map editor click at (%d, %d)\n", x, y);
+	if (x >= gen->map_editor.done_btn.x0
+		&& x <= gen->map_editor.done_btn.x1
+		&& y >= gen->map_editor.done_btn.y0
+		&& y <= gen->map_editor.done_btn.y1)
+	{
+		create_map_file(gen);
+		return ;
+	}
+}
+
 int	on_mouse_click(int button, int x, int y, t_gen *gen)
 {
 	if (button == MOUSE_LEFT_CLICK && gen->in_map_editor)
 	{
+		handle_map_editor_click(x, y, gen);
 		gen->is_drawing = 1;
 		return (0);
 	}

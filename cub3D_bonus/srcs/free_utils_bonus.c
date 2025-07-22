@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/17 15:16:54 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/22 15:21:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,32 +86,6 @@ int	unclosed_door(t_map *map)
 	return (1);
 }
 
-void	create_map_file(t_gen *gen)
-{
-	int		fd;
-	char	*map_path;
-
-	map_path = ft_strjoin("wowowowo", ".cub");
-	if (!map_path)
-		return ;
-	fd = open(map_path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
-	{
-		free(map_path);
-		return ;
-	}
-	for (int i = 0; i < 100; i++)
-	{
-		for (int j = 0; j < 100; j++)
-		{
-			ft_putstr_fd(ft_itoa(gen->edited_map[i][j]), fd);
-		}
-		write(fd, "\n", 1);
-	}
-	close(fd);
-	free(map_path);
-}
-
 void	util_close_window(t_gen *gen)
 {
 	if (gen->door.door_closed.img_ptr)
@@ -126,7 +100,6 @@ void	util_close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->btn_options.img_ptr);
 	if (gen->btn_back_home.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->btn_back_home.img_ptr);
-	//create_map_file(gen);
 }
 
 void	free_all_buttons(t_gen *gen)
