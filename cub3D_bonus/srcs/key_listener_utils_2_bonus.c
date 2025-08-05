@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/22 14:55:51 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/05 11:33:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	on_mouse_click(int button, int x, int y, t_gen *gen)
 		return (0);
 	}
 	if (button == MOUSE_LEFT_CLICK && !gen->in_menu && gen->ignore_next_mouse)
-		add_projectile(gen);
+		gen->is_shooting = 1;
 	if (button == MOUSE_LEFT_CLICK && gen->in_menu
 		&& !gen->in_options && !gen->map_selection)
 		handle_menu_click(x, y, gen);

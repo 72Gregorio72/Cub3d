@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_listener_utils_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpicchio <gpicchio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 16:00:31 by gpicchio         ###   ########.fr       */
+/*   Updated: 2025/08/05 11:33:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	mouse_release(int button, int x, int y, t_gen *gen)
 		if (gen->dragging_slider)
 			gen->dragging_slider = 0;
 	}
+	if (button == MOUSE_LEFT_CLICK && !gen->in_menu && gen->ignore_next_mouse)
+		gen->is_shooting = 0;
 	return (0);
 }
 

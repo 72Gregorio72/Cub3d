@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:42:14 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/22 15:21:45 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/05 11:52:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	util_close_window(t_gen *gen)
 		mlx_destroy_image(gen->mlx_ptr, gen->btn_options.img_ptr);
 	if (gen->btn_back_home.img_ptr)
 		mlx_destroy_image(gen->mlx_ptr, gen->btn_back_home.img_ptr);
+	if (gen->gun_tex[0]->img_ptr)
+		mlx_destroy_image(gen->mlx_ptr, gen->gun_tex[0]->img_ptr);
 }
 
 void	free_all_buttons(t_gen *gen)

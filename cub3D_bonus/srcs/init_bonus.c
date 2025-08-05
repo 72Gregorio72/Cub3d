@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/18 12:06:16 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/05 12:05:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	load_button_images(t_gen *gen)
 	load_texture(gen->mlx_ptr, "textures/option_btn.xpm", &gen->btn_options);
 	load_texture(gen->mlx_ptr,
 		"textures/red_cross_tiny.xpm", &gen->btn_back_home);
+	//load_texture(gen->mlx_ptr, "textures/guns/ak47_1.xpm", &gen->gun_tex);
+	load_animation(gen, "textures/guns/ak47_", gen->gun_tex, 4);
 }
 
 void	init_keys(t_gen *gen)
@@ -82,6 +84,8 @@ void	init_main(t_gen *gen)
 	gen->is_initializing = 0;
 	gen->is_drawing = 0;
 	init_edited_map(gen->edited_map, gen);
+	gen->is_shooting = 0;
+	gen->gun_index = 0;
 }
 
 t_tex	*get_texture(char *path, t_gen *gen)

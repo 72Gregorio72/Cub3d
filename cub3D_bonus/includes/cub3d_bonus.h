@@ -65,9 +65,8 @@
 # define MAGENTA "\033[1;35m"
 # define CYAN "\033[1;36m"
 # define WHITE "\033[1;37m"
-# define MOVE_SPEED 0.05
+# define MOVE_SPEED 0.2
 # define ROTATE_SPEED 0.08
-# define MOVE_SPEED 0.05
 # define MAX_ZOMBIES 32
 # define ZOMBIE_SPEED 0.01
 # define MOUSE_LEFT_CLICK 1
@@ -427,6 +426,9 @@ typedef struct s_gen
 	int					in_map_editor;
 	int					is_drawing;
 	int					edited_map[100][100];
+	int					is_shooting;
+	t_tex				*gun_tex[4];
+	int					gun_index;
 }				t_gen;
 
 typedef struct s_ray
@@ -529,9 +531,12 @@ void	draw_texture_column(t_ray *ray, t_gen *gen, t_tex *tex, int tex_x);
 void	draw_ceiling_and_floor(t_ray *ray, t_gen *gen);
 void	draw_doors(t_gen *gen, t_ray *ray);
 void	draw_healthbar(t_gen *gen);
+void	draw_gun(t_gen *gen);
 void	draw_minimap_arrow(t_gen *gen);
 void	draw_minimap_grid(t_img *img, t_gen *gen);
 void	draw_minimap(t_map *map, t_gen *gen);
+void	load_animation(t_gen *gen, const char *base_path,
+	t_tex **tex_array, int count);
 
 // projectile
 void	update_projectile_position(t_gen *gen);

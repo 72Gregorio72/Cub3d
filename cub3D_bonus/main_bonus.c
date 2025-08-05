@@ -71,6 +71,9 @@ int	game_loop(t_gen *gen)
 	cleanup_projectiles(gen);
 	update_zombies_position(gen);
 	draw_healthbar(gen);
+	draw_gun(gen);
+	if (gen->is_shooting)
+		add_projectile(gen);
 	current_time = get_current_time();
 	if (current_time - last_time >= 50)
 	{

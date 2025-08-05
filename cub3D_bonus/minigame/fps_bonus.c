@@ -38,8 +38,10 @@ void	add_projectile(t_gen *gen)
 	new_proj = malloc(sizeof(t_projectile));
 	if (!new_proj)
 		return ;
-	new_proj->x = gen->player.x;
-	new_proj->y = gen->player.y;
+	double pistol_length = 0.3;
+	double lateral_offset = 0.1;
+	new_proj->x = gen->player.x + gen->player.dir_x * pistol_length + gen->player.plane_x * lateral_offset;
+	new_proj->y = gen->player.y + gen->player.dir_y * pistol_length + gen->player.plane_y * lateral_offset;
 	new_proj->dir_x = gen->player.dir_x;
 	new_proj->dir_y = gen->player.dir_y;
 	new_proj->damage = 20;
