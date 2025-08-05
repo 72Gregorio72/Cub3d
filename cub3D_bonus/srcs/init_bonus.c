@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:36:48 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/08/05 12:05:23 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/05 13:51:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	load_button_images(t_gen *gen)
 	load_texture(gen->mlx_ptr, "textures/option_btn.xpm", &gen->btn_options);
 	load_texture(gen->mlx_ptr,
 		"textures/red_cross_tiny.xpm", &gen->btn_back_home);
-	//load_texture(gen->mlx_ptr, "textures/guns/ak47_1.xpm", &gen->gun_tex);
 	load_animation(gen, "textures/guns/ak47_", gen->gun_tex, 4);
 }
 
@@ -34,18 +33,18 @@ void	init_keys(t_gen *gen)
 	gen->player_options.key_right = KB_D;
 }
 
-void	init_edited_map(int edited_map[100][100], t_gen *gen)
+void	init_edited_map(int edited_map[EDITED_MAP_GRID_SIZE][EDITED_MAP_GRID_SIZE], t_gen *gen)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < 100)
+	while (i < EDITED_MAP_GRID_SIZE)
 	{
 		j = 0;
-		while (j < 100)
+		while (j < EDITED_MAP_GRID_SIZE)
 		{
-			edited_map[i][j] = 0;
+			edited_map[i][j] = 2;
 			j++;
 		}
 		i++;
@@ -54,7 +53,6 @@ void	init_edited_map(int edited_map[100][100], t_gen *gen)
 	gen->map_editor.done_btn.y0 = SCREEN_Y - 100;
 	gen->map_editor.done_btn.x1 = SCREEN_X - 50;
 	gen->map_editor.done_btn.y1 = SCREEN_Y - 50;
-	//gen->map_editor.done_btn.texture = get_texture("textures/start_btn.xpm", gen);
 }
 
 void	init_main(t_gen *gen)

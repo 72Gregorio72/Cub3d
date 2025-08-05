@@ -6,14 +6,14 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:58:33 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/22 15:21:51 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/05 14:09:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
 #define SQUARE_SIZE SCREEN_X
-#define GRID_SIZE 100
+#define GRID_SIZE EDITED_MAP_GRID_SIZE
 #define CELL_SIZE (SQUARE_SIZE / GRID_SIZE)
 #define OFFSET_X 0
 #define OFFSET_Y 0
@@ -27,11 +27,11 @@ void	read_map_template(int fd, char ***edited_map)
 	int		i;
 
 	i = 0;
-	*edited_map = malloc(sizeof(char *) * 100);
+	*edited_map = malloc(sizeof(char *) * EDITED_MAP_GRID_SIZE);
 	if (!(*edited_map))
 		return ;
 	line = get_next_line(fd);
-	while (line && i < 100)
+	while (line && i < EDITED_MAP_GRID_SIZE)
 	{
 		(*edited_map)[i] = ft_strdup(line);
 		free(line);
@@ -67,6 +67,47 @@ char	**get_map_template(t_gen *gen)
 	return (template_map);
 }
 
+void flood_fill_from_edge(int **map, int size, int x, int y, int mark)
+{
+	if (x < 0 || x >= size || y < 0 || y >= size)
+		return;
+	if (map[y][x] != 2)
+		return;
+	map[y][x] = mark;
+	flood_fill_from_edge(map, size, x+1, y, mark);
+	flood_fill_from_edge(map, size, x-1, y, mark);
+	flood_fill_from_edge(map, size, x, y+1, mark);
+	flood_fill_from_edge(map, size, x, y-1, mark);
+}
+
+void	fill_playable_spaces(t_gen *gen)
+{
+	int **tmp_map = malloc(EDITED_MAP_GRID_SIZE * sizeof(int*));
+	for (int i = 0; i < EDITED_MAP_GRID_SIZE; i++)
+	{
+		tmp_map[i] = malloc(EDITED_MAP_GRID_SIZE * sizeof(int));
+		for (int j = 0; j < EDITED_MAP_GRID_SIZE; j++)
+			tmp_map[i][j] = gen->edited_map[i][j];
+	}
+	for (int i = 0; i < EDITED_MAP_GRID_SIZE; i++)
+	{
+		if (tmp_map[0][i] == 2)      flood_fill_from_edge(tmp_map, EDITED_MAP_GRID_SIZE, i, 0, 3);
+		if (tmp_map[EDITED_MAP_GRID_SIZE-1][i] == 2) flood_fill_from_edge(tmp_map, EDITED_MAP_GRID_SIZE, i, EDITED_MAP_GRID_SIZE-1, 3);
+		if (tmp_map[i][0] == 2)      flood_fill_from_edge(tmp_map, EDITED_MAP_GRID_SIZE, 0, i, 3);
+		if (tmp_map[i][EDITED_MAP_GRID_SIZE-1] == 2) flood_fill_from_edge(tmp_map, EDITED_MAP_GRID_SIZE, EDITED_MAP_GRID_SIZE-1, i, 3);
+	}
+	for (int i = 0; i < EDITED_MAP_GRID_SIZE; i++)
+	{
+		for (int j = 0; j < EDITED_MAP_GRID_SIZE; j++)
+		{
+			if (gen->edited_map[i][j] == 2 && tmp_map[i][j] == 2)
+				gen->edited_map[i][j] = 0;
+		}
+		free(tmp_map[i]);
+	}
+	free(tmp_map);
+}
+
 void	create_map_file(t_gen *gen)
 {
 	int		fd;
@@ -79,6 +120,7 @@ void	create_map_file(t_gen *gen)
 	char **template_map = get_map_template(gen);
 	if (!template_map)
 		return ;
+	fill_playable_spaces(gen);
 	while (1)
 	{
 		index_str = ft_itoa(index);
@@ -110,12 +152,19 @@ void	create_map_file(t_gen *gen)
 	{
 		if (ft_strncmp(template_map[i], "map here:", 9) == 0 && !map_written)
 		{
-			for (int j = 0; j < 100; j++)
+			for (int j = 0; j < EDITED_MAP_GRID_SIZE; j++)
 			{
-				for (int k = 0; k < 100; k++)
+				for (int k = 0; k < EDITED_MAP_GRID_SIZE; k++)
 				{
-					printf("Writing map at (%d, %d): %d\n", j, k, gen->edited_map[j][k]);
-					ft_putstr_fd(ft_itoa(gen->edited_map[j][k]), fd);
+					int val = gen->edited_map[j][k];
+					if (val == 2)
+					{
+						ft_putstr_fd(" ", fd);
+						continue ;
+					}
+					char *cell_str = ft_itoa(val);
+					ft_putstr_fd(cell_str, fd);
+					free(cell_str);
 				}
 				write(fd, "\n", 1);
 			}
@@ -211,12 +260,10 @@ void	map_editor(t_gen *gen)
 	draw_buttons(gen);
 }
 
-void	update_edited_map(int edited_map[100][100], int x, int y)
+void	update_edited_map(int edited_map[EDITED_MAP_GRID_SIZE][EDITED_MAP_GRID_SIZE], int x, int y)
 {
-	if (edited_map[y][x] == 0)
+	if (edited_map[y][x] == 2)
 		edited_map[y][x] = 1;
-	else
-		edited_map[y][x] = 0;
 }
 
 void	draw_in_editor(int x, int y, t_gen *gen)

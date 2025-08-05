@@ -92,6 +92,7 @@
 # define PREVIEW_WIDTH  200
 # define PREVIEW_HEIGHT 200
 # define PREVIEW_MARGIN_Y 80
+# define EDITED_MAP_GRID_SIZE 20
 
 typedef struct s_gen	t_gen;
 
@@ -425,7 +426,7 @@ typedef struct s_gen
 	t_map_editor		map_editor;
 	int					in_map_editor;
 	int					is_drawing;
-	int					edited_map[100][100];
+	int					edited_map[EDITED_MAP_GRID_SIZE][EDITED_MAP_GRID_SIZE];
 	int					is_shooting;
 	t_tex				*gun_tex[4];
 	int					gun_index;

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/08/05 11:33:11 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/05 13:35:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,15 @@ void	handle_map_selection_click(int x, int y, t_gen *gen)
 
 void	handle_map_editor_click(int x, int y, t_gen *gen)
 {
-	printf("Map editor click at (%d, %d)\n", x, y);
 	if (x >= gen->map_editor.done_btn.x0
 		&& x <= gen->map_editor.done_btn.x1
 		&& y >= gen->map_editor.done_btn.y0
 		&& y <= gen->map_editor.done_btn.y1)
 	{
 		create_map_file(gen);
+		gen->in_map_editor = 0;
+		gen->is_drawing = 0;
+		draw_menu(gen);
 		return ;
 	}
 }
