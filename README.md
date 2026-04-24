@@ -83,8 +83,6 @@ Per godere dell'esperienza completa con menu, nemici e minimappa:
 ```bash
 cd cub3D_bonus
 make
-```
 
-```bash
-./cub3D_bonus maps/creepy.cub
+./cub3D_bonus maps/test.cub
 ```
