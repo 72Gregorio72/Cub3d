@@ -85,10 +85,6 @@ cd cub3D_bonus
 make
 ```
 
-Avvia il programma senza argomenti (se vuoi che si apra il menu principale) o con una delle mappe bonus:
-
 ```bash
-./cub3D_bonus
-# oppure
 ./cub3D_bonus maps/creepy.cub
 ```
