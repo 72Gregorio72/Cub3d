@@ -20,26 +20,26 @@ Per compilare la versione base del progetto:
 ```bash
 cd cub3D
 make
+```
 
-Per avviare il gioco, passa come argomento un file mappa .cub valido:
-Bash
-
+```bash
 ./cub3D maps/test.cub
+```
+## Controlli Base
 
-Controlli Base
+* **W / A / S / D:** Muovi il personaggio (Avanti, Sinistra, Indietro, Destra).
 
-    W / A / S / D: Muovi il personaggio (Avanti, Sinistra, Indietro, Destra).
+* **Frecce Direzionali (← / →):** Ruota la visuale a sinistra e a destra.
 
-    Frecce Direzionali (← / →): Ruota la visuale a sinistra e a destra.
+* **ESC (o click sulla 'X' della finestra):** Esci dal gioco.
 
-    ESC (o click sulla 'X' della finestra): Esci dal gioco.
-
-Parte BONUS: (Versione Estesa)
+## Parte BONUS: (Versione Estesa)
 
 La versione Bonus del progetto (cub3D_bonus/) trasforma il semplice motore di raycasting in un vero e proprio mini-gioco completo. È stata aggiunta un'enorme quantità di funzionalità, trasformando l'esplorazione in un'avventura survival con interfaccia grafica e nemici animati.
 
-Funzionalità Aggiuntive Bonus
-1. Menu Principale e Interfaccia Utente (UI)
+**Funzionalità Aggiuntive Bonus**
+
+1. **Menu Principale e Interfaccia Utente (UI)**
 
     Menu di Selezione: All'avvio, il giocatore viene accolto da un menu interattivo (menu_bonus.c) dove è possibile navigare e selezionare visivamente la mappa da giocare (es. Cheese Maze, Creepy, Dungeon, Matrix).
 
@@ -49,7 +49,7 @@ Funzionalità Aggiuntive Bonus
 
     Contatore FPS: Visualizzazione in tempo reale dei frame per secondo (fps_bonus.c) per monitorare le performance del motore.
 
-2. Minimappa Dinamica
+2. **Minimappa Dinamica**
 
     Orientamento in tempo reale: Una minimappa in sovraimpressione (minimap_bonus.c) che disegna la griglia del livello.
 
@@ -57,11 +57,11 @@ Funzionalità Aggiuntive Bonus
 
     Radar Nemici: Sulla minimappa vengono tracciate anche le posizioni degli zombie, utile per pianificare i propri movimenti in anticipo.
 
-3. Interazione Ambientale: Porte
+3. **Interazione Ambientale: Porte**
 
     Porte Apribili/Chiudibili: Il sistema di raycasting è stato potenziato per riconoscere blocchi "porta". Le porte hanno texture dedicate e possono essere attraversate dal giocatore, aggiungendo profondità al level design.
 
-4. Sistema di Nemici (Zombies AI)
+4. **Sistema di Nemici (Zombies AI)**
 
 Questo è il cuore della parte bonus. Non ci sono semplici sprite statici, ma entità gestite da un'Intelligenza Artificiale (zombie_cpu_bonus.c):
 
@@ -77,17 +77,20 @@ Questo è il cuore della parte bonus. Non ci sono semplici sprite statici, ma en
 
         Dying: Ben 20 frame fluidi per l'animazione della sconfitta del nemico.
 
-Compilazione e Utilizzo (Bonus)
+
+## Compilazione e Utilizzo (Bonus)
 
 Per godere dell'esperienza completa con menu, nemici e minimappa:
-Bash
 
+```bash
 cd cub3D_bonus
 make
+```
 
 Avvia il programma senza argomenti (se vuoi che si apra il menu principale) o con una delle mappe bonus:
-Bash
 
+```bash
 ./cub3D_bonus
 # oppure
 ./cub3D_bonus maps/creepy.cub
+```
