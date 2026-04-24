@@ -41,41 +41,39 @@ La versione Bonus del progetto (cub3D_bonus/) trasforma il semplice motore di ra
 
 1. **Menu Principale e Interfaccia Utente (UI)**
 
-    Menu di Selezione: All'avvio, il giocatore viene accolto da un menu interattivo (menu_bonus.c) dove è possibile navigare e selezionare visivamente la mappa da giocare (es. Cheese Maze, Creepy, Dungeon, Matrix).
+    * Menu di Selezione: All'avvio, il giocatore viene accolto da un menu interattivo (menu_bonus.c) dove è possibile navigare e selezionare visivamente la mappa da giocare (es. Cheese Maze, Creepy, Dungeon, Matrix).
 
-    HUD in Game: Durante il gioco è presente una vera e propria interfaccia utente.
+    * HUD in Game: Durante il gioco è presente una vera e propria interfaccia utente.
 
-    Healthbar: Una barra della salute dinamica (draw_healthbar_bonus.c) che si svuota quando si subiscono danni.
+    * Healthbar: Una barra della salute dinamica (draw_healthbar_bonus.c) che si svuota quando si subiscono danni.
 
-    Contatore FPS: Visualizzazione in tempo reale dei frame per secondo (fps_bonus.c) per monitorare le performance del motore.
+    * Contatore FPS: Visualizzazione in tempo reale dei frame per secondo (fps_bonus.c) per monitorare le performance del motore.
 
 2. **Minimappa Dinamica**
 
-    Orientamento in tempo reale: Una minimappa in sovraimpressione (minimap_bonus.c) che disegna la griglia del livello.
+    * Orientamento in tempo reale: Una minimappa in sovraimpressione (minimap_bonus.c) che disegna la griglia del livello.
 
-    Tracking del Giocatore: La posizione del giocatore è chiaramente visibile con una freccia (minimap_arrow_bonus.c) che ruota in base alla direzione dello sguardo.
+    * Tracking del Giocatore: La posizione del giocatore è chiaramente visibile con una freccia (minimap_arrow_bonus.c) che ruota in base alla direzione dello sguardo.
 
-    Radar Nemici: Sulla minimappa vengono tracciate anche le posizioni degli zombie, utile per pianificare i propri movimenti in anticipo.
+    * Radar Nemici: Sulla minimappa vengono tracciate anche le posizioni degli zombie, utile per pianificare i propri movimenti in anticipo.
 
 3. **Interazione Ambientale: Porte**
 
-    Porte Apribili/Chiudibili: Il sistema di raycasting è stato potenziato per riconoscere blocchi "porta". Le porte hanno texture dedicate e possono essere attraversate dal giocatore, aggiungendo profondità al level design.
+    * Porte Apribili/Chiudibili: Il sistema di raycasting è stato potenziato per riconoscere blocchi "porta". Le porte hanno texture dedicate e possono essere attraversate dal giocatore, aggiungendo profondità al level design.
 
 4. **Sistema di Nemici (Zombies AI)**
 
-Questo è il cuore della parte bonus. Non ci sono semplici sprite statici, ma entità gestite da un'Intelligenza Artificiale (zombie_cpu_bonus.c):
+	* Pathfinding e Movimento: Gli zombie si muovono all'interno della mappa cercando il giocatore.
 
-    Pathfinding e Movimento: Gli zombie si muovono all'interno della mappa cercando il giocatore.
+    * Sistema di Animazione Avanzato: I nemici sono completamente animati tramite una macchina a stati (zombie_animator_bonus.c) che carica ed esegue in sequenza decine di frame in formato .xpm:
 
-    Sistema di Animazione Avanzato: I nemici sono completamente animati tramite una macchina a stati (zombie_animator_bonus.c) che carica ed esegue in sequenza decine di frame in formato .xpm:
+        * Walking: Oltre 25 frame per l'animazione della camminata.
 
-        Walking: Oltre 25 frame per l'animazione della camminata.
+        * Attacking: Animazioni dedicate quando lo zombie è a portata per ferire il giocatore.
 
-        Attacking: Animazioni dedicate quando lo zombie è a portata per ferire il giocatore.
+        * Hitted: Reazione visiva ai danni subiti.
 
-        Hitted: Reazione visiva ai danni subiti.
-
-        Dying: Ben 20 frame fluidi per l'animazione della sconfitta del nemico.
+        * Dying: Ben 20 frame fluidi per l'animazione della sconfitta del nemico.
 
 
 ## Compilazione e Utilizzo (Bonus)
