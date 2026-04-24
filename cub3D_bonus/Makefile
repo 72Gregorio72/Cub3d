@@ -95,7 +95,7 @@ bonus: all
 miniclean: fclean
 	$(RM) minilibx-linux
 
-vale: re
+valgrind: re
 	make clean
 	@clear
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARSG)
@@ -103,7 +103,7 @@ vale: re
 push: miniclean
 	bash -i -c "push"
 
-testosterone: re
+test: re
 	make clean
 	@clear
 	@./$(NAME) $(ARSG)

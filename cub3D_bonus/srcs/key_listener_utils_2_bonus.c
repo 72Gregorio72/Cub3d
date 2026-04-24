@@ -6,7 +6,7 @@
 /*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:36:59 by gpicchio          #+#    #+#             */
-/*   Updated: 2025/07/10 14:41:56 by vcastald         ###   ########.fr       */
+/*   Updated: 2026/04/24 10:32:46 by vcastald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,11 @@ void	handle_map_selection_click(int x, int y, t_gen *gen)
 	}
 }
 
-int	on_mouse_click(int button, int x, int y, t_gen *gen)
+int	on_mouse_click(int button, int x, int y, void *param)
 {
+	t_gen	*gen;
+
+	gen = (t_gen *)param;
 	if (button == MOUSE_LEFT_CLICK && !gen->in_menu && gen->ignore_next_mouse)
 		add_projectile(gen);
 	if (button == MOUSE_LEFT_CLICK && gen->in_menu

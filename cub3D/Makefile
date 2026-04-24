@@ -54,7 +54,7 @@ bonus: all
 miniclean: fclean
 	$(RM) minilibx-linux
 
-vale: re clean
+valgrind: re clean
 	@clear
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ciao.cub
 

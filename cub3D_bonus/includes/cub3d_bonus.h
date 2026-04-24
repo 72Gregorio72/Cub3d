@@ -451,7 +451,7 @@ void	free_all_buttons(t_gen *gen);
 int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 int		on_mouse_move(int x, int y, t_gen *gen);
-int		on_mouse_click(int button, int x, int y, t_gen *gen);
+int		on_mouse_click(int button, int x, int y, void *param);
 int		on_key_press(int keycode, t_gen *gen);
 int		on_key_release(int keycode, t_gen *gen);
 void	mouse_check(int x, int y, t_gen *gen);
