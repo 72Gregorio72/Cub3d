@@ -1,0 +1,99 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_listener_bonus.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vcastald <vcastald@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/26 12:36:57 by gpicchio          #+#    #+#             */
+/*   Updated: 2025/07/10 14:41:52 by vcastald         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d_bonus.h"
+
+void	check_press(int keycode, t_gen *gen)
+{
+	if (keycode == KB_ESC)
+	{
+		close_window(gen);
+		exit(0);
+	}
+	if (keycode == gen->player_options.key_up)
+		gen->keys.w = 1;
+	if (keycode == gen->player_options.key_down)
+		gen->keys.s = 1;
+	if (keycode == gen->player_options.key_left)
+		gen->keys.a = 1;
+	if (keycode == gen->player_options.key_right)
+		gen->keys.d = 1;
+	if (keycode == KB_LEFT)
+		gen->keys.left = 1;
+	if (keycode == KB_RIGHT)
+		gen->keys.right = 1;
+}
+
+int	on_key_press(int keycode, t_gen *gen)
+{
+	check_press(keycode, gen);
+	if (gen->waiting_key_for)
+	{
+		if (gen->waiting_key_for == 1)
+			gen->player_options.key_up = keycode;
+		else if (gen->waiting_key_for == 2)
+			gen->player_options.key_down = keycode;
+		else if (gen->waiting_key_for == 3)
+			gen->player_options.key_left = keycode;
+		else if (gen->waiting_key_for == 4)
+			gen->player_options.key_right = keycode;
+		gen->waiting_key_for = 0;
+		open_options_menu(gen);
+		return (0);
+	}
+	return (0);
+}
+
+int	on_key_release(int keycode, t_gen *gen)
+{
+	if (keycode == gen->player_options.key_up)
+		gen->keys.w = 0;
+	if (keycode == gen->player_options.key_down)
+		gen->keys.s = 0;
+	if (keycode == gen->player_options.key_left)
+		gen->keys.a = 0;
+	if (keycode == gen->player_options.key_right)
+		gen->keys.d = 0;
+	if (keycode == KB_LEFT)
+		gen->keys.left = 0;
+	if (keycode == KB_RIGHT)
+		gen->keys.right = 0;
+	if (keycode == KB_E)
+		draw_menu(gen);
+	if (keycode == KB_Q)
+		gen->door.flag_door_open = 1;
+	return (0);
+}
+
+void	mouse_check(int x, int y, t_gen *gen)
+{
+	int				delta_x;
+	int				delta_y;
+	double			angle;
+
+	delta_x = x - (SCREEN_X / 2);
+	delta_y = y - (SCREEN_Y / 2);
+	if (abs(delta_x) > 1)
+	{
+		angle = -delta_x * (gen->player_options.mouse_sensitivity * 0.001);
+		rotate_player(gen, -angle);
+	}
+	if (abs(delta_y) > 1)
+	{
+		gen->mouse_vertical_offset += delta_y;
+		if (gen->mouse_vertical_offset < -500)
+			gen->mouse_vertical_offset = -500;
+		else if (gen->mouse_vertical_offset > 500)
+			gen->mouse_vertical_offset = 500;
+	}
+	mlx_mouse_move(gen->mlx_ptr, gen->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
+}
