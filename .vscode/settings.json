@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "stdio.h": "c",
-        "cub3d_bonus.h": "c",
-        "libft.h": "c"
-    }
-}
